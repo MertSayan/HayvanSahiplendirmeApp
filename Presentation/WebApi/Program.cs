@@ -1,11 +1,18 @@
 
+using Application.Behaviors;
 using Application.Features.MediatR.Users.Handlers.Write;
 using Application.Interfaces;
+using Application.Interfaces.PetInterface;
 using Application.Interfaces.TokenInterface;
+using Application.Validations.Pets;
+using AutoMapper;
+using FluentValidation;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Persistence.Context;
 using Persistence.Repositories;
+using Persistence.Repositories.PetRepository;
 using Persistence.Repositories.TokenRepository;
 using System.Text;
 
@@ -43,18 +50,35 @@ namespace WebApi
                 cfg.RegisterServicesFromAssemblies(typeof(LoginCommandHandler).Assembly);
             });
 
+            builder.Services.AddValidatorsFromAssembly(typeof(CreatePetCommandValidator).Assembly);
+
+            // Pipeline'a validation davranýþýný ekledik
+            
+
             // Add services to the container.
 
             builder.Services.AddScoped<HayvanContext>();
             builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
             builder.Services.AddScoped(typeof(IRepository<>),typeof(Repository<>));
             builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+            builder.Services.AddScoped<IPetRepository,PetRepository>();
+            builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
             builder.Services.AddControllers();
             builder.Services.AddAuthorization(); // jwt için yazdým bunu. eklenmemesi halinde [Authorize] attribute i kullanýlmaz.
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new Application.MapperProfiles.MapperProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            builder.Services.AddSingleton(mapper);
 
             var app = builder.Build();
 

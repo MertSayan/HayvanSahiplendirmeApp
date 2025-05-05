@@ -7,6 +7,6 @@
         public AdoptionRequest AdoptionRequest { get; set; }
         public int WeekNumber { get; set; }
         public string PhotoImageUrl { get; set; }
-        public string Note { get; set; }
+        public string? Note { get; set; }
     }
 }

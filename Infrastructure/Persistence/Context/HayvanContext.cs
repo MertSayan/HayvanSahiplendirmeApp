@@ -24,6 +24,7 @@ namespace Persistence.Context
         public DbSet<Message> Messages { get; set; }
         public DbSet<AdoptionRequest> AdoptionRequests { get; set; }
         public DbSet<AdoptionTracking> AdoptionTrackings { get; set; }
+        public DbSet<PetImage> PetImages { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -125,6 +126,13 @@ namespace Persistence.Context
                 .HasOne(at => at.AdoptionRequest)
                 .WithMany(ar => ar.Trackings)
                 .HasForeignKey(at => at.AdoptionRequestId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // (10) Pet ↔ PetImage (1-N)
+            modelBuilder.Entity<PetImage>()
+                .HasOne(pi => pi.Pet)
+                .WithMany(p => p.Images)
+                .HasForeignKey(pi => pi.PetId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

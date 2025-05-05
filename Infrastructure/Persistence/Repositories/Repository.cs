@@ -51,14 +51,14 @@ namespace Persistence.Repositories
         //}
 
         //aşağıdaki metot üstteki metodun daha gelişmişidir. aşağıdaki metot başka tabloları da include edebilmemizi sağlar.
-        public async Task<T> GetByFilterAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+        public async Task<T> GetByFilterAsync(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] includes)
         {
             IQueryable<T> query = _context.Set<T>();
 
             foreach (var include in includes)
                 query = query.Include(include);
 
-            return await query.FirstOrDefaultAsync(predicate);
+            return await query.FirstOrDefaultAsync(filter);
         }
 
         public async Task<T> GetByIdAsync(int id)

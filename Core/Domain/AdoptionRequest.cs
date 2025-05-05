@@ -9,7 +9,8 @@
         public User Sender { get; set; }
         public int OwnerId { get; set; }
         public User Owner { get; set; }
-        public string Status { get; set; }
+        public string Status { get; set; } // enum yapısı kullanacağız. pending, accepted , rejected
+        public string? Note { get; set; } //istek yollarken kısa bir not yazabilecek
 
         public  ICollection<AdoptionTracking> Trackings { get; set; } = new List<AdoptionTracking>();
     }

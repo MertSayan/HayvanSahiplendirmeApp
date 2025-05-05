@@ -1,13 +1,17 @@
-﻿namespace Domain
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Application.Features.MediatR.Pets.Results
 {
-    public class Pet : Entity
+    public class GetByIdPetQueryResult
     {
         public int PetId { get; set; }
-        public int UserId { get; set; }
-        public User User { get; set; }
+        public string UserName { get; set; }
         public string Name { get; set; }
-        public int PetTypeId { get; set; }
-        public PetType PetType { get; set; }
+        public string PetTypeName { get; set; }
         public string Age { get; set; }
         public string Gender { get; set; }
         public string Description { get; set; }
@@ -18,10 +22,5 @@
         public bool IsAdopted { get; set; } // sahiplendirilip sahiplendirilmediği ( ilan aktif mi pasif mi gibi )
         public string? Breed { get; set; } // Örn: "Golden Retriever"
         public string MainImageUrl { get; set; }
-        public ICollection<PetImage> Images { get; set; }=new List<PetImage>();
-
-        public ICollection<PetComment> PetComments { get; set; } = new List<PetComment>();
-        public ICollection<PetLike> PetLikes { get; set; } = new List<PetLike>();
-        public ICollection<AdoptionRequest> AdoptionRequests { get; set; } = new List<AdoptionRequest>();
     }
 }
