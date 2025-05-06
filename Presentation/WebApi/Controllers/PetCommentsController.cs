@@ -1,6 +1,8 @@
 ﻿using Application.Constants;
 using Application.Features.MediatR.PetComments.Commands;
+using Application.Features.MediatR.PetComments.Queries;
 using Application.Features.MediatR.Pets.Commands;
+using Application.Features.MediatR.Pets.Queries;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -19,6 +21,12 @@ namespace WebApi.Controllers
             _mediator = mediator;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllPetCommentByPetId(int id)
+        {
+            var values = await _mediator.Send(new GetAllPetCommentByPetIdQuery(id));
+            return Ok(values);
+        }
         [HttpPost]
         public async Task<IActionResult> CreatePetComment(CreatePetCommentCommand command)
         {

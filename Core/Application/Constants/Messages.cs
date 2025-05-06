@@ -17,5 +17,7 @@ namespace Application.Constants
         public static string EntityNameDuplicated => $"Bu isme sahip bir {EntityName} nesnesi zaten var, lütfen ismini değiştirin";
         public static string EntityAlreadyDeleted => $"Girdiginiz id değerine sahip {EntityName} nesnesine zaten soft delete yapılmış";
         public static string EntityCantMatches => "Email veya sifre uyusmuyor";
+
+        public static string EntityCantGet => $"{EntityName} alanına ait veri bulunamadı.";
     }
 }

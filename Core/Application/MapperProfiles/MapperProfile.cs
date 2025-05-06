@@ -1,4 +1,5 @@
 ﻿using Application.Features.MediatR.PetComments.Commands;
+using Application.Features.MediatR.PetComments.Results;
 using Application.Features.MediatR.Pets.Commands;
 using Application.Features.MediatR.Pets.Results;
 using AutoMapper;
@@ -21,6 +22,10 @@ namespace Application.MapperProfiles
 
             CreateMap<PetComment, CreatePetCommentCommand>().ReverseMap();
             CreateMap<PetComment, UpdatePetCommentCommand>().ReverseMap();
+
+            CreateMap<PetComment, GetAllPetCommentByPetIdQueryResult>()
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Name))
+            .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.Name));
 
 
 
