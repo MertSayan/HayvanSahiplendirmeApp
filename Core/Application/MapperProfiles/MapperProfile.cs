@@ -1,4 +1,5 @@
-﻿using Application.Features.MediatR.PetComments.Commands;
+﻿using Application.Features.MediatR.AdoptionRequests.Commands;
+using Application.Features.MediatR.PetComments.Commands;
 using Application.Features.MediatR.PetComments.Results;
 using Application.Features.MediatR.PetLikes.Commands;
 using Application.Features.MediatR.PetLikes.Results;
@@ -38,6 +39,10 @@ namespace Application.MapperProfiles
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Name));
             CreateMap<PetLike, GetAllPetLikeByUserIdQueryResult>()
                 .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.Name));
+
+            //AdoptionRequest
+            CreateMap<AdoptionRequest, CreateAdoptionRequestCommand>().ReverseMap();
+            CreateMap<AdoptionRequest, UpdateAdoptionRequestCommand>().ReverseMap();
 
 
         }

@@ -23,6 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\MediatR\AdoptionRequests\Handlers\Read\" />
+    <Folder Include="Features\MediatR\AdoptionRequests\Results\" />
+    <Folder Include="Features\MediatR\AdoptionRequests\Queries\" />
     <Folder Include="Features\MediatR\Users\Handlers\Read\" />
     <Folder Include="Features\MediatR\Users\Results\" />
     <Folder Include="Features\MediatR\Users\Queries\" />
