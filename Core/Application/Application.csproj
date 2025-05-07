@@ -23,9 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\MediatR\PetLikes\Handlers\Read\" />
-    <Folder Include="Features\MediatR\PetLikes\Results\" />
-    <Folder Include="Features\MediatR\PetLikes\Queries\" />
     <Folder Include="Features\MediatR\Users\Handlers\Read\" />
     <Folder Include="Features\MediatR\Users\Results\" />
     <Folder Include="Features\MediatR\Users\Queries\" />
