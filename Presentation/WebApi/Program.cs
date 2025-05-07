@@ -4,6 +4,7 @@ using Application.Features.MediatR.Users.Handlers.Write;
 using Application.Interfaces;
 using Application.Interfaces.PetCommentInterface;
 using Application.Interfaces.PetInterface;
+using Application.Interfaces.PetLikeInterface;
 using Application.Interfaces.TokenInterface;
 using Application.Validations.Pets;
 using AutoMapper;
@@ -14,6 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 using Persistence.Context;
 using Persistence.Repositories;
 using Persistence.Repositories.PetCommentRepository;
+using Persistence.Repositories.PetLikeRepository;
 using Persistence.Repositories.PetRepository;
 using Persistence.Repositories.TokenRepository;
 using System.Text;
@@ -66,6 +68,9 @@ namespace WebApi
             builder.Services.AddScoped<IPetRepository,PetRepository>();
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             builder.Services.AddScoped<IPetCommentRepository,PetCommentRepository>();
+            builder.Services.AddScoped<IPetLikeRepository, PetLikeRepository>();
+
+
             builder.Services.AddControllers();
             builder.Services.AddAuthorization(); // jwt için yazdým bunu. eklenmemesi halinde [Authorize] attribute i kullanýlmaz.
 
