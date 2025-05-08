@@ -7,6 +7,7 @@ using Application.Interfaces.PetCommentInterface;
 using Application.Interfaces.PetInterface;
 using Application.Interfaces.PetLikeInterface;
 using Application.Interfaces.TokenInterface;
+using Application.Interfaces.UserInterface;
 using Application.Validations.Pets;
 using AutoMapper;
 using FluentValidation;
@@ -20,6 +21,7 @@ using Persistence.Repositories.PetCommentRepository;
 using Persistence.Repositories.PetLikeRepository;
 using Persistence.Repositories.PetRepository;
 using Persistence.Repositories.TokenRepository;
+using Persistence.Repositories.UserRepository;
 using System.Text;
 
 namespace WebApi
@@ -72,6 +74,7 @@ namespace WebApi
             builder.Services.AddScoped<IPetCommentRepository,PetCommentRepository>();
             builder.Services.AddScoped<IPetLikeRepository, PetLikeRepository>();
             builder.Services.AddScoped<IAdoptionRequestRepository, AdoptionRequestRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 
             builder.Services.AddControllers();

@@ -10,7 +10,7 @@ namespace Application.Enums
     {
         
         Ziyaretci=1,
-        Kullanici,
-        Admin,
+        Kullanici=2,
+        Admin=3,
     }
 }

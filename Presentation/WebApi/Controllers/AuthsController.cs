@@ -1,6 +1,8 @@
 ﻿using Application.Constants;
 using Application.Features.MediatR.Pets.Commands;
+using Application.Features.MediatR.Pets.Queries;
 using Application.Features.MediatR.Users.Commands;
+using Application.Features.MediatR.Users.Queries;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +18,27 @@ namespace WebApi.Controllers
         public AuthsController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllUser()
+        {
+            var values = await _mediator.Send(new GetAllUserQuery());
+            return Ok(values);
+        }
+
+        [HttpGet("GetByIdUser")]
+        public async Task<IActionResult> GetByIdUser(int id)
+        {
+            var value = await _mediator.Send(new GetByIdUserQuery(id));
+            return Ok(value);
+        }
+
+        [HttpGet("GetByIdUserDetailsForAdmin")]
+        public async Task<IActionResult> GetByIdUserDetailsForAdmin(int id)
+        {
+            var value = await _mediator.Send(new GetByIdUserDetailsForAdminQuery(id));
+            return Ok(value);
         }
 
         [HttpPost("Login")]

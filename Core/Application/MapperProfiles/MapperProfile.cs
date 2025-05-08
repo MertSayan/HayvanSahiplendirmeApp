@@ -8,6 +8,7 @@ using Application.Features.MediatR.PetLikes.Results;
 using Application.Features.MediatR.Pets.Commands;
 using Application.Features.MediatR.Pets.Results;
 using Application.Features.MediatR.Users.Commands;
+using Application.Features.MediatR.Users.Results;
 using AutoMapper;
 using Domain;
 
@@ -66,6 +67,15 @@ namespace Application.MapperProfiles
             CreateMap<User, CreateUserCommand>().ReverseMap();
             CreateMap<User, UpdateUserCommand>().ReverseMap();
             CreateMap<User, UpdateUserByAdminCommand>().ReverseMap();
+
+            CreateMap<User, GetAllUserQueryResult>()
+            .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));
+
+            CreateMap<User, GetByIdUserQueryResult>()
+            .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));
+
+            CreateMap<User, GetByIdUserDetailsForAdminQueryResult>()
+            .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));
 
 
         }
