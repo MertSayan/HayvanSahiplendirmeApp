@@ -39,6 +39,13 @@ namespace WebApi.Controllers
             return Ok(Messages<User>.EntityUpdated);
         }
 
+        [HttpPut("UpdateAdminUser")]
+        public async Task<IActionResult> UpdateAdminUser(UpdateUserByAdminCommand command)
+        {
+            await _mediator.Send(command);
+            return Ok(Messages<User>.EntityUpdated);
+        }
+
         [HttpDelete("DeleteUser")]
         public async Task<IActionResult> DeleteUser(DeleteUserCommand command)
         {

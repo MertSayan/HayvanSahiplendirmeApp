@@ -65,6 +65,7 @@ namespace Application.MapperProfiles
 
             CreateMap<User, CreateUserCommand>().ReverseMap();
             CreateMap<User, UpdateUserCommand>().ReverseMap();
+            CreateMap<User, UpdateUserByAdminCommand>().ReverseMap();
 
 
         }
