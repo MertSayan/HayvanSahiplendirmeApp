@@ -8,8 +8,9 @@ namespace Application.Enums
 {
     public enum UserRole
     {
-        Admin,
+        
+        Ziyaretci=1,
         Kullanici,
-        Ziyaretci
+        Admin,
     }
 }

@@ -30,5 +30,12 @@ namespace WebApi.Controllers
             await _mediator.Send(command);
             return Ok(Messages<User>.EntityAdded);
         }
+
+        [HttpPut("UpdateUser")]
+        public async Task<IActionResult> UpdateUser(UpdateUserCommand command)
+        {
+            await _mediator.Send(command);
+            return Ok(Messages<User>.EntityUpdated);
+        }
     }
 }

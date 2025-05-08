@@ -64,6 +64,7 @@ namespace Application.MapperProfiles
                 .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.Name));
 
             CreateMap<User, CreateUserCommand>().ReverseMap();
+            CreateMap<User, UpdateUserCommand>().ReverseMap();
 
 
         }
