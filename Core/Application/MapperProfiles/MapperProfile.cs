@@ -1,4 +1,6 @@
-﻿using Application.Features.MediatR.AdoptionRequests.Commands;
+﻿using Application.Enums;
+using Application.Features.MediatR.AdoptionRequests.Commands;
+using Application.Features.MediatR.AdoptionRequests.Results;
 using Application.Features.MediatR.PetComments.Commands;
 using Application.Features.MediatR.PetComments.Results;
 using Application.Features.MediatR.PetLikes.Commands;
@@ -43,6 +45,22 @@ namespace Application.MapperProfiles
             //AdoptionRequest
             CreateMap<AdoptionRequest, CreateAdoptionRequestCommand>().ReverseMap();
             CreateMap<AdoptionRequest, UpdateAdoptionRequestCommand>().ReverseMap();
+            CreateMap<AdoptionRequest, GetAllAdoptionRequestByPetIdQueryResult>()
+                .ForMember(dest => dest.SenderName, opt => opt.MapFrom(src => src.Sender.Name))
+                .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => src.Owner.Name))
+                .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.Name));
+            CreateMap<AdoptionRequest, GetAllAdoptionRequestByUserIdQueryResult>()
+                .ForMember(dest => dest.SenderName, opt => opt.MapFrom(src => src.Sender.Name))
+                .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => src.Owner.Name))
+                .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.Name));
+            CreateMap<AdoptionRequest, GetAllAdoptionRequestQueryResult>()
+                .ForMember(dest => dest.SenderName, opt => opt.MapFrom(src => src.Sender.Name))
+                .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => src.Owner.Name))
+                .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.Name));
+            CreateMap<AdoptionRequest, GetByIdAdoptionRequestQueryResult>()
+                .ForMember(dest => dest.SenderName, opt => opt.MapFrom(src => src.Sender.Name))
+                .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => src.Owner.Name))
+                .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.Name));
 
 
         }

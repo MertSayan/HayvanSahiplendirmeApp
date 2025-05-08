@@ -1,5 +1,7 @@
 ﻿using Application.Constants;
 using Application.Features.MediatR.AdoptionRequests.Commands;
+using Application.Features.MediatR.AdoptionRequests.Queries;
+using Application.Features.MediatR.Pets.Queries;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +17,31 @@ namespace WebApi.Controllers
         public AdoptionRequestsController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllAdoptionRequest()
+        {
+            var values = await _mediator.Send(new GetAllAdoptionRequestQuery());
+            return Ok(values);
+        }
+        [HttpGet("GetAllAdoptionRequestByPetId")]
+        public async Task<IActionResult> GetAllAdoptionRequestByPetId(int petId)
+        {
+            var values = await _mediator.Send(new GetAllAdoptionRequestByPetIdQuery(petId));
+            return Ok(values);
+        }
+        [HttpGet("GetAllAdoptionRequestByUserId")]
+        public async Task<IActionResult> GetAllAdoptionRequestByUserId(int userId)
+        {
+            var values = await _mediator.Send(new GetAllAdoptionRequestByUserIdQuery(userId));
+            return Ok(values);
+        }
+        [HttpGet("ById")]
+        public async Task<IActionResult> GetByIdAdoptionRequest(int id)
+        {
+            var value = await _mediator.Send(new GetByIdAdoptionRequestQuery(id));
+            return Ok(value);
         }
 
         [HttpPost]

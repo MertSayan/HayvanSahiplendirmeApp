@@ -1,4 +1,5 @@
-﻿using Application.Features.MediatR.AdoptionRequests.Commands;
+﻿using Application.Enums;
+using Application.Features.MediatR.AdoptionRequests.Commands;
 using Application.Interfaces;
 using AutoMapper;
 using Domain;
@@ -20,6 +21,7 @@ namespace Application.Features.MediatR.AdoptionRequests.Handlers.Write
         public async Task<Unit> Handle(CreateAdoptionRequestCommand request, CancellationToken cancellationToken)
         {
             var adoptionRequest=_mapper.Map<AdoptionRequest>(request);
+            adoptionRequest.Status = AdoptionStatus.Pending.ToString();
             await _repository.CreateAsync(adoptionRequest);
             return Unit.Value;
         }
