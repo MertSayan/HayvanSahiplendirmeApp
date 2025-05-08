@@ -7,6 +7,7 @@ using Application.Features.MediatR.PetLikes.Commands;
 using Application.Features.MediatR.PetLikes.Results;
 using Application.Features.MediatR.Pets.Commands;
 using Application.Features.MediatR.Pets.Results;
+using Application.Features.MediatR.Users.Commands;
 using AutoMapper;
 using Domain;
 
@@ -61,6 +62,8 @@ namespace Application.MapperProfiles
                 .ForMember(dest => dest.SenderName, opt => opt.MapFrom(src => src.Sender.Name))
                 .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => src.Owner.Name))
                 .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.Name));
+
+            CreateMap<User, CreateUserCommand>().ReverseMap();
 
 
         }
