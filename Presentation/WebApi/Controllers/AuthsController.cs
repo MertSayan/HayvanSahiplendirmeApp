@@ -1,4 +1,5 @@
 ﻿using Application.Constants;
+using Application.Features.MediatR.Pets.Commands;
 using Application.Features.MediatR.Users.Commands;
 using Domain;
 using MediatR;
@@ -37,5 +38,13 @@ namespace WebApi.Controllers
             await _mediator.Send(command);
             return Ok(Messages<User>.EntityUpdated);
         }
+
+        [HttpDelete("DeleteUser")]
+        public async Task<IActionResult> DeleteUser(DeleteUserCommand command)
+        {
+            await _mediator.Send(command);
+            return Ok(Messages<User>.EntityDeleted);
+        }
+        
     }
 }
