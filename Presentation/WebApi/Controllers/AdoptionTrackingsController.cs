@@ -1,5 +1,6 @@
 ﻿using Application.Constants;
 using Application.Features.MediatR.AdoptionTrackings.Commands;
+using Application.Features.MediatR.AdoptionTrackings.Queries;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,20 @@ namespace WebApi.Controllers
         {
             _mediator = mediator;
         }
-        
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllAdoptionTracking()
+        {
+            var values = await _mediator.Send(new GetAllAdoptionTrackingQuery());
+            return Ok(values);
+        }
+
+        [HttpGet("ById")]
+        public async Task<IActionResult> GetByIdAdoptionTracking(int id)
+        {
+            var value = await _mediator.Send(new GetByIdAdoptionTrackingQuery(id));
+            return Ok(value);
+        }
 
         [HttpPost]
         public async Task<IActionResult> CreateAdoptionTracking(CreateAdoptionTrackingCommand command)

@@ -1,7 +1,7 @@
-﻿using Application.Enums;
-using Application.Features.MediatR.AdoptionRequests.Commands;
+﻿using Application.Features.MediatR.AdoptionRequests.Commands;
 using Application.Features.MediatR.AdoptionRequests.Results;
 using Application.Features.MediatR.AdoptionTrackings.Commands;
+using Application.Features.MediatR.AdoptionTrackings.Results;
 using Application.Features.MediatR.PetComments.Commands;
 using Application.Features.MediatR.PetComments.Results;
 using Application.Features.MediatR.PetLikes.Commands;
@@ -70,17 +70,24 @@ namespace Application.MapperProfiles
             CreateMap<User, UpdateUserCommand>().ReverseMap();
             CreateMap<User, UpdateUserByAdminCommand>().ReverseMap();
             CreateMap<User, GetAllUserQueryResult>()
-            .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));
+                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));
             CreateMap<User, GetByIdUserQueryResult>()
-            .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));
+                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));
             CreateMap<User, GetByIdUserDetailsForAdminQueryResult>()
-            .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));
+                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));
 
 
             //AdoptionTracking
             CreateMap<AdoptionTracking,CreateAdoptionTrackingCommand>().ReverseMap(); 
-            CreateMap<AdoptionTracking,UpdateAdoptionRequestCommand>().ReverseMap(); 
-
+            CreateMap<AdoptionTracking,UpdateAdoptionRequestCommand>().ReverseMap();
+            CreateMap<AdoptionTracking, GetAllAdoptionTrackingQueryResult>()
+                .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => src.AdoptionRequest.Owner.Name))
+                .ForMember(dest => dest.SenderName, opt => opt.MapFrom(src => src.AdoptionRequest.Sender.Name))
+                .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.AdoptionRequest.Pet.Name));
+            CreateMap<AdoptionTracking,GetByIdAdoptionTrackingQueryResult>()
+                .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => src.AdoptionRequest.Owner.Name))
+                .ForMember(dest => dest.SenderName, opt => opt.MapFrom(src => src.AdoptionRequest.Sender.Name))
+                .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.AdoptionRequest.Pet.Name));
 
         }
     }
