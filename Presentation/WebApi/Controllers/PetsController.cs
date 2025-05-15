@@ -30,6 +30,12 @@ namespace WebApi.Controllers
             var value=await _mediator.Send(new GetByIdPetQuery(id));
             return Ok(value);
         }
+        [HttpGet("GetAllPetByOwnerId")]
+        public async Task<IActionResult> GetAllPetByOwnerId(int id)
+        {
+            var value = await _mediator.Send(new GetAllPetByOwnerIdQuery(id));
+            return Ok(value);
+        }
         [HttpPost]
         public async Task<IActionResult> CreatePet(CreatePetCommand command)
         {

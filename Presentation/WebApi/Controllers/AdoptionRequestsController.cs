@@ -31,12 +31,19 @@ namespace WebApi.Controllers
             var values = await _mediator.Send(new GetAllAdoptionRequestByPetIdQuery(petId));
             return Ok(values);
         }
-        [HttpGet("GetAllAdoptionRequestByUserId")]
-        public async Task<IActionResult> GetAllAdoptionRequestByUserId(int userId)
+        [HttpGet("GetAllIncomingAdoptionByOwnerId")]
+        public async Task<IActionResult> GetAllIncomingAdoptionByOwnerId(int ownerId)
         {
-            var values = await _mediator.Send(new GetAllAdoptionRequestByUserIdQuery(userId));
+            var values = await _mediator.Send(new GetAllIncomingAdoptionByOwnerIdQuery(ownerId));
             return Ok(values);
         }
+        [HttpGet("GetAllAdoptiobRequestBySenderId")]
+        public async Task<IActionResult> GetAllAdoptionRequestBySenderId(int senderId)
+        {
+            var values = await _mediator.Send(new GetAllAdoptionRequestBySenderIdQuery(senderId));
+            return Ok(values);
+        }
+
         [HttpGet("ById")]
         public async Task<IActionResult> GetByIdAdoptionRequest(int id)
         {

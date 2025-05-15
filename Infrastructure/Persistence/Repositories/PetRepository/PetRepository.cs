@@ -1,4 +1,5 @@
-﻿using Application.Interfaces.PetInterface;
+﻿using Application.Features.MediatR.Pets.Results;
+using Application.Interfaces.PetInterface;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
@@ -22,6 +23,15 @@ namespace Persistence.Repositories.PetRepository
                 .ToListAsync();
         }
 
+        public async Task<List<Pet>> GetAllPetByOwnerIdAsync(int ownerId)
+        {
+            return await _context.Pets
+             .Where(p => p.UserId == ownerId && p.DeletedDate == null)
+             .Include(p => p.PetType)
+             .Include(p => p.AdoptionRequests)
+             .ToListAsync();
+        }
+
         public async Task<Pet> GetByIdPetAsync(int id)
         {
             var entity = await _context.Pets
@@ -33,5 +43,6 @@ namespace Persistence.Repositories.PetRepository
                 throw new Exception("Pet bulunamadı.");
             return entity;
         }
+
     }
 }

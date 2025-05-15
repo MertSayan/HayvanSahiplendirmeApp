@@ -29,6 +29,9 @@ namespace Application.MapperProfiles
             CreateMap<Pet, GetByIdPetQueryResult>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Name))
                 .ForMember(dest => dest.PetTypeName, opt => opt.MapFrom(src => src.PetType.PetTypeName));
+            CreateMap<Pet, GetAllPetByOwnerIdQueryResult>()
+               .ForMember(dest => dest.PetTypeName, opt => opt.MapFrom(src => src.PetType.PetTypeName))
+               .ForMember(dest => dest.RequestCount, opt => opt.MapFrom(src => src.AdoptionRequests.Count(r => r.DeletedDate == null)));
 
             //PetComment
             CreateMap<PetComment, CreatePetCommentCommand>().ReverseMap();
@@ -52,10 +55,10 @@ namespace Application.MapperProfiles
                 .ForMember(dest => dest.SenderName, opt => opt.MapFrom(src => src.Sender.Name))
                 .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => src.Owner.Name))
                 .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.Name));
-            CreateMap<AdoptionRequest, GetAllAdoptionRequestByUserIdQueryResult>()
-                .ForMember(dest => dest.SenderName, opt => opt.MapFrom(src => src.Sender.Name))
-                .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => src.Owner.Name))
-                .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.Name));
+            //CreateMap<AdoptionRequest, GetAllAdoptionRequestByUserIdQueryResult>()
+            //    .ForMember(dest => dest.SenderName, opt => opt.MapFrom(src => src.Sender.Name))
+            //    .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => src.Owner.Name))
+            //    .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.Name));
             CreateMap<AdoptionRequest, GetAllAdoptionRequestQueryResult>()
                 .ForMember(dest => dest.SenderName, opt => opt.MapFrom(src => src.Sender.Name))
                 .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => src.Owner.Name))
@@ -64,6 +67,12 @@ namespace Application.MapperProfiles
                 .ForMember(dest => dest.SenderName, opt => opt.MapFrom(src => src.Sender.Name))
                 .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => src.Owner.Name))
                 .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.Name));
+            CreateMap<AdoptionRequest, GetAllAdoptionRequestBySenderIdQueryResult>()
+              .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.Name))
+              .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => src.Owner.Name));
+            CreateMap<AdoptionRequest, GetAllIncomingAdoptionByOwnerIdQueryResult>()
+            .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.Name))
+            .ForMember(dest => dest.SenderName, opt => opt.MapFrom(src => src.Sender.Name));
 
             //User
             CreateMap<User, CreateUserCommand>().ReverseMap();
@@ -88,7 +97,8 @@ namespace Application.MapperProfiles
                 .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => src.AdoptionRequest.Owner.Name))
                 .ForMember(dest => dest.SenderName, opt => opt.MapFrom(src => src.AdoptionRequest.Sender.Name))
                 .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.AdoptionRequest.Pet.Name));
-
+           
+          
         }
     }
 }

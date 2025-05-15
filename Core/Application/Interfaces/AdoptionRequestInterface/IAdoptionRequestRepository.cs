@@ -11,7 +11,8 @@ namespace Application.Interfaces.AdoptionRequestInterface
     {
         Task<List<AdoptionRequest>> GetAllAdoptionRequestAsync();
         Task<List<AdoptionRequest>> GetAllAdoptionRequestByPetIdAsync(int id);
-        Task<List<AdoptionRequest>> GetAllAdoptionRequestByUserIdAsync(int id);
+        Task<List<AdoptionRequest>> GetAllIncomingAdoptionRequestByOwnerIdAsync(int id);
         Task<AdoptionRequest> GetByIdAdoptionRequest(int id);
+        Task<List<AdoptionRequest>> GetAllAdoptionRequestBySenderId(int id);
     }
 }

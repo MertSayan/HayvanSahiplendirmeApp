@@ -33,9 +33,18 @@ namespace Persistence.Repositories.AdoptionRequestRepository
                 .ToListAsync();
         }
 
-        public async Task<List<AdoptionRequest>> GetAllAdoptionRequestByUserIdAsync(int id)
+        public async Task<List<AdoptionRequest>> GetAllAdoptionRequestBySenderId(int id)
         {
-            return await _context.AdoptionRequests.Where(x => x.DeletedDate == null && x.OwnerId == id)
+            return await _context.AdoptionRequests
+               .Where(x => x.SenderId == id && x.DeletedDate == null)
+               .Include(x => x.Pet)
+               .Include(x => x.Owner)
+               .ToListAsync();
+        }
+
+        public async Task<List<AdoptionRequest>> GetAllIncomingAdoptionRequestByOwnerIdAsync(int id)
+        {
+            return await _context.AdoptionRequests.Where(x => x.DeletedDate == null && x.OwnerId == id && x.Status=="Pending")
                 .Include(x => x.Sender)
                 .Include(x => x.Owner)
                 .Include(x => x.Pet)

@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Application.Features.MediatR.AdoptionRequests.Queries
 {
-    public class GetAllAdoptionRequestByUserIdQuery:IRequest<List<GetAllAdoptionRequestByUserIdQueryResult>>
+    public class GetAllIncomingAdoptionByOwnerIdQuery : IRequest<List<GetAllIncomingAdoptionByOwnerIdQueryResult>>
     {
         public int Id { get; set; }
 
-        public GetAllAdoptionRequestByUserIdQuery(int id)
+        public GetAllIncomingAdoptionByOwnerIdQuery(int id)
         {
             Id = id;
         }
