@@ -15,6 +15,15 @@ namespace Persistence.Repositories.PetRepository
             _context = context;
         }
 
+        public async Task<List<Pet>> GetAllActivePetByOwnerIdAsync(int ownerId)
+        {
+            return await _context.Pets.Where(x=>x.DeletedDate==null && x.UserId==ownerId && x.IsAdopted==false)
+                .Include(x=>x.PetType)
+                .Include(x=>x.PetLikes)
+                .Include(x=>x.PetComments)
+                .ToListAsync();
+        }
+
         public async Task<List<Pet>> GetAllPetAsync()
         {
             return await _context.Pets.Where(x=>x.DeletedDate==null)

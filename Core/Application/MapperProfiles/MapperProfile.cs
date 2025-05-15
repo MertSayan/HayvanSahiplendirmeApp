@@ -30,8 +30,13 @@ namespace Application.MapperProfiles
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Name))
                 .ForMember(dest => dest.PetTypeName, opt => opt.MapFrom(src => src.PetType.PetTypeName));
             CreateMap<Pet, GetAllPetByOwnerIdQueryResult>()
-               .ForMember(dest => dest.PetTypeName, opt => opt.MapFrom(src => src.PetType.PetTypeName))
-               .ForMember(dest => dest.RequestCount, opt => opt.MapFrom(src => src.AdoptionRequests.Count(r => r.DeletedDate == null)));
+                .ForMember(dest => dest.PetTypeName, opt => opt.MapFrom(src => src.PetType.PetTypeName))
+                .ForMember(dest => dest.RequestCount, opt => opt.MapFrom(src => src.AdoptionRequests.Count(r => r.DeletedDate == null)));
+            CreateMap<Pet,GetAllActivePetByOwnerIdQueryResult>()
+                .ForMember(dest => dest.PetTypeName, opt => opt.MapFrom(src => src.PetType.PetTypeName))
+                .ForMember(dest => dest.LikeCount, opt => opt.MapFrom(src => src.PetLikes.Count(l => l.DeletedDate == null)))
+                .ForMember(dest => dest.CommentCount, opt => opt.MapFrom(src => src.PetComments.Count(c => c.DeletedDate == null)));
+
 
             //PetComment
             CreateMap<PetComment, CreatePetCommentCommand>().ReverseMap();
