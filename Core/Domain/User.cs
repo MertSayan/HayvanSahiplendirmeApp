@@ -21,5 +21,7 @@
         public  ICollection<Message> ReceivedMessages { get; set; } = new List<Message>();
         public  ICollection<AdoptionRequest> SentRequests { get; set; } = new List<AdoptionRequest>();
         public  ICollection<AdoptionRequest> ReceivedRequests { get; set; } = new List<AdoptionRequest>();
+        public ICollection<PetFavorite> PetFavorites { get; set; } = new List<PetFavorite>();
+
     }
 }

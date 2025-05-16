@@ -25,6 +25,8 @@ namespace Persistence.Context
         public DbSet<AdoptionRequest> AdoptionRequests { get; set; }
         public DbSet<AdoptionTracking> AdoptionTrackings { get; set; }
         public DbSet<PetImage> PetImages { get; set; }
+        public DbSet<PetFavorite> PetFavorites { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -41,6 +43,7 @@ namespace Persistence.Context
             modelBuilder.Entity<Message>().HasKey(m => m.MessageId);
             modelBuilder.Entity<AdoptionRequest>().HasKey(ar => ar.AdoptionRequestId);
             modelBuilder.Entity<AdoptionTracking>().HasKey(at => at.AdoptionTrackingId);
+            modelBuilder.Entity<PetFavorite>().HasKey(at => at.PetFavoritteId);
 
             // (2) User ↔ Role (1-N)
             modelBuilder.Entity<User>()
@@ -134,6 +137,19 @@ namespace Persistence.Context
                 .WithMany(p => p.Images)
                 .HasForeignKey(pi => pi.PetId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // (11) pet-petfavoritte ( 1- N )
+            modelBuilder.Entity<PetFavorite>()
+                .HasOne(f => f.Pet)
+                .WithMany(p => p.PetFavorites)
+                .HasForeignKey(f => f.PetId)
+                .OnDelete(DeleteBehavior.Cascade);
+            // (12) user-petfavoritte (1-N)
+            modelBuilder.Entity<PetFavorite>()
+                .HasOne(f => f.User)
+                .WithMany(u => u.PetFavorites)
+                .HasForeignKey(f => f.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

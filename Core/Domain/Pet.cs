@@ -23,5 +23,7 @@
         public ICollection<PetComment> PetComments { get; set; } = new List<PetComment>();
         public ICollection<PetLike> PetLikes { get; set; } = new List<PetLike>();
         public ICollection<AdoptionRequest> AdoptionRequests { get; set; } = new List<AdoptionRequest>();
+        public ICollection<PetFavorite> PetFavorites { get; set; } = new List<PetFavorite>();
+
     }
 }

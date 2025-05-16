@@ -4,6 +4,7 @@ using Application.Features.MediatR.AdoptionTrackings.Commands;
 using Application.Features.MediatR.AdoptionTrackings.Results;
 using Application.Features.MediatR.PetComments.Commands;
 using Application.Features.MediatR.PetComments.Results;
+using Application.Features.MediatR.PetFavorites.Results;
 using Application.Features.MediatR.PetLikes.Commands;
 using Application.Features.MediatR.PetLikes.Results;
 using Application.Features.MediatR.Pets.Commands;
@@ -103,7 +104,12 @@ namespace Application.MapperProfiles
                 .ForMember(dest => dest.SenderName, opt => opt.MapFrom(src => src.AdoptionRequest.Sender.Name))
                 .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.AdoptionRequest.Pet.Name));
            
-          
+            //FavoritePet
+            CreateMap<Pet,GetAllFavoritePetQueryResult>()
+                 .ForMember(dest => dest.PetTypeName, opt => opt.MapFrom(src => src.PetType.PetTypeName))
+                .ForMember(dest => dest.LikeCount, opt => opt.MapFrom(src => src.PetLikes.Count(x => x.DeletedDate == null)))
+                .ForMember(dest => dest.CommentCount, opt => opt.MapFrom(src => src.PetComments.Count(x => x.DeletedDate == null)));
+
         }
     }
 }
