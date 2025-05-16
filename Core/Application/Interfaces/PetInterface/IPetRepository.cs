@@ -1,10 +1,4 @@
-﻿using Application.Features.MediatR.Pets.Results;
-using Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain;
 
 namespace Application.Interfaces.PetInterface
 {
@@ -14,5 +8,6 @@ namespace Application.Interfaces.PetInterface
         Task<Pet> GetByIdPetAsync(int id); //user,pettype ile birlikte
         Task<List<Pet>> GetAllPetByOwnerIdAsync(int ownerId);
         Task<List<Pet>> GetAllActivePetByOwnerIdAsync(int ownerId);
+        Task<List<Pet>> GetAllAdoptedPetByOwnerIdAsync(int ownerId);
     }
 }
