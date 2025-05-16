@@ -19,5 +19,7 @@ namespace Application.Constants
         public static string EntityCantMatches => "Email veya sifre uyusmuyor";
 
         public static string EntityCantGet => $"{EntityName} alanına ait veri bulunamadı.";
+        public static string SahiplenmeKabul => "Sahiplenme isteği kabul edildi. Haftalık Takip yapabilirsiniz.";
+        public static string SahiplenmeRed => "Sahiplenme isteği reddedildi";
     }
 }

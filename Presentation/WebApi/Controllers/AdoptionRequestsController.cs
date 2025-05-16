@@ -63,6 +63,18 @@ namespace WebApi.Controllers
             await _mediator.Send(command);
             return Ok(Messages<AdoptionRequest>.EntityUpdated);
         }
+        [HttpPut("Accept")]
+        public async Task<IActionResult> UpdateAdoptionRequestAccept(UpdateAdoptionRequestAcceptCommand command)
+        {
+            await _mediator.Send(command);
+            return Ok(Messages<AdoptionRequest>.SahiplenmeKabul);
+        }
+        [HttpPut("Reject")]
+        public async Task<IActionResult> UpdateAdoptionRequestReject(UpdateAdoptionRequestRejectCommand command)
+        {
+            await _mediator.Send(command);
+            return Ok(Messages<AdoptionRequest>.SahiplenmeRed);
+        }
         [HttpDelete]
         public async Task<IActionResult> DeleteAdoptionRequest(int id)
         {
