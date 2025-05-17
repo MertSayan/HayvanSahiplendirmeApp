@@ -40,6 +40,13 @@ namespace WebApi.Controllers
             var value = await _mediator.Send(new GetByIdUserDetailsForAdminQuery(id));
             return Ok(value);
         }
+        
+        [HttpGet("GetByIdUserProfileStats")]
+        public async Task<IActionResult> GetByIdUserProfileStats(int id)
+        {
+            var value = await _mediator.Send(new GetByIdUserProfileStatsQuery(id));
+            return Ok(value);
+        }
 
         [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginCommand command)

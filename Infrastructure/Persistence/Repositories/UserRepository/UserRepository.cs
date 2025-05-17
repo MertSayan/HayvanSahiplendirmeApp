@@ -1,4 +1,5 @@
-﻿using Application.Interfaces.UserInterface;
+﻿using Application.Enums;
+using Application.Interfaces.UserInterface;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
@@ -48,6 +49,22 @@ namespace Persistence.Repositories.UserRepository
             if (entity == null)
                 throw new Exception("User bulunamadı.");
             return entity;
+        }
+
+        public async Task<(int totalPets, int totalLikes, int successfulAdoptions)> GetUserStatsAsync(int userId)
+        {
+            var totalPets = await _context.Pets
+        .CountAsync(p => p.UserId == userId && p.DeletedDate == null);
+
+            var totalLikes = await _context.Pets
+                .Where(p => p.UserId == userId && p.DeletedDate == null)
+                .SelectMany(p => p.PetLikes)
+                .CountAsync(p => p.DeletedDate == null);
+
+            var successfulAdoptions = await _context.AdoptionRequests
+                .CountAsync(r => r.OwnerId == userId && r.Status == AdoptionStatus.Accepted.ToString() && r.DeletedDate == null);
+
+            return (totalPets, totalLikes, successfulAdoptions);
         }
     }
 }

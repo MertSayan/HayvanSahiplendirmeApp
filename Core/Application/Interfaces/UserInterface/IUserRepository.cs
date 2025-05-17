@@ -11,6 +11,9 @@ namespace Application.Interfaces.UserInterface
     {
         Task<List<User>> GetAllUserAsync(); 
         Task<User> GetByIdUserAsync(int id); 
-        Task<User> GetByIdUserDetailsForAdminAsync(int id); 
+        Task<User> GetByIdUserDetailsForAdminAsync(int id);
+        Task<(int totalPets, int totalLikes, int successfulAdoptions)> GetUserStatsAsync(int userId);
+ 
+
     }
 }
