@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using Application.Features.MediatR.Pets.Queries;
+using Domain;
 
 namespace Application.Interfaces.PetInterface
 {
@@ -9,5 +10,7 @@ namespace Application.Interfaces.PetInterface
         Task<List<Pet>> GetAllPetByOwnerIdAsync(int ownerId);
         Task<List<Pet>> GetAllActivePetByOwnerIdAsync(int ownerId);
         Task<List<Pet>> GetAllAdoptedPetByOwnerIdAsync(int ownerId);
+        Task<List<Pet>> GetFilteredPetsAsync(GetAllFilterPetQuery query);
+
     }
 }

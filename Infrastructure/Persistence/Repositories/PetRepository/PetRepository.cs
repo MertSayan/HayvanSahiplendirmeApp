@@ -1,4 +1,5 @@
 ﻿using Application.Constants;
+using Application.Features.MediatR.Pets.Queries;
 using Application.Features.MediatR.Pets.Results;
 using Application.Interfaces.PetInterface;
 using Domain;
@@ -61,5 +62,38 @@ namespace Persistence.Repositories.PetRepository
             return entity;
         }
 
+        public async Task<List<Pet>> GetFilteredPetsAsync(GetAllFilterPetQuery query)
+        {
+            var pets =  _context.Pets
+                .Include(p => p.PetType)
+                .Where(p => !p.IsAdopted && p.DeletedDate == null); // sadece aktif ilanlar
+
+            if (query.PetTypeId.HasValue)
+                pets = pets.Where(p => p.PetTypeId == query.PetTypeId);
+
+            if (!string.IsNullOrWhiteSpace(query.Age))
+                pets = pets.Where(p => p.Age == query.Age);
+
+            if (!string.IsNullOrWhiteSpace(query.City))
+                pets = pets.Where(p => p.City == query.City);
+
+            if (!string.IsNullOrWhiteSpace(query.Gender))
+                pets = pets.Where(p => p.Gender == query.Gender);
+
+            if (query.IsVaccinated.HasValue)
+                pets = pets.Where(p => p.IsVaccinated == query.IsVaccinated);
+
+            if (query.IsNeutered.HasValue)
+                pets = pets.Where(p => p.IsNeutered == query.IsNeutered);
+
+            // 🔽 Pagination uyguluyoruz
+            int skip = (query.Page - 1) * query.PageSize;
+
+            return await pets
+             .OrderByDescending(p => p.PetLikes.Count(l => l.DeletedDate == null))
+             .Skip(skip)
+             .Take(query.PageSize)
+             .ToListAsync();
+        }
     }
 }

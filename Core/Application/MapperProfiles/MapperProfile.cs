@@ -40,7 +40,8 @@ namespace Application.MapperProfiles
                 .ForMember(dest => dest.CommentCount, opt => opt.MapFrom(src => src.PetComments.Count(c => c.DeletedDate == null)));
             CreateMap<Pet, GetAllAdoptedPetByOwnerIdQueryResult>()
                 .ForMember(dest => dest.PetTypeName, opt => opt.MapFrom(src => src.PetType.PetTypeName));
-
+            CreateMap<Pet, GetAllFilterPetQueryResult>()
+                .ForMember(dest => dest.PetTypeName, opt => opt.MapFrom(src => src.PetType.PetTypeName));
 
             //PetComment
             CreateMap<PetComment, CreatePetCommentCommand>().ReverseMap();
