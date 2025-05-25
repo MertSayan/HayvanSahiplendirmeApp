@@ -23,8 +23,9 @@ namespace Persistence.Repositories.TokenRepository
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name,user.Name),
+                new Claim(ClaimTypes.Surname,user.Surname),
                 new Claim(ClaimTypes.NameIdentifier,user.UserId.ToString()),
-                new Claim(ClaimTypes.Role,user.Role.RoleName)
+                new Claim(ClaimTypes.Role,user.Role.RoleName),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -34,7 +35,7 @@ namespace Persistence.Repositories.TokenRepository
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddHours(1),
+                expires: DateTime.UtcNow.AddHours(4),
                 signingCredentials: creds
             );
 
