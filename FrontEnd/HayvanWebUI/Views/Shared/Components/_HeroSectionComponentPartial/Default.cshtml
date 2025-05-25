@@ -1,0 +1,22 @@
+﻿<section class="hero-section">
+    <div class="container">
+        <div class="hero-text">
+            <h1>Bir Can Dostuna Yuva Ol</h1>
+            <p class="lead">
+                Sahiplenmek ya da sahiplendirmek istediğiniz dostlarımız için en güvenilir platform. Onların
+                yeni bir yuvaya, sizin de yeni bir dosta ihtiyacınız var.
+            </p>
+            <div class="hero-buttons">
+                <a href="/Pet/Index" class="btn btn-primary btn-lg">Hayvanları Gör</a>
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <a href="/Pet/Create" class="btn btn-light btn-lg">Hayvan Sahiplendir</a>
+                }
+                else
+                {
+                    <a href="/Account/Login" class="btn btn-light btn-lg">Giriş Yap</a>
+                }
+            </div>
+        </div>
+    </div>
+</section>

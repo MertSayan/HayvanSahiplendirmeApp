@@ -54,6 +54,12 @@ namespace WebApi.Controllers
             var result = await _mediator.Send(query);
             return Ok(result);
         }
+        [HttpGet("Top3LikePet")]
+        public async Task<IActionResult> GetFeaturedPets(int sayi)
+        {
+            var result = await _mediator.Send(new GetFeaturedPetQuery(sayi));
+            return Ok(result);
+        }
         [HttpPost]
         public async Task<IActionResult> CreatePet(CreatePetCommand command)
         {

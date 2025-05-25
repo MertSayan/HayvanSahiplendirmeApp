@@ -1,8 +1,14 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/UILayout/Index.cshtml";
 }
+<!-- Hero Section -->
+@await Component.InvokeAsync("_HeroSectionComponentPartial")
+<!-- Featured Pets Section -->
+@await Component.InvokeAsync("_FeaturedPetsComponentPartial")
+<!-- Info Section -->
+@await Component.InvokeAsync("_InfoComponentPartial")
+<!-- Success Stories Section -->
+@await Component.InvokeAsync("_SuccessStroriesComponentPartial")
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>

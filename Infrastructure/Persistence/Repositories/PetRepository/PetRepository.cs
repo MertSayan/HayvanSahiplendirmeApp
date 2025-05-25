@@ -95,5 +95,16 @@ namespace Persistence.Repositories.PetRepository
              .Take(query.PageSize)
              .ToListAsync();
         }
+
+        public async Task<List<Pet>> GetTopLikedPetsAsync(int count)
+        {
+            return await _context.Pets
+            .Include(p => p.PetLikes)
+            .Include(p=>p.PetType)
+            .Where(p => !p.IsAdopted && p.DeletedDate==null)
+            .OrderByDescending(p => p.PetLikes.Count)
+            .Take(count)
+            .ToListAsync();
+        }
     }
 }

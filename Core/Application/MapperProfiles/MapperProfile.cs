@@ -42,6 +42,9 @@ namespace Application.MapperProfiles
                 .ForMember(dest => dest.PetTypeName, opt => opt.MapFrom(src => src.PetType.PetTypeName));
             CreateMap<Pet, GetAllFilterPetQueryResult>()
                 .ForMember(dest => dest.PetTypeName, opt => opt.MapFrom(src => src.PetType.PetTypeName));
+            CreateMap<Pet, GetFeaturedPetQueryResult>()
+                .ForMember(dest => dest.LikeCount, opt => opt.MapFrom(src => src.PetLikes.Count(c => c.DeletedDate == null)))
+                .ForMember(dest => dest.PetTypeName, opt => opt.MapFrom(src => src.PetType.PetTypeName));
 
             //PetComment
             CreateMap<PetComment, CreatePetCommentCommand>().ReverseMap();
