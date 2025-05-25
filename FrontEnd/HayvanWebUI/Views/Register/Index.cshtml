@@ -1,0 +1,111 @@
+﻿@model CreateUserDto
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/UILayout/Index.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-@ViewBag.ColumnSize">
+            <div class="card shadow-sm">
+                <div class="card-body p-5">
+                    @* Kayıt formunu render eder *@
+
+
+                    @* Header *@
+                    <div class="text-center mb-4">
+                        <h2 class="mb-3">Yeni Hesap Oluştur</h2>
+                        <p class="text-muted">
+                            Hayvan dostlarına yardım etmek için aramıza katıl. Zaten bir hesabın var
+                            mı? <a href="/Account/Login">Giriş yap</a>.
+                        </p>
+                    </div>
+
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            @TempData["ErrorMessage"]
+                        </div>
+                    }
+
+                    <form asp-controller="Register" asp-action="Index" method="post">
+                        @* Kişisel bilgiler bölümü *@
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Name" class="form-label">Ad</label>
+                                <input asp-for="Name" type="text" class="form-control" id="firstName"
+                                       placeholder="Adınız" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Surname" class="form-label">Soyad</label>
+                                <input asp-for="Surname" type="text" class="form-control" id="lastName" 
+                                       placeholder="Soyadınız" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="AboutMe" class="form-label">Hakkımda</label>
+                            <input asp-for="AboutMe"  type="text" class="form-control" id="about" 
+                                   placeholder="hakkımda yazısı giriniz"/>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">E-posta</label>
+                            <input asp-for="Email" type="email" class="form-control" id="email" 
+                                   placeholder="E-posta adresiniz" required>
+                            <small class="form-text text-muted">
+                                E-posta adresiniz, hesabınızı doğrulamak ve
+                                bilgilendirme amacıyla kullanılacaktır.
+                            </small>
+                        </div>
+
+                        @* <div class="mb-3">
+                            <label for="phone" class="form-label">Telefon (Opsiyonel)</label>
+                            <input type="tel" class="form-control" id="phone" name="Phone"
+                                   placeholder="Telefon numaranız">
+                            <small class="form-text text-muted">
+                                Telefon numaranız, sahiplendirme sürecinde iletişim
+                                amacıyla kullanılacaktır.
+                            </small>
+                        </div> *@
+
+                        @* Şifre bölümü *@
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Password" class="form-label">Şifre</label>
+                                <input asp-for="Password" class="form-control" id="password" 
+                                       placeholder="Şifreniz" required>
+                                <small class="form-text text-muted">
+                                    En az 8 karakter, büyük/küçük harf ve rakam
+                                    içermeli.
+                                </small>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="confirmPassword" class="form-label">Şifre Tekrar</label>
+                                <input type="password" class="form-control" id="confirmPassword" name="ConfirmPassword"
+                                       placeholder="Şifrenizi tekrar girin" required>
+                            </div>
+                        </div>
+
+                        @* Konum bölümü *@
+                        @await Component.InvokeAsync("_LocationComponentPartial")
+
+
+                        @* Form gönderme butonu *@
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">Kayıt Ol</button>
+                        </div>
+                    </form>
+
+
+                    @section Scripts {
+                        <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
+                        <script src="~/js/account/register.js"></script>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
