@@ -1,0 +1,10 @@
+﻿@model List<GetAllPetTypeDto>
+
+<label class="form-label">Hayvan Türü</label>
+<select class="form-select" name="petTypeId">
+    <option selected value="">Tümü</option>
+    @foreach (var type in Model)
+    {
+        <option value="@type.PetTypeId">@type.PetTypeName</option>
+    }
+</select>

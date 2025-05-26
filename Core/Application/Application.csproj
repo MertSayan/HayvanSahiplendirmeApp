@@ -22,4 +22,9 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\MediatR\PetTypes\Commands\" />
+    <Folder Include="Features\MediatR\PetTypes\Handlers\Write\" />
+  </ItemGroup>
+
 </Project>

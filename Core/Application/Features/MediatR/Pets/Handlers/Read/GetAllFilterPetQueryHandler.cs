@@ -1,14 +1,8 @@
 ﻿using Application.Features.MediatR.Pets.Queries;
 using Application.Features.MediatR.Pets.Results;
-using Application.Interfaces;
 using Application.Interfaces.PetInterface;
 using AutoMapper;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.MediatR.Pets.Handlers.Read
 {

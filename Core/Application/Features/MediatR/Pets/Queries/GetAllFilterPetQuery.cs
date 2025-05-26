@@ -18,6 +18,6 @@ namespace Application.Features.MediatR.Pets.Queries
         public bool? IsNeutered { get; set; }
 
         public int Page { get; set; } = 1;         // varsayılan: 1. sayfa
-        public int PageSize { get; set; } = 10;    // varsayılan: 10 kayıt
+        public int PageSize { get; set; } = 6   ;    // varsayılan: 10 kayıt
     }
 }

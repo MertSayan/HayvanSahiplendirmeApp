@@ -10,6 +10,7 @@ using Application.Features.MediatR.PetLikes.Commands;
 using Application.Features.MediatR.PetLikes.Results;
 using Application.Features.MediatR.Pets.Commands;
 using Application.Features.MediatR.Pets.Results;
+using Application.Features.MediatR.PetTypes.Results;
 using Application.Features.MediatR.Users.Commands;
 using Application.Features.MediatR.Users.Results;
 using AutoMapper;
@@ -41,7 +42,8 @@ namespace Application.MapperProfiles
             CreateMap<Pet, GetAllAdoptedPetByOwnerIdQueryResult>()
                 .ForMember(dest => dest.PetTypeName, opt => opt.MapFrom(src => src.PetType.PetTypeName));
             CreateMap<Pet, GetAllFilterPetQueryResult>()
-                .ForMember(dest => dest.PetTypeName, opt => opt.MapFrom(src => src.PetType.PetTypeName));
+                .ForMember(dest => dest.PetTypeName, opt => opt.MapFrom(src => src.PetType.PetTypeName))
+                .ForMember(dest => dest.PetLike, opt => opt.MapFrom(src => src.PetLikes.Count()));
             CreateMap<Pet, GetFeaturedPetQueryResult>()
                 .ForMember(dest => dest.LikeCount, opt => opt.MapFrom(src => src.PetLikes.Count(c => c.DeletedDate == null)))
                 .ForMember(dest => dest.PetTypeName, opt => opt.MapFrom(src => src.PetType.PetTypeName));
@@ -118,6 +120,9 @@ namespace Application.MapperProfiles
                 .ForMember(dest => dest.LikeCount, opt => opt.MapFrom(src => src.PetLikes.Count(x => x.DeletedDate == null)))
                 .ForMember(dest => dest.CommentCount, opt => opt.MapFrom(src => src.PetComments.Count(x => x.DeletedDate == null)));
 
+
+            //PetType
+            CreateMap<PetType,GetAllPetTypeQueryResult>().ReverseMap();
         }
     }
 }
