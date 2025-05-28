@@ -6,6 +6,7 @@ using Application.Features.MediatR.PetComments.Commands;
 using Application.Features.MediatR.PetComments.Results;
 using Application.Features.MediatR.PetFavorites.Commands;
 using Application.Features.MediatR.PetFavorites.Results;
+using Application.Features.MediatR.PetImages.Results;
 using Application.Features.MediatR.PetLikes.Commands;
 using Application.Features.MediatR.PetLikes.Results;
 using Application.Features.MediatR.Pets.Commands;
@@ -133,6 +134,9 @@ namespace Application.MapperProfiles
 
             //PetType
             CreateMap<PetType,GetAllPetTypeQueryResult>().ReverseMap();
+
+            //PetImage
+            CreateMap<PetImage, GetPetImagesByPetIdQueryResult>().ReverseMap();
         }
     }
 }

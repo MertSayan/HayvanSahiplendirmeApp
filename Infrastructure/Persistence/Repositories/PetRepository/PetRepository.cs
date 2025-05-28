@@ -1,6 +1,5 @@
 ﻿using Application.Constants;
 using Application.Features.MediatR.Pets.Queries;
-using Application.Features.MediatR.Pets.Results;
 using Application.Interfaces.PetInterface;
 using Domain;
 using Microsoft.EntityFrameworkCore;
@@ -32,7 +31,6 @@ namespace Persistence.Repositories.PetRepository
                 .Include(x => x.PetType)
                 .ToListAsync();
         }
-
         public async Task<List<Pet>> GetAllPetAsync()
         {
             return await _context.Pets.Where(x=>x.DeletedDate==null)

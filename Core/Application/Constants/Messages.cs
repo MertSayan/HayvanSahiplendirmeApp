@@ -11,6 +11,7 @@ namespace Application.Constants
         public static readonly string EntityName=typeof(T).Name;
 
         public static string EntityAdded => $"{EntityName} nesnesi başarıyla eklendi";
+        public static string EntitiesAdded => $"{EntityName} nesneleri başarıyla eklendi";
         public static string EntityUpdated => $"{EntityName} nesnesi başarıyla güncellendi";
         public static string EntityDeleted => $"{EntityName} nesnesine başarıyla soft delete yapıldı";
         public static string EntityNotFound => $"Girdiğiniz id değerine sahip bir {EntityName} nesnesi bulunamadı";

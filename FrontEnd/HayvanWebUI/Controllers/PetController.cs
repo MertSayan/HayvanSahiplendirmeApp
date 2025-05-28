@@ -63,19 +63,6 @@ namespace HayvanWebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddComment(AddPetCommentDto dto)
         {
-            //int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-            //dto.UserId = userId;
-            //var client = _httpClientFactory.CreateClient();
-            //var content = new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json");
-
-            //var response = await client.PostAsync("https://localhost:7160/api/PetComments", content);
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    return RedirectToAction("Detail", "Pet", new { id = dto.PetId });
-            //}
-
-            //TempData["Error"] = "Yorum eklenirken hata oluştu.";
-            //return RedirectToAction("Details", new { id = dto.PetId });
 
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             var userName = User.Identity?.Name ?? "Kullanıcı";
