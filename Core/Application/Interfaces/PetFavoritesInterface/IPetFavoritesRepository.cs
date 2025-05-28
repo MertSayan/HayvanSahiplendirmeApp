@@ -10,5 +10,7 @@ namespace Application.Interfaces.PetFavoritesInterface
     public interface IPetFavoritesRepository
     {
         Task<List<Pet>> GetMyPetFavoritesAsync(int userId);
+        Task<PetFavorite> GetPetFavoriteByIdAsync(int userId, int petId);
+        Task DeletePetFavoriteAsync(PetFavorite entity);
     }
 }

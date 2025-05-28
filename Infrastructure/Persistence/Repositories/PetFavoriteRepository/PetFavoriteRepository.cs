@@ -1,14 +1,8 @@
-﻿using Application.Features.MediatR.AdoptionRequests.Queries;
+﻿using Application.Constants;
 using Application.Interfaces.PetFavoritesInterface;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persistence.Repositories.PetFavoriteRepository
 {
@@ -19,6 +13,12 @@ namespace Persistence.Repositories.PetFavoriteRepository
         public PetFavoriteRepository(HayvanContext context)
         {
             _context = context;
+        }
+
+        public async Task DeletePetFavoriteAsync(PetFavorite entity)
+        {
+            _context.PetFavorites.Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<Pet>> GetMyPetFavoritesAsync(int userId)
@@ -35,6 +35,17 @@ namespace Persistence.Repositories.PetFavoriteRepository
                 .Include(p => p.PetComments)
                 .ToListAsync();
 
+        }
+
+        public async Task<PetFavorite> GetPetFavoriteByIdAsync(int userId, int petId)
+        {
+            var petFavorite = await _context.PetFavorites
+               .FirstOrDefaultAsync(x => x.DeletedDate == null && x.UserId == userId && x.PetId == petId);
+            if (petFavorite != null)
+            {
+                return petFavorite;
+            }
+            throw new Exception(Messages<PetFavorite>.EntityNotFound);
         }
     }
 }

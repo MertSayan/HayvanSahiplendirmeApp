@@ -2,7 +2,6 @@
 {
     public class PetFavorite:Entity
     {
-        public int PetFavoritteId { get; set; }
         public int PetId { get; set; }
         public Pet Pet { get; set; }
         public int UserId { get; set; }

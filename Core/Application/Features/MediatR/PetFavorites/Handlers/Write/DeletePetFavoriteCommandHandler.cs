@@ -1,23 +1,22 @@
 ﻿using Application.Features.MediatR.PetFavorites.Commands;
-using Application.Interfaces;
-using Domain;
+using Application.Interfaces.PetFavoritesInterface;
 using MediatR;
 
 namespace Application.Features.MediatR.PetFavorites.Handlers.Write
 {
     public class DeletePetFavoriteCommandHandler : IRequestHandler<DeletePetFavoriteCommand, Unit>
     {
-        private readonly IRepository<PetFavorite> _repository;
+        private readonly IPetFavoritesRepository _petFavoriteRepository;
 
-        public DeletePetFavoriteCommandHandler(IRepository<PetFavorite> repository)
+        public DeletePetFavoriteCommandHandler(IPetFavoritesRepository petFavoriteRepository)
         {
-            _repository = repository;
+            _petFavoriteRepository = petFavoriteRepository;
         }
 
         public async Task<Unit> Handle(DeletePetFavoriteCommand request, CancellationToken cancellationToken)
         {
-            var petFavorite = await _repository.GetByIdAsync(request.Id);
-            await _repository.DeleteAsync(petFavorite);
+            var petFavorite = await _petFavoriteRepository.GetPetFavoriteByIdAsync(request.UserId,request.PetId);
+            await _petFavoriteRepository.DeletePetFavoriteAsync(petFavorite);
             return Unit.Value;
         }
     }

@@ -44,9 +44,9 @@ namespace WebApi.Controllers
             return Ok(Messages<PetLike>.EntityUpdated);
         }
         [HttpDelete]
-        public async Task<IActionResult> DeletePetLike(int id)
+        public async Task<IActionResult> DeletePetLike(int userId,int petId)
         {
-            await _mediator.Send(new DeletePetLikeCommand(id));
+            await _mediator.Send(new DeletePetLikeCommand(userId,petId));
             return Ok(Messages<PetLike>.EntityDeleted);
 
         }

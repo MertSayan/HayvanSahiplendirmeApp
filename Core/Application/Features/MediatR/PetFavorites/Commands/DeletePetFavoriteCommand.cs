@@ -4,11 +4,14 @@ namespace Application.Features.MediatR.PetFavorites.Commands
 {
     public class DeletePetFavoriteCommand:IRequest<Unit>
     {
-        public int Id { get; set; }
-
-        public DeletePetFavoriteCommand(int id)
+        public DeletePetFavoriteCommand(int userId, int petId)
         {
-            Id = id;
+            PetId = petId;
+            UserId = userId;
         }
+
+        public int PetId { get; set; }
+        public int UserId { get; set; }
+
     }
 }

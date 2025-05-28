@@ -11,6 +11,8 @@ namespace Application.Interfaces.PetLikeInterface
     {
         Task<List<PetLike>> GetAllPetLikeByPetIdAsync(int id);
         Task<List<PetLike>> GetAllPetLikeByUserIdAsync(int id);
+        Task<PetLike> GetPetLikeByIdAsync(int userId, int petId);
+        Task DeletePetLikeAsync(PetLike entity);
         
     }
 }

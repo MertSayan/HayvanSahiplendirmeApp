@@ -1,7 +1,9 @@
-﻿using Application.Interfaces.PetLikeInterface;
+﻿using Application.Constants;
+using Application.Interfaces.PetLikeInterface;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
+using System.Xml.Linq;
 
 namespace Persistence.Repositories.PetLikeRepository
 {
@@ -12,6 +14,12 @@ namespace Persistence.Repositories.PetLikeRepository
         public PetLikeRepository(HayvanContext context)
         {
             _context = context;
+        }
+
+        public async Task DeletePetLikeAsync(PetLike entity)
+        {
+             _context.PetLikes.Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<PetLike>> GetAllPetLikeByPetIdAsync(int id)
@@ -26,6 +34,17 @@ namespace Persistence.Repositories.PetLikeRepository
             return await _context.PetLikes.Where(x => x.DeletedDate == null && x.UserId == id)
                .Include(x => x.Pet)
                .ToListAsync();
+        }
+
+        public async Task<PetLike> GetPetLikeByIdAsync(int userId, int petId)
+        {
+            var petLike= await _context.PetLikes
+                .FirstOrDefaultAsync(x => x.DeletedDate == null && x.UserId == userId && x.PetId == petId);
+            if (petLike != null)
+            {
+                return petLike;
+            }
+            throw new Exception(Messages<PetLike>.EntityNotFound);
         }
     }
 }

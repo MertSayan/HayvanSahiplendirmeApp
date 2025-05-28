@@ -4,11 +4,14 @@ namespace Application.Features.MediatR.PetLikes.Commands
 {
     public class DeletePetLikeCommand:IRequest<Unit>
     {
-        public int Id { get; set; }
-
-        public DeletePetLikeCommand(int id)
+        public DeletePetLikeCommand(int userId, int petId)
         {
-            Id = id;
+            UserId = userId;
+            PetId = petId;
         }
+
+        public int UserId { get; set; }
+        public int PetId { get; set; }
+
     }
 }
