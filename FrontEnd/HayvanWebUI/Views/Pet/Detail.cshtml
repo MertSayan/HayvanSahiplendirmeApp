@@ -121,17 +121,8 @@
                     </div>
                 </div>
                 @* PetGalery *@
-                @* <h4>Diğer Görseller</h4>
-                <div class="row mb-4">
-                    @foreach (var image in gallery)
-                    {
-                        <div class="col-md-3 col-6 mb-3">
-                            <div class="pet-thumbnail-container">
-                                <img src="@image" class="pet-thumbnail rounded" alt="@pet.Name">
-                            </div>
-                        </div>
-                    }
-                </div> *@
+                @await Component.InvokeAsync("_PetImagesComponentPartial", new { id = Model.PetId })
+
                 @* PetComments *@
                 <div class="comments-section">
 
