@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace HayvanWebUI.Controllers
 {
@@ -6,6 +7,7 @@ namespace HayvanWebUI.Controllers
     {
         public IActionResult Index()
         {
+            
             return View();
         }
     }

@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/UILayout/Index.cshtml";
+    var isAuthenticated = User.Identity != null && User.Identity.IsAuthenticated;
+
 }
 <!-- Hero Section -->
 @await Component.InvokeAsync("_HeroSectionComponentPartial")

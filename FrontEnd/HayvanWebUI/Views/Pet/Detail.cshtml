@@ -139,16 +139,7 @@
 
                     @if (User.Identity != null && User.Identity.IsAuthenticated)
                     {
-                        @* <form asp-action="AddComment" asp-controller="Pet" method="post">
-                            <input type="hidden" name="PetId" value="@Model.PetId" />
 
-                            <div class="mb-3">
-                                <label for="commentText" class="form-label">Yorum Yap</label>
-                                <textarea class="form-control" name="CommentText" id="commentText" rows="3" placeholder="Yorumunuzu buraya yazın..." required></textarea>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary">Gönder</button>
-                        </form> *@
                         <form id="commentForm">
                             <input type="hidden" name="PetId" value="@Model.PetId" />
 
