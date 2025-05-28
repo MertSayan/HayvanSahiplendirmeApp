@@ -48,13 +48,15 @@ namespace Persistence.Repositories.PetRepository
              .ToListAsync();
         }
 
-        public async Task<Pet> GetByIdPetAsync(int id)
+        public async Task<Pet> GetByIdPetAsync(int petId)
         {
             var entity = await _context.Pets
                .Include(p => p.User)
                .Include(p => p.PetType)
                .Include(p=>p.PetLikes)
-               .FirstOrDefaultAsync(p => p.PetId == id && p.DeletedDate == null);
+               .FirstOrDefaultAsync(p => p.PetId == petId && p.DeletedDate == null);
+
+           
 
             if (entity == null)
                 throw new Exception(Messages<Pet>.EntityNotFound);

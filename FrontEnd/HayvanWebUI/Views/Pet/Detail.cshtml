@@ -19,14 +19,12 @@
                     <div>
                         @if (isAuthenticated)
                         {
-                            <button class="btn btn-outline-danger me-2" id="likeButton">
-                                <i class="fas fa-heart"></i> Beğen
+                            <button class="btn @(Model.IsLiked ? "btn-danger" : "btn-outline-danger") me-2" id="likeButton">
+                                <i class="fas fa-heart"></i> @(Model.IsLiked ? "Beğendin" : "Beğen")
                                 (@Model.PetLikeCount)
                             </button>
-                            //burası istek gönderme şeyi olacak
                             <a href="/AdoptionRequest/Index/@Model.PetId" class="btn btn-primary">
-                                <i class="fas fa-envelope"></i>
-                                Sahiplendirme İsteği Gönder
+                                <i class="fas fa-envelope"></i> Sahiplendirme İsteği Gönder
                             </a>
                         }
                         else
@@ -38,6 +36,7 @@
                                 <i class="fas fa-envelope"></i> İletişim için giriş yap
                             </a>
                         }
+
                     </div>
                 </div>
 
@@ -313,31 +312,32 @@
     {
         <script>
             @* beğenme *@
-            $(function () {
-                // Beğen butonu
-                $('#likeButton').on('click', function () {
-                    var btn = $(this);
-                    var liked = btn.hasClass('btn-danger');
+                $(function () {
+                    $('#likeButton').on('click', function () {
+                        var btn = $(this);
+                        var liked = btn.hasClass('btn-danger');
+                        var userId = @ViewBag.UserId;
+                        var petId = @Model.PetId;
 
-                    // AJAX isteği
-                    $.ajax({
-                        url: '/Pet/LikePet',
-                        type: 'POST',
-                        data: { petId: @Model.PetId, like: !liked },
-                        success: function (data) {
-                            if (data.success) {
-                                if (liked) {
-                                    btn.removeClass('btn-danger').addClass('btn-outline-danger');
-                                    btn.html('<i class="fas fa-heart"></i> Beğen (' + data.likeCount + ')');
-                                } else {
-                                    btn.removeClass('btn-outline-danger').addClass('btn-danger');
-                                    btn.html('<i class="fas fa-heart"></i> Beğendin (' + data.likeCount + ')');
+                        $.ajax({
+                            url: liked ? '/PetLike/UnLike' : '/PetLike/Like',
+                            type: 'POST',
+                            data: { userId: userId, petId: petId },
+                            success: function (data) {
+                                if (data.success) {
+                                    if (liked) {
+                                        btn.removeClass('btn-danger').addClass('btn-outline-danger');
+                                        btn.html('<i class="fas fa-heart"></i> Beğen (' + (@Model.PetLikeCount - 1) + ')');
+                                    } else {
+                                        btn.removeClass('btn-outline-danger').addClass('btn-danger');
+                                        btn.html('<i class="fas fa-heart"></i> Beğendin (' + (@Model.PetLikeCount + 1) + ')');
+                                    }
                                 }
                             }
-                        }
+                        });
                     });
                 });
-            });
+
 
             @* form gönderimi *@
                 $(document).ready(function () {

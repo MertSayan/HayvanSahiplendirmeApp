@@ -25,9 +25,9 @@ namespace WebApi.Controllers
             return Ok(values);
         }
         [HttpGet("ById")]
-        public async Task<IActionResult> GetByIdPet(int id)
+        public async Task<IActionResult> GetByIdPet(int petId,int currentUserId)
         {
-            var value=await _mediator.Send(new GetByIdPetQuery(id));
+            var value=await _mediator.Send(new GetByIdPetQuery(petId,currentUserId));
             return Ok(value);
         }
         [HttpGet("GetAllPetByOwnerId")]

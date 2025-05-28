@@ -24,5 +24,7 @@
         public string? Breed { get; set; } // Örn: "Golden Retriever"
         public string? MainImageUrl { get; set; }
         public int PetLikeCount { get; set; }
+        public bool IsLiked { get; set; }
+
     }
 }

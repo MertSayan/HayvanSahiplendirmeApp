@@ -49,8 +49,11 @@ namespace HayvanWebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> Detail(int id)
         {
-            var client=_httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7160/api/Pets/ById?id="+id);
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = int.TryParse(userIdString, out var parsedId) ? parsedId : 0;
+            ViewBag.UserId = userId;
+            var client =_httpClientFactory.CreateClient();
+            var responseMessage = await client.GetAsync($"https://localhost:7160/api/Pets/ById?petId={id}&currentUserId={userId}");
             if(responseMessage.IsSuccessStatusCode)
             {
                 var jsonData=await responseMessage.Content.ReadAsStringAsync();

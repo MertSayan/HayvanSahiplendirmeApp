@@ -1,5 +1,6 @@
 ﻿using Application.Constants;
 using Application.Interfaces.PetLikeInterface;
+using Azure.Core;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
@@ -45,6 +46,11 @@ namespace Persistence.Repositories.PetLikeRepository
                 return petLike;
             }
             throw new Exception(Messages<PetLike>.EntityNotFound);
+        }
+
+        public async Task<bool> IsLiked(int userId, int petId)
+        {
+            return await _context.PetLikes.AnyAsync(x => x.PetId == petId && x.UserId == userId);
         }
     }
 }

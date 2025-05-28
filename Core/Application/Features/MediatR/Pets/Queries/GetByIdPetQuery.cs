@@ -5,11 +5,15 @@ namespace Application.Features.MediatR.Pets.Queries
 {
     public class GetByIdPetQuery:IRequest<GetByIdPetQueryResult>
     {
-        public int Id { get; set; }
-
-        public GetByIdPetQuery(int id)
+        public GetByIdPetQuery(int petId, int currentUserId)
         {
-            Id = id;
+            PetId = petId;
+            CurrentUserId = currentUserId;
         }
+
+        public int PetId { get; set; }
+        public int CurrentUserId { get; set; }
+
+        
     }
 }
