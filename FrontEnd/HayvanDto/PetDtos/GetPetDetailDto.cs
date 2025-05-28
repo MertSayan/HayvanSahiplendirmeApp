@@ -1,10 +1,10 @@
-﻿namespace Application.Features.MediatR.Pets.Results
+﻿namespace HayvanDto.PetDtos
 {
-    public class GetByIdPetQueryResult
+    public class GetPetDetailDto
     {
         public int PetId { get; set; }
-        public int UserId { get; set; }
         public string UserImageUrl { get; set; }
+        public int UserId { get; set; }
         public string UserName { get; set; }
         public string UserSurname { get; set; }
         public DateTime UserCreatedDate { get; set; }
@@ -24,5 +24,6 @@
         public string? Breed { get; set; } // Örn: "Golden Retriever"
         public string? MainImageUrl { get; set; }
         public int PetLikeCount { get; set; }
+
     }
 }

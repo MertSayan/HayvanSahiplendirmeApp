@@ -2,6 +2,8 @@
 using HayvanWebUI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Security.Claims;
+using System.Text;
 
 namespace HayvanWebUI.Controllers
 {
@@ -13,19 +15,7 @@ namespace HayvanWebUI.Controllers
         {
             _httpClientFactory = httpClientFactory;
         }
-        //[HttpGet]
-        //public async Task<IActionResult> Index()
-        //{
-        //    var client =  _httpClientFactory.CreateClient();
-        //    var responseMessage = await client.GetAsync("https://localhost:7160/api/Pets/Filter");
-        //    if (responseMessage.IsSuccessStatusCode)
-        //    {
-        //        var jsonData=await responseMessage.Content.ReadAsStringAsync();
-        //        var result = JsonConvert.DeserializeObject<List<GetAllFilterPetDto>>(jsonData);
-        //        return View(result);
-        //    }
-        //    return View();
-        //}
+        
         [HttpGet]
         public async Task<IActionResult> Index(int page = 1, int? petTypeId = null, string? age = null, string? city = null)
         {
@@ -55,6 +45,63 @@ namespace HayvanWebUI.Controllers
             }
 
             return View(new PetListViewModel()); // boş modelle dön
+        }
+        [HttpGet]
+        public async Task<IActionResult> Detail(int id)
+        {
+            var client=_httpClientFactory.CreateClient();
+            var responseMessage = await client.GetAsync("https://localhost:7160/api/Pets/ById?id="+id);
+            if(responseMessage.IsSuccessStatusCode)
+            {
+                var jsonData=await responseMessage.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<GetPetDetailDto>(jsonData);
+                return View(result);
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddComment(AddPetCommentDto dto)
+        {
+            //int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            //dto.UserId = userId;
+            //var client = _httpClientFactory.CreateClient();
+            //var content = new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json");
+
+            //var response = await client.PostAsync("https://localhost:7160/api/PetComments", content);
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    return RedirectToAction("Detail", "Pet", new { id = dto.PetId });
+            //}
+
+            //TempData["Error"] = "Yorum eklenirken hata oluştu.";
+            //return RedirectToAction("Details", new { id = dto.PetId });
+
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var userName = User.Identity?.Name ?? "Kullanıcı";
+            var userImageUrl = "/images/default-avatar.png"; // Dilersen veritabanından getir
+
+            dto.UserId = userId;
+
+            var client = _httpClientFactory.CreateClient();
+            var content = new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync("https://localhost:7160/api/PetComments", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Json(new
+                {
+                    success = true,
+                    userId = userId,
+                    userName = userName,
+                    userImageUrl = userImageUrl,
+                    commentText = dto.CommentText,
+                    createdDate = DateTime.Now.ToString("dd MMM yyyy HH:mm")
+                });
+            }
+
+            return Json(new { success = false });
         }
 
     }
