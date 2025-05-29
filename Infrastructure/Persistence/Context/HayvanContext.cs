@@ -108,6 +108,9 @@ namespace Persistence.Context
 
             // (8) AdoptionRequest ↔ Pet, Sender, Owner
             modelBuilder.Entity<AdoptionRequest>()
+                .HasIndex(a => new { a.PetId, a.SenderId })
+                .IsUnique();
+            modelBuilder.Entity<AdoptionRequest>()
                 .HasOne(ar => ar.Pet)
                 .WithMany(p => p.AdoptionRequests)
                 .HasForeignKey(ar => ar.PetId)

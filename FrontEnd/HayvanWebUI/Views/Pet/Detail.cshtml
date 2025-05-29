@@ -19,24 +19,39 @@
                     <div>
                         @if (isAuthenticated)
                         {
-                            <button class="btn @(Model.IsLiked ? "btn-danger" : "btn-outline-danger") me-2" id="likeButton">
-                                <i class="fas fa-heart"></i> @(Model.IsLiked ? "Beğendin" : "Beğen")
+                            <button class="btn btn-outline-danger me-2" id="likeButton">
+                                <i class="fas fa-heart"></i> Beğen
                                 (@Model.PetLikeCount)
                             </button>
-                            <a href="/AdoptionRequest/Index/@Model.PetId" class="btn btn-primary">
-                                <i class="fas fa-envelope"></i> Sahiplendirme İsteği Gönder
-                            </a>
+
+                            @* ✅ Hızlı sahiplendirme butonu koşullu olarak render ediliyor *@
+                            @if (Model.HasRequestedAdoption)
+                            {
+                                <button class="btn btn-secondary" disabled>
+                                    <i class="fas fa-envelope"></i>
+                                    Başvuru Yapıldı
+                                </button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-primary" id="adoptionRequestBtn"
+                                        data-petid="@Model.PetId"
+                                        data-ownerid="@Model.UserId"
+                                        data-senderid="@ViewBag.UserId">
+                                    <i class="fas fa-envelope"></i>
+                                    Hızlı Sahiplendirme İsteği Gönder
+                                </button>
+                            }
                         }
                         else
                         {
-                            <a href="/Login/Index?returnUrl=/Pet/Detail/@Model.PetId" class="btn btn-outline-danger me-2">
+                            <a href="/Login/Login?returnUrl=/Pet/Details/@Model.PetId" class="btn btn-outline-danger me-2">
                                 <i class="fas fa-heart"></i> Beğenmek için giriş yap
                             </a>
-                            <a href="/Login/Index?returnUrl=/Message/Create/@Model.PetId" class="btn btn-primary">
+                            <a href="/Account/Login?returnUrl=/Message/Create/@Model.PetId" class="btn btn-primary">
                                 <i class="fas fa-envelope"></i> İletişim için giriş yap
                             </a>
                         }
-
                     </div>
                 </div>
 
@@ -228,15 +243,16 @@
             @if (isAuthenticated)
             {
                 <div class="adoption-form">
-                    <h5 class="mb-3">Sahiplenme Başvurusu</h5>
+                    <h5 class="mb-3">Sahiplenme İsteği Formu</h5>
 
-                    <form>
+                    <form id="adoptionForm">
+
                         <div class="mb-3">
                             <label for="reason" class="form-label">Neden Sahiplenmek İstiyorsunuz?</label>
                             <textarea class="form-control" id="reason" rows="3"
-                                      placeholder="Lütfen sahiplenme nedeninizi belirtin..."></textarea>
+                                      placeholder="Lütfen sahiplenme nedeninizi belirtin..." required></textarea>
                         </div>
-                        <div class="mb-3">
+                        @* <div class="mb-3">
                             <label for="experience" class="form-label">Daha Önce Evcil Hayvan Sahiplendiniz Mi?</label>
                             <select class="form-select" id="experience">
                                 <option selected>Seçiniz</option>
@@ -254,14 +270,26 @@
                                 <option>Müstakil ev</option>
                                 <option>Çiftlik/Bahçeli ev</option>
                             </select>
-                        </div>
-                        <div class="form-check mb-3">
+                        </div> *@
+                        @* <div class="form-check mb-3">
                             <input class="form-check-input" type="checkbox" id="terms">
                             <label class="form-check-label" for="terms">
                                 <a href="#">Sahiplendirme Koşulları</a>'nı okudum ve kabul ediyorum
                             </label>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Başvuru Gönder</button>
+                        </div> *@
+                        @* Gönderim butonunu başvuru durumuna göre göster *@
+                        @if (Model.HasRequestedAdoption)
+                        {
+                            <button type="submit" class="btn btn-secondary w-100" disabled>
+                                Zaten Başvuruldu
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-primary w-100">
+                                Başvuru Gönder
+                            </button>
+                        }
                     </form>
                 </div>
             }
@@ -405,6 +433,94 @@
                             },
                             error: function () {
                                 alert("Sunucu hatası oluştu.");
+                            }
+                        });
+                    });
+                });
+
+                @* hızlı sahiplendirme isteği *@
+            $(document).ready(function () {
+                $('#adoptionRequestBtn').click(function () {
+                    var petId = $(this).data('petid');
+                    var senderId = $(this).data('senderid');
+                    var ownerId = $(this).data('ownerid');
+
+                    console.log("PetId:", petId, "OwnerId:", ownerId, "SenderId:", senderId);
+
+
+                    var dto = {
+                        PetId: petId,
+                        SenderId: senderId,
+                        OwnerId: ownerId,
+                        Note: "Hızlı istek" 
+                    };
+
+                    $.ajax({
+                        url: '/Adoption/CreateAdoptionRequest',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(dto),
+                            success: function (response) {
+                                if (response.success) {
+                                    alert("İstek başarıyla gönderildi!");
+
+                                    // Hızlı sahiplendirme butonunu devre dışı bırak
+                                    $('#adoptionRequestBtn')
+                                        .prop('disabled', true)
+                                        .text("İstek Gönderildi");
+
+                                    // Form submit butonunu da devre dışı bırak
+                                    $('#adoptionForm button[type="submit"]')
+                                        .prop('disabled', true)
+                                        .text("Başvuru Yapıldı");
+                                } else {
+                                    alert("İstek gönderilemedi.");
+                                }
+                            }
+                    });
+                });
+            });
+
+            @* note yazarak sahiplenme *@
+                $(function () {
+                    $('#adoptionForm').on('submit', function (e) {
+                        e.preventDefault();
+
+                        var note = $('#reason').val();
+                        var petId = @Model.PetId;
+                        var ownerId = @Model.UserId;
+                        var senderId = @ViewBag.UserId;
+
+                        $.ajax({
+                            url: '/Adoption/CreateAdoptionRequest',
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                PetId: petId,
+                                OwnerId: ownerId,
+                                SenderId: senderId,
+                                Note: note
+                            }),
+                            success: function (res) {
+                                if (res.success) {
+                                    alert("Başvuru başarıyla gönderildi!");
+                                    $('#reason').val("");
+
+                                    // Form submit butonunu devre dışı bırak
+                                    $('#adoptionForm button[type="submit"]')
+                                        .prop('disabled', true)
+                                        .text("Başvuru Yapıldı");
+
+                                    // Hızlı sahiplendirme butonunu da devre dışı bırak
+                                    $('#adoptionRequestBtn')
+                                        .prop('disabled', true)
+                                        .text("İstek Gönderildi");
+                                } else {
+                                    alert("Gönderim başarısız oldu.");
+                                }
+                            },
+                            error: function () {
+                                alert("Bir hata oluştu.");
                             }
                         });
                     });

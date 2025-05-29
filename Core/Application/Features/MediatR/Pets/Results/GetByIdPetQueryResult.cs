@@ -25,6 +25,7 @@
         public string? MainImageUrl { get; set; }
         public int PetLikeCount { get; set; }
         public bool IsLiked { get; set; }
+        public bool HasRequestedAdoption { get; set; }
 
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Application.Enums;
 using Application.Features.MediatR.AdoptionRequests.Commands;
-using Application.Interfaces;
+using Application.Interfaces.AdoptionRequestInterface;
 using AutoMapper;
 using Domain;
 using MediatR;
@@ -9,12 +9,12 @@ namespace Application.Features.MediatR.AdoptionRequests.Handlers.Write
 {
     public class CreateAdoptionRequestCommandHandler : IRequestHandler<CreateAdoptionRequestCommand, Unit>
     {
-        private readonly IRepository<AdoptionRequest> _repository;
+        private readonly IAdoptionRequestRepository _adoptionRequestRepository;
         private readonly IMapper _mapper;
 
-        public CreateAdoptionRequestCommandHandler(IRepository<AdoptionRequest> repository, IMapper mapper)
+        public CreateAdoptionRequestCommandHandler(IAdoptionRequestRepository adoptionRequestRepository, IMapper mapper)
         {
-            _repository = repository;
+            _adoptionRequestRepository = adoptionRequestRepository;
             _mapper = mapper;
         }
 
@@ -22,7 +22,7 @@ namespace Application.Features.MediatR.AdoptionRequests.Handlers.Write
         {
             var adoptionRequest=_mapper.Map<AdoptionRequest>(request);
             adoptionRequest.Status = AdoptionStatus.Pending.ToString();
-            await _repository.CreateAsync(adoptionRequest);
+            await _adoptionRequestRepository.CreateAdoptionRequestAsync(adoptionRequest);
             return Unit.Value;
         }
     }
