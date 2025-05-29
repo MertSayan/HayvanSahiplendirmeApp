@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.MediatR.AdoptionRequests.Results
+namespace HayvanDto.AdoptionRequestDtos
 {
-    public class GetAllIncomingAdoptionByOwnerIdQueryResult
+    public class GetAllAdoptionRequestByOwnerIdDto
     {
         public int AdoptionRequestId { get; set; }
         public string PetName { get; set; }

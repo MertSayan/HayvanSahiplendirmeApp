@@ -98,7 +98,9 @@ namespace Application.MapperProfiles
               .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => src.Owner.Name));
             CreateMap<AdoptionRequest, GetAllIncomingAdoptionByOwnerIdQueryResult>()
             .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.Name))
-            .ForMember(dest => dest.SenderName, opt => opt.MapFrom(src => src.Sender.Name));
+            .ForMember(dest => dest.SenderName, opt => opt.MapFrom(src => src.Sender.Name + " " + src.Sender.Surname))
+            .ForMember(dest => dest.SenderImageUrl, opt => opt.MapFrom(src => src.Sender.ProfilePictureUrl))
+            .ForMember(dest => dest.SenderId, opt => opt.MapFrom(src => src.Sender.UserId));
 
             //User
             CreateMap<User, CreateUserCommand>().ReverseMap();

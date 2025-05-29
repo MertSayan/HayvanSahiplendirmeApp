@@ -1,0 +1,27 @@
+﻿@model GetUserStatsDto
+<div class="row mt-4">
+    <div class="col-md-4 mb-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h3 class="display-4">@Model.TotalPets</h3>
+                <p class="text-muted">İlan Edilen Hayvan</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h3 class="display-4">@Model.TotalLikes</h3>
+                <p class="text-muted">Toplam Beğeni</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h3 class="display-4">@Model.SuccessfulAdoptions</h3>
+                <p class="text-muted">Başarılı Sahiplendirme</p>
+            </div>
+        </div>
+    </div>
+</div>

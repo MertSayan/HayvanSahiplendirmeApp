@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.MediatR.Users.Results
+namespace HayvanDto.UserDtos
 {
-    public class GetByIdUserQueryResult
+    public class GetUserDetailDto
     {
         public int UserId { get; set; }
         public string Name { get; set; }
@@ -18,6 +18,6 @@ namespace Application.Features.MediatR.Users.Results
         public string City { get; set; }
         public string District { get; set; }
         public string? AboutMe { get; set; } // Profil açıklaması
-        public DateTime CreatedDate { get; set; }
+        public string CreatedDate { get; set; }
     }
 }

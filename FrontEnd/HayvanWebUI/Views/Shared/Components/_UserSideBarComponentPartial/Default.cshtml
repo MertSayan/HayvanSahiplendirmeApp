@@ -1,0 +1,94 @@
+﻿@model GetUserDetailDto
+@{
+    DateTime createdDate = DateTime.TryParse(Model.CreatedDate, out var parsedDate) ? parsedDate : DateTime.Now;
+    int years = DateTime.Now.Year - createdDate.Year;
+
+    if (DateTime.Now < createdDate.AddYears(years))
+    {
+        years--;
+    }
+
+    var yearText = years + " Yıldır Üye";
+}
+<div class="sidebar mb-4">
+    <div class="user-profile text-center mb-4">
+        <img src="@Model.ProfilePictureUrl" class="rounded-circle profile-photo mb-3"
+             alt="User">
+        <h4>@Model.Name @Model.Surname</h4>
+        <p class="text-muted">@Model.City, @Model.District</p>
+        <span class="badge bg-primary">@yearText</span>
+        <div class="d-grid gap-2 mt-3">
+            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                <i class="fas fa-user-edit"></i> Profili Düzenle
+            </button>
+        </div>
+    </div>
+
+    <div class="sidebar-menu">
+        <ul class="list-group">
+            <li class="list-group-item menu-item-top ">
+                <a href="/User/Profile" class="d-flex align-items-center">
+                    <i class="fas fa-user me-2"></i>
+                    <span>Profilim</span>
+                    <div class="ms-auto d-flex align-items-center">
+                        <span class="badge-placeholder"></span>
+                    </div>
+                </a>
+            </li>
+            <li class="list-group-item ">
+                <a href="/User/MyPets" class="d-flex align-items-center">
+                    <i class="fas fa-paw me-2"></i>
+                    <span>Hayvanlarım</span>
+                    <div class="ms-auto d-flex align-items-center">
+                        <span class="badge bg-primary badge-sm">3</span>
+                    </div>
+                </a>
+            </li>
+            <li class="list-group-item ">
+                <a href="/User/Requests" class="d-flex align-items-center">
+                    <i class="fas fa-paper-plane me-2"></i>
+                    <span>İsteklerim</span>
+                    <div class="ms-auto d-flex align-items-center">
+                        <span class="badge bg-primary badge-sm">2</span>
+                    </div>
+                </a>
+            </li>
+            <li class="list-group-item ">
+                <a href="/User/Requests?type=received" class="d-flex align-items-center">
+                    <i class="fas fa-envelope me-2"></i>
+                    <span>G. İstekler</span>
+                    <div class="ms-auto d-flex align-items-center">
+                        <span class="badge bg-danger badge-sm">5</span>
+                    </div>
+                </a>
+            </li>
+            <li class="list-group-item ">
+                <a href="/Message/Index" class="d-flex align-items-center">
+                    <i class="fas fa-comments me-2"></i>
+                    <span>Mesajlar</span>
+                    <div class="ms-auto d-flex align-items-center">
+                        <span class="badge bg-danger badge-sm">3</span>
+                    </div>
+                </a>
+            </li>
+            <li class="list-group-item ">
+                <a href="/User/Favorites" class="d-flex align-items-center">
+                    <i class="fas fa-heart me-2"></i>
+                    <span>Favoriler</span>
+                    <div class="ms-auto d-flex align-items-center">
+                        <span class="badge bg-primary badge-sm">7</span>
+                    </div>
+                </a>
+            </li>
+            <li class="list-group-item menu-item-bottom ">
+                <a href="/User/Settings" class="d-flex align-items-center">
+                    <i class="fas fa-cog me-2"></i>
+                    <span>Ayarlar</span>
+                    <div class="ms-auto d-flex align-items-center">
+                        <span class="badge-placeholder"></span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
