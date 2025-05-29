@@ -2,7 +2,6 @@
 {
     public class PetLike : Entity
     {
-        public int PetLikeId { get; set; }
         public int PetId { get; set; }
         public Pet Pet { get; set; }
         public int UserId { get; set; }

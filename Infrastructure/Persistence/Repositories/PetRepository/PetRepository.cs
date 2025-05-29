@@ -1,6 +1,5 @@
 ﻿using Application.Constants;
 using Application.Features.MediatR.Pets.Queries;
-using Application.Features.MediatR.Pets.Results;
 using Application.Interfaces.PetInterface;
 using Domain;
 using Microsoft.EntityFrameworkCore;
@@ -32,7 +31,6 @@ namespace Persistence.Repositories.PetRepository
                 .Include(x => x.PetType)
                 .ToListAsync();
         }
-
         public async Task<List<Pet>> GetAllPetAsync()
         {
             return await _context.Pets.Where(x=>x.DeletedDate==null)
@@ -50,12 +48,15 @@ namespace Persistence.Repositories.PetRepository
              .ToListAsync();
         }
 
-        public async Task<Pet> GetByIdPetAsync(int id)
+        public async Task<Pet> GetByIdPetAsync(int petId)
         {
             var entity = await _context.Pets
                .Include(p => p.User)
                .Include(p => p.PetType)
-               .FirstOrDefaultAsync(p => p.PetId == id && p.DeletedDate == null);
+               .Include(p=>p.PetLikes)
+               .FirstOrDefaultAsync(p => p.PetId == petId && p.DeletedDate == null);
+
+           
 
             if (entity == null)
                 throw new Exception(Messages<Pet>.EntityNotFound);
@@ -66,6 +67,7 @@ namespace Persistence.Repositories.PetRepository
         {
             var pets =  _context.Pets
                 .Include(p => p.PetType)
+                .Include(p=>p.PetLikes)
                 .Where(p => !p.IsAdopted && p.DeletedDate == null); // sadece aktif ilanlar
 
             if (query.PetTypeId.HasValue)
@@ -75,7 +77,7 @@ namespace Persistence.Repositories.PetRepository
                 pets = pets.Where(p => p.Age == query.Age);
 
             if (!string.IsNullOrWhiteSpace(query.City))
-                pets = pets.Where(p => p.City == query.City);
+                pets = pets.Where(p => p.City.ToLower() == query.City.ToLower());
 
             if (!string.IsNullOrWhiteSpace(query.Gender))
                 pets = pets.Where(p => p.Gender == query.Gender);
@@ -94,6 +96,17 @@ namespace Persistence.Repositories.PetRepository
              .Skip(skip)
              .Take(query.PageSize)
              .ToListAsync();
+        }
+
+        public async Task<List<Pet>> GetTopLikedPetsAsync(int count)
+        {
+            return await _context.Pets
+            .Include(p => p.PetLikes)
+            .Include(p=>p.PetType)
+            .Where(p => !p.IsAdopted && p.DeletedDate==null)
+            .OrderByDescending(p => p.PetLikes.Count)
+            .Take(count)
+            .ToListAsync();
         }
     }
 }

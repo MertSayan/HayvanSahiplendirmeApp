@@ -31,9 +31,9 @@ namespace WebApi.Controllers
             return Ok(Messages<PetFavorite>.EntityAdded);
         }
         [HttpDelete]
-        public async Task<IActionResult> DeletePetFavorite(int id)
+        public async Task<IActionResult> DeletePetFavorite(int userId,int petId)
         {
-            await _mediator.Send(new DeletePetFavoriteCommand(id));
+            await _mediator.Send(new DeletePetFavoriteCommand(userId,petId));
             return Ok(Messages<PetFavorite>.EntityDeleted);
         }
     }

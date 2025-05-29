@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Application.Features.MediatR.Pets.Results
+﻿namespace Application.Features.MediatR.Pets.Results
 {
     public class GetAllFilterPetQueryResult
     {
@@ -17,5 +11,7 @@ namespace Application.Features.MediatR.Pets.Results
         public bool IsVaccinated { get; set; }
         public bool IsNeutered { get; set; }
         public string MainImageUrl { get; set; }
+        public string Description { get; set; }
+        public int PetLike {  get; set; }
     }
 }

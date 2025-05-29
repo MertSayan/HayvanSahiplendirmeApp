@@ -1,0 +1,35 @@
+﻿<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Neden Sahiplenmeliyim?</h2>
+                <p>Bir hayvanı sahiplendiğinizde sadece ona bir yuva vermekle kalmaz, aynı zamanda:</p>
+                <ul>
+                    <li>Sadık bir dost kazanırsınız</li>
+                    <li>Evinize sevgi ve neşe getirirsiniz</li>
+                    <li>Fiziksel ve ruhsal sağlığınıza katkıda bulunursunuz</li>
+                    <li>Bir canın hayatını kurtarırsınız</li>
+                </ul>
+                <a href="/Home/About" class="btn btn-outline-primary mt-3">Daha Fazla Bilgi</a>
+            </div>
+            <div class="col-md-6">
+                <h2>Nasıl Sahiplendirebilirim?</h2>
+                <p>Eğer bir hayvanı sahiplendirmek istiyorsanız:</p>
+                <ol>
+                    <li>Üye girişi yapın veya hesap oluşturun</li>
+                    <li>"Hayvan Sahiplendir" butonuna tıklayın</li>
+                    <li>Hayvanınızın bilgilerini ve fotoğraflarını ekleyin</li>
+                    <li>Sahiplendirme ilanınız onaylandıktan sonra yayınlanacaktır</li>
+                </ol>
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <a href="/Pet/Create" class="btn btn-outline-primary mt-3">Hemen Sahiplendir</a>
+                }
+                else
+                {
+                    <a href="/Account/Login" class="btn btn-outline-primary mt-3">Üye Girişi Yap</a>
+                }
+            </div>
+        </div>
+    </div>
+</section>

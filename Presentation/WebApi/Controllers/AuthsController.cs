@@ -56,7 +56,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("CreateUser")]
-        public async Task<IActionResult> CreateUser(CreateUserCommand command)
+        public async Task<IActionResult> CreateUser([FromForm]CreateUserCommand command)
         {
             await _mediator.Send(command);
             return Ok(Messages<User>.EntityAdded);

@@ -1,9 +1,4 @@
 ﻿using Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Interfaces.PetLikeInterface
 {
@@ -11,6 +6,10 @@ namespace Application.Interfaces.PetLikeInterface
     {
         Task<List<PetLike>> GetAllPetLikeByPetIdAsync(int id);
         Task<List<PetLike>> GetAllPetLikeByUserIdAsync(int id);
+        Task<PetLike> GetPetLikeByIdAsync(int userId, int petId);
+        Task DeletePetLikeAsync(PetLike entity);
+        Task<bool> IsLiked(int userId,int petId);
+        Task<int> GetLikeCountByPetIdAsync(int petId);
         
     }
 }

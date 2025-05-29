@@ -1,10 +1,5 @@
 ﻿using Domain;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persistence.Context
 {
@@ -39,11 +34,13 @@ namespace Persistence.Context
             modelBuilder.Entity<Pet>().HasKey(p => p.PetId);
             modelBuilder.Entity<PetType>().HasKey(pt => pt.PetTypeId);
             modelBuilder.Entity<PetComment>().HasKey(pc => pc.PetCommentId);
-            modelBuilder.Entity<PetLike>().HasKey(pl => pl.PetLikeId);
+            modelBuilder.Entity<PetLike>()
+                .HasKey(pl => new { pl.PetId, pl.UserId });
             modelBuilder.Entity<Message>().HasKey(m => m.MessageId);
             modelBuilder.Entity<AdoptionRequest>().HasKey(ar => ar.AdoptionRequestId);
             modelBuilder.Entity<AdoptionTracking>().HasKey(at => at.AdoptionTrackingId);
-            modelBuilder.Entity<PetFavorite>().HasKey(at => at.PetFavoritteId);
+            modelBuilder.Entity<PetFavorite>()
+                .HasKey(pf => new { pf.PetId, pf.UserId });
 
             // (2) User ↔ Role (1-N)
             modelBuilder.Entity<User>()
@@ -80,6 +77,10 @@ namespace Persistence.Context
                 .OnDelete(DeleteBehavior.Restrict);
 
             // (6) Pet ↔ PetLike (1-N)
+
+            
+
+
             modelBuilder.Entity<PetLike>()
                 .HasOne(pl => pl.Pet)
                 .WithMany(p => p.PetLikes)
@@ -106,6 +107,9 @@ namespace Persistence.Context
                 .OnDelete(DeleteBehavior.Restrict);
 
             // (8) AdoptionRequest ↔ Pet, Sender, Owner
+            modelBuilder.Entity<AdoptionRequest>()
+                .HasIndex(a => new { a.PetId, a.SenderId })
+                .IsUnique();
             modelBuilder.Entity<AdoptionRequest>()
                 .HasOne(ar => ar.Pet)
                 .WithMany(p => p.AdoptionRequests)
@@ -138,6 +142,7 @@ namespace Persistence.Context
                 .HasForeignKey(pi => pi.PetId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+           
             // (11) pet-petfavoritte ( 1- N )
             modelBuilder.Entity<PetFavorite>()
                 .HasOne(f => f.Pet)

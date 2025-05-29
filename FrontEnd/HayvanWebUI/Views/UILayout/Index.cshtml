@@ -1,0 +1,23 @@
+﻿
+@{
+    Layout = null;
+    var isAuthenticated = User.Identity != null && User.Identity.IsAuthenticated;
+
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @await Component.InvokeAsync("_HeadUILayoutComponentPartial")
+</head>
+<body>
+    @await Component.InvokeAsync("_HeaderUILayoutComponentPartial")
+    @await Component.InvokeAsync("_ModalsUILayoutComponentPartial")
+    @RenderBody()
+    @await Component.InvokeAsync("_FooterUILayoutComponentPartial")
+    @await Component.InvokeAsync("_ScriptsUILayoutComponentPartial")
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+

@@ -25,9 +25,9 @@ namespace WebApi.Controllers
             return Ok(values);
         }
         [HttpGet("ById")]
-        public async Task<IActionResult> GetByIdPet(int id)
+        public async Task<IActionResult> GetByIdPet(int petId,int currentUserId)
         {
-            var value=await _mediator.Send(new GetByIdPetQuery(id));
+            var value=await _mediator.Send(new GetByIdPetQuery(petId,currentUserId));
             return Ok(value);
         }
         [HttpGet("GetAllPetByOwnerId")]
@@ -52,6 +52,12 @@ namespace WebApi.Controllers
         public async Task<IActionResult> FilterPets([FromQuery] GetAllFilterPetQuery query)
         {
             var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+        [HttpGet("Top3LikePet")]
+        public async Task<IActionResult> GetFeaturedPets(int sayi)
+        {
+            var result = await _mediator.Send(new GetFeaturedPetQuery(sayi));
             return Ok(result);
         }
         [HttpPost]

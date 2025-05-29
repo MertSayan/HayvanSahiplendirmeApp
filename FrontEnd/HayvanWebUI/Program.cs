@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
 namespace HayvanWebUI
 {
     public class Program
@@ -8,7 +10,9 @@ namespace HayvanWebUI
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddHttpClient();
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddCookie(JwtBearerDefaults.AuthenticationScheme);
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -23,7 +27,7 @@ namespace HayvanWebUI
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

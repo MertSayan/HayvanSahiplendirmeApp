@@ -1,0 +1,530 @@
+﻿@model GetPetDetailDto
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/UILayout/Index.cshtml";
+    var isAuthenticated = User.Identity != null && User.Identity.IsAuthenticated;
+}
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="pet-detail-info">
+                @* PetHeader *@
+                <div class="pet-detail-header">
+                    <img src="@Model.MainImageUrl" class="pet-detail-img" alt="@Model.Name">
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h1 class="mb-0">@Model.Name</h1>
+                    <div>
+                        @if (isAuthenticated)
+                        {
+                            <button class="btn btn-outline-danger me-2" id="likeButton">
+                                <i class="fas fa-heart"></i> Beğen
+                                (@Model.PetLikeCount)
+                            </button>
+
+                            @* ✅ Hızlı sahiplendirme butonu koşullu olarak render ediliyor *@
+                            @if (Model.HasRequestedAdoption)
+                            {
+                                <button class="btn btn-secondary" disabled>
+                                    <i class="fas fa-envelope"></i>
+                                    Başvuru Yapıldı
+                                </button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-primary" id="adoptionRequestBtn"
+                                        data-petid="@Model.PetId"
+                                        data-ownerid="@Model.UserId"
+                                        data-senderid="@ViewBag.UserId">
+                                    <i class="fas fa-envelope"></i>
+                                    Hızlı Sahiplendirme İsteği Gönder
+                                </button>
+                            }
+                        }
+                        else
+                        {
+                            <a href="/Login/Login?returnUrl=/Pet/Details/@Model.PetId" class="btn btn-outline-danger me-2">
+                                <i class="fas fa-heart"></i> Beğenmek için giriş yap
+                            </a>
+                            <a href="/Account/Login?returnUrl=/Message/Create/@Model.PetId" class="btn btn-primary">
+                                <i class="fas fa-envelope"></i> İletişim için giriş yap
+                            </a>
+                        }
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap pet-tags mb-3">
+                    <span class="pet-tag">@Model.PetTypeName</span>
+                    <span class="pet-tag">@Model.Age Yaş</span>
+
+                    <span class="pet-tag">
+                        @(Model.IsNeutered ? "Kısırlaştırılmış" : "Kısırlaştırılmamış")
+                    </span>
+
+                    <span class="pet-tag">
+                        @(Model.IsVaccinated ? "Aşıları Tam" : "Aşıları Eksik")
+                    </span>
+
+                    <span class="pet-tag">@Model.City</span>
+                    <span class="pet-tag">@Model.District</span>
+                </div>
+
+
+               @*  PetInfo *@
+                <h4>Hakkında</h4>
+                <p>
+                    @Model.Description
+                </p>
+
+                <h4>Özellikleri</h4>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <strong>Yaş:</strong>
+                                <span>@Model.Age</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <strong>Cinsiyet:</strong>
+                                <span>@Model.Gender</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <strong>Türü:</strong>
+                                <span>@Model.Breed</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <strong>Kısırlaştırılmış:</strong>
+                                @if (Model.IsNeutered)
+                                {
+                                    <span class="text-success"><i class="fas fa-check"></i> Evet</span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger"><i class="fas fa-times"></i> Hayır</span>
+                                }
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <strong>Aşıları:</strong>
+                                @if (Model.IsVaccinated)
+                                {
+                                    <span class="text-success"><i class="fas fa-check"></i> Tam</span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger"><i class="fas fa-times"></i> Eksik</span>
+                                }
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <strong>Sahiplendirildi Mi:</strong>
+                                @if (Model.IsAdopted)
+                                {
+                                    <span class="text-success"><i class="fas fa-check"></i> Evet</span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger"><i class="fas fa-times"></i> Hayır</span>
+                                }
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                @* PetGalery *@
+                @await Component.InvokeAsync("_PetImagesComponentPartial", new { id = Model.PetId })
+
+                @* PetComments *@
+                <div class="comments-section">
+
+                     @await Component.InvokeAsync("_PetCommentComponentPartial", new { id = Model.PetId })
+
+                    @if (User.Identity != null && User.Identity.IsAuthenticated)
+                    {
+
+                        <form id="commentForm">
+                            <input type="hidden" name="PetId" value="@Model.PetId" />
+
+                            <div class="mb-3">
+                                <label for="commentText" class="form-label">Yorum Yap</label>
+                                <textarea class="form-control" name="CommentText" id="commentText" rows="3"
+                                          placeholder="Yorumunuzu buraya yazın..." required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Gönder</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info mt-4">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Yorum yapmak için <a href="/Login/Index?returnUrl=/Pet/Detail/@Model.PetId" class="alert-link">giriş yapın</a>
+                            veya
+                            <a href="/Register/Index" class="alert-link">kayıt olun</a>.
+                        </div>
+                    }
+                </div>
+                   
+                
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            @* ownerSideBar *@
+            <div class="sidebar mb-4">
+                <div class="user-profile text-center">
+                    <img src="@Model.UserImageUrl" class="user-avatar mx-auto d-block" alt="@Model.UserName">
+                    <div class="profile-info mt-3">
+                        <h5 class="mb-1">@Model.UserName @Model.UserSurname</h5>
+                        <p class="text-muted">@Model.UserCreatedDate.ToString("dd MMMM yyyy")</p>
+
+                        @{
+                            var years = DateTime.Now.Year - Model.UserCreatedDate.Year;
+                            if (Model.UserCreatedDate > DateTime.Now.AddYears(-years))
+                            {
+                                years--; // henüz yıl dolmadıysa bir eksilt
+                            }
+                        }
+
+                        <p class="text-muted">@years @(years == 1 ? "yıldır" : "yıldır") üye</p>
+                    </div>
+
+                </div>
+                <hr>
+                <div class="contact-info">
+                    @if (isAuthenticated)
+                    {
+                        <p class="d-flex align-items-center mb-2">
+                            <i class="fas fa-map-marker-alt text-primary me-3"></i>
+                            @Model.UserCity @Model.UserDistrict
+                        </p>
+                        <p class="d-flex align-items-center mb-2">
+                            <i class="fas fa-envelope text-primary me-3"></i>
+                            @Model.UserEmail
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="d-flex align-items-center mb-2">
+                            <i class="fas fa-map-marker-alt text-primary me-3"></i> @Model.City
+                        </p>
+                        <div class="alert alert-warning py-2">
+                            <i class="fas fa-lock me-2"></i> İletişim bilgilerini görmek için
+                            <a href="/Login/Index?returnUrl=/Pet/Details/@Model.PetId" class="alert-link">giriş yapın</a>
+                        </div>
+                    }
+                </div>
+                <hr>
+                @if (isAuthenticated)
+                {
+                    <a href="/Message/Create/@Model.PetId" class="btn btn-primary w-100 mb-3 py-2 fs-5">
+                        <i class="fas fa-envelope me-2"></i>
+                        İletişime Geç
+                    </a>
+                    <a href="/User/Profile?id=@Model.UserId" class="btn btn-outline-primary w-100 py-2">
+                        <i class="fas fa-user me-2"></i>
+                        Profili Görüntüle
+                    </a>
+                }
+                else
+                {
+                    <a href="/Account/Login?returnUrl=/Message/Create/@Model.PetId" class="btn btn-primary w-100 mb-3 py-2 fs-5">
+                        <i class="fas fa-sign-in-alt me-2"></i> İletişim için Giriş Yap
+                    </a>
+                    <a href="/Profile/Index?id=@Model.UserId" class="btn btn-outline-primary w-100 py-2">
+                        <i class="fas fa-user me-2"></i> Profili Görüntüle
+                    </a>
+                }
+            </div>
+            @* AdoptionForm *@
+            @if (isAuthenticated)
+            {
+                <div class="adoption-form">
+                    <h5 class="mb-3">Sahiplenme İsteği Formu</h5>
+
+                    <form id="adoptionForm">
+
+                        <div class="mb-3">
+                            <label for="reason" class="form-label">Neden Sahiplenmek İstiyorsunuz?</label>
+                            <textarea class="form-control" id="reason" rows="3"
+                                      placeholder="Lütfen sahiplenme nedeninizi belirtin..." required></textarea>
+                        </div>
+                        @* <div class="mb-3">
+                            <label for="experience" class="form-label">Daha Önce Evcil Hayvan Sahiplendiniz Mi?</label>
+                            <select class="form-select" id="experience">
+                                <option selected>Seçiniz</option>
+                                <option>Evet, halen sahibim</option>
+                                <option>Evet, daha önce sahiptim</option>
+                                <option>Hayır, ilk kez sahipleniyorum</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="living" class="form-label">Yaşam Alanınız</label>
+                            <select class="form-select" id="living">
+                                <option selected>Seçiniz</option>
+                                <option>Apartman dairesi (bahçesiz)</option>
+                                <option>Bahçeli apartman dairesi</option>
+                                <option>Müstakil ev</option>
+                                <option>Çiftlik/Bahçeli ev</option>
+                            </select>
+                        </div> *@
+                        @* <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="terms">
+                            <label class="form-check-label" for="terms">
+                                <a href="#">Sahiplendirme Koşulları</a>'nı okudum ve kabul ediyorum
+                            </label>
+                        </div> *@
+                        @* Gönderim butonunu başvuru durumuna göre göster *@
+                        @if (Model.HasRequestedAdoption)
+                        {
+                            <button type="submit" class="btn btn-secondary w-100" disabled>
+                                Zaten Başvuruldu
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-primary w-100">
+                                Başvuru Gönder
+                            </button>
+                        }
+                    </form>
+                </div>
+            }
+            else
+            {
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Sahiplenme Başvurusu</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-2">Bu sevimli dostunuzu sahiplenmek ister misiniz?</p>
+                        <div class="alert alert-info mb-0">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Sahiplenme başvurusu yapmak için <a href="/Login/Index?returnUrl=/Pet/Details/@Model.PetId"
+                                                                class="alert-link">giriş yapın</a> veya <a href="/Register/Index" class="alert-link">kayıt olun</a>.
+                        </div>
+                    </div>
+                </div>
+            }
+            @* SimilarPets *@
+           @*  <div class="sidebar">
+                <h5 class="mb-3">Benzer Hayvanlar</h5>
+                <div class="row">
+                    @foreach (var similarPet in similarPets)
+                    {
+                        <div class="col-6 mb-3">
+                            <div class="card h-100">
+                                <div class="similar-pet-container">
+                                    <img src="@similarPet.ImageUrl" class="similar-pet-img card-img-top" alt="@similarPet.Name">
+                                </div>
+                                <div class="card-body p-2">
+                                    <h6 class="card-title mb-0">@similarPet.Name</h6>
+                                    <span class="pet-tag">@similarPet.Type</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="text-center">
+                    <a href="/Pet/Index" class="btn btn-outline-primary btn-sm">Tümünü Gör</a>
+                </div>
+            </div> *@
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @if (isAuthenticated)
+    {
+        <script>
+            @* beğenme *@
+                $(function () {
+                    var userId = @ViewBag.UserId;
+                    var petId = @Model.PetId;
+
+                    // Beğeni durumu kontrolü: sayfa yüklendiğinde butona sınıf ata
+                    if (@Model.IsLiked.ToString().ToLower() === "true") {
+                        $('#likeButton').addClass('btn-danger').removeClass('btn-outline-danger');
+                        $('#likeButton').html('<i class="fas fa-heart"></i> Beğendin (@Model.PetLikeCount)');
+                    }
+
+                    // Beğeni butonuna tıklama
+                    $('#likeButton').on('click', function () {
+                        var btn = $(this);
+                        var liked = btn.hasClass('btn-danger'); // zaten beğendiyse
+
+                        $.ajax({
+                            url: liked ? '/PetLike/UnLike' : '/PetLike/Like',
+                            type: 'POST',
+                            data: {
+                                userId: userId,
+                                petId: petId
+                            },
+                            success: function (response) {
+                                if (response.success) {
+                                    // Toggle buton stili
+                                    if (liked) {
+                                        btn.removeClass('btn-danger').addClass('btn-outline-danger');
+                                    } else {
+                                        btn.removeClass('btn-outline-danger').addClass('btn-danger');
+                                    }
+
+                                    // Beğeni sayısını güncelle
+                                    $.ajax({
+                                        url: '/PetLike/GetLikeCount',
+                                        type: 'GET',
+                                        data: { petId: petId },
+                                        success: function (res) {
+                                            var count = res.likeCount;
+                                            if (liked) {
+                                                btn.html('<i class="fas fa-heart"></i> Beğen (' + count + ')');
+                                            } else {
+                                                btn.html('<i class="fas fa-heart"></i> Beğendin (' + count + ')');
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    });
+                });
+
+
+            @* form gönderimi *@
+                $(document).ready(function () {
+                    $('#commentForm').on('submit', function (e) {
+                        e.preventDefault();
+
+                        var form = $(this);
+                        var petId = form.find('input[name="PetId"]').val();
+                        var commentText = form.find('textarea[name="CommentText"]').val();
+
+                        $.ajax({
+                            url: '/Pet/AddComment',
+                            type: 'POST',
+                            data: {
+                                PetId: petId,
+                                CommentText: commentText
+                            },
+                            success: function (response) {
+                                console.log("Geldi:", response);
+                                if (response.success) {
+                                    $('#commentList').append(`
+                                        <div class="comment mb-3">
+                                            <div class="d-flex">
+                                                <img src="${response.userImageUrl}" class="user-avatar-sm me-3" alt="${response.userName}">
+                                                <div>
+                                                    <h6 class="mb-1">
+                                                        <a href="/User/Profile?id=${response.userId}" class="text-decoration-none">${response.userName}</a>
+                                                    </h6>
+                                                    <p class="text-muted small">${response.createdDate}</p>
+                                                    <p>${response.commentText}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `);
+                                    form[0].reset();
+                                } else {
+                                    alert("Yorum eklenemedi.");
+                                }
+                            },
+                            error: function () {
+                                alert("Sunucu hatası oluştu.");
+                            }
+                        });
+                    });
+                });
+
+                @* hızlı sahiplendirme isteği *@
+            $(document).ready(function () {
+                $('#adoptionRequestBtn').click(function () {
+                    var petId = $(this).data('petid');
+                    var senderId = $(this).data('senderid');
+                    var ownerId = $(this).data('ownerid');
+
+                    console.log("PetId:", petId, "OwnerId:", ownerId, "SenderId:", senderId);
+
+
+                    var dto = {
+                        PetId: petId,
+                        SenderId: senderId,
+                        OwnerId: ownerId,
+                        Note: "Hızlı istek" 
+                    };
+
+                    $.ajax({
+                        url: '/Adoption/CreateAdoptionRequest',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(dto),
+                            success: function (response) {
+                                if (response.success) {
+                                    alert("İstek başarıyla gönderildi!");
+
+                                    // Hızlı sahiplendirme butonunu devre dışı bırak
+                                    $('#adoptionRequestBtn')
+                                        .prop('disabled', true)
+                                        .text("İstek Gönderildi");
+
+                                    // Form submit butonunu da devre dışı bırak
+                                    $('#adoptionForm button[type="submit"]')
+                                        .prop('disabled', true)
+                                        .text("Başvuru Yapıldı");
+                                } else {
+                                    alert("İstek gönderilemedi.");
+                                }
+                            }
+                    });
+                });
+            });
+
+            @* note yazarak sahiplenme *@
+                $(function () {
+                    $('#adoptionForm').on('submit', function (e) {
+                        e.preventDefault();
+
+                        var note = $('#reason').val();
+                        var petId = @Model.PetId;
+                        var ownerId = @Model.UserId;
+                        var senderId = @ViewBag.UserId;
+
+                        $.ajax({
+                            url: '/Adoption/CreateAdoptionRequest',
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                PetId: petId,
+                                OwnerId: ownerId,
+                                SenderId: senderId,
+                                Note: note
+                            }),
+                            success: function (res) {
+                                if (res.success) {
+                                    alert("Başvuru başarıyla gönderildi!");
+                                    $('#reason').val("");
+
+                                    // Form submit butonunu devre dışı bırak
+                                    $('#adoptionForm button[type="submit"]')
+                                        .prop('disabled', true)
+                                        .text("Başvuru Yapıldı");
+
+                                    // Hızlı sahiplendirme butonunu da devre dışı bırak
+                                    $('#adoptionRequestBtn')
+                                        .prop('disabled', true)
+                                        .text("İstek Gönderildi");
+                                } else {
+                                    alert("Gönderim başarısız oldu.");
+                                }
+                            },
+                            error: function () {
+                                alert("Bir hata oluştu.");
+                            }
+                        });
+                    });
+                });
+        </script>
+    }
+}

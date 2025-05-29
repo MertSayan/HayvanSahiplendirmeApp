@@ -1,0 +1,200 @@
+﻿@model PetListViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/UILayout/Index.cshtml";
+    var isAuthenticated = User.Identity != null && User.Identity.IsAuthenticated;
+    var currentPage = Model.CurrentPage;
+    var totalPages = Model.TotalPages;
+}
+
+<div class="container py-5">
+    @* _Header *@
+
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1>Sahiplenmeyi Bekleyen Dostlarımız</h1>
+            <p class="lead">
+                Aşağıdaki dostlarımız sıcak bir yuva arıyor. Onlara sahip çıkmak istiyorsanız detayları
+                inceleyebilirsiniz.
+            </p>
+        </div>
+        <div class="col-md-4 text-end">
+            @if (isAuthenticated)
+            {
+                <a href="/Pet/Create" class="btn btn-primary"><i class="fas fa-plus"></i> Hayvan Sahiplendir</a>
+            }
+            else
+            {
+                <a href="/Account/Login?returnUrl=/Pet/Create" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i>
+                    İlan Vermek İçin Giriş Yap
+                </a>
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            @* FilterSideBar *@
+            <div class="sidebar mb-4">
+                <h5>Filtrele</h5>
+                <hr>
+                <form action="/Pet/Index" method="get">
+                    <div class="mb-3">
+                        @await Component.InvokeAsync("_PetTypeDropdownComponentPartial")
+
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Yaş Aralığı</label>
+                        <select class="form-select" name="age">
+                            <option value="" selected>Tümü</option>
+                            <option value="1">1 Yaş</option>
+                            <option value="2">2 Yaş</option>
+                            <option value="3">3 Yaş</option>
+                            <option value="4">4 Yaş</option>
+                            <option value="5">5 Yaş</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        @await Component.InvokeAsync("_PetLocationDropdownComponentPartial")
+
+                       @*  <label class="form-label">Şehir</label>
+                        <select class="form-select" name="city">
+                            <option selected>Tümü</option>
+                            <option>İstanbul</option>
+                            <option>Ankara</option>
+                            <option>İzmir</option>
+                            <option>Bursa</option>
+                            <option>Adana</option>
+                        </select> *@
+                    </div>
+
+                    @if (isAuthenticated)
+                    {
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="onlyFavorites" name="onlyFavorites"
+                                       value="true">
+                                <label class="form-check-label" for="onlyFavorites">
+                                    <i class="fas fa-heart text-danger"></i> Sadece Favorilerim
+                                </label>
+                            </div>
+                        </div>
+                    }
+
+                    <button type="submit" class="btn btn-primary w-100">Filtrele</button>
+                </form>
+            </div>
+
+             @* PopulerTags 
+            <div class="sidebar">
+                <h5><i class="fas fa-tags text-primary"></i> Popüler Etiketler</h5>
+                <hr>
+                <div class="d-flex flex-wrap">
+                    @foreach (var tag in tags)
+                    {
+                        <a href="#" class="popular-tag">@tag</a>
+                    }
+                </div>
+            </div> *@
+
+        </div>
+
+        <div class="col-md-9">
+            @* PetList *@
+            @if (!isAuthenticated)
+            {
+                <div class="alert alert-info mb-4">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Favorilere eklemek ve sahiplenmek için <a href="/Account/Login" class="alert-link">giriş yapın</a> veya
+                    <a href="/Account/Register" class="alert-link">kayıt olun</a>.
+                </div>
+            }
+            <div class="row">
+                @foreach (var pet in Model.Pets)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="similar-pet-container">
+                                <img src="@pet.MainImageUrl" class="similar-pet-img" alt="@pet.Name">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">@pet.Name</h5>
+                                <div class="pet-tags">
+                                    <span class="pet-tag">@pet.PetTypeName</span>
+                                    <span class="pet-tag">@pet.Age</span>
+                                </div>
+                                <p class="card-text mt-2">@pet.Description</p>
+                            </div>
+                            <div class="card-footer bg-white d-flex justify-content-between align-items-center">
+                                <a href="/Pet/Detail/@pet.PetId" class="btn btn-primary btn-sm">Detaylar</a>
+                                <div>
+                                    <span class="me-2"><i class="fas fa-heart text-danger"></i> @pet.PetLike</span>
+                                    <span><i class="fas fa-comment text-secondary"></i> 5</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            @* Pagination *@
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                        <a class="page-link" href="@(currentPage > 1 ? $"/Pet/Index?page={currentPage - 1}" : "#")" tabindex="-1"
+                           aria-disabled="@(currentPage == 1 ? "true" : "false")">Önceki</a>
+                    </li>
+
+                    @for (int i = 1; i <= totalPages; i++)
+                    {
+                        <li class="page-item @(i == currentPage ? "active" : "")">
+                            <a class="page-link" href="/Pet/Index?page=@i">@i</a>
+                        </li>
+                    }
+
+                    <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                        <a class="page-link"
+                           href="@(currentPage < totalPages ? $"/Pet/Index?page={currentPage + 1}" : "#")">Sonraki</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @if (isAuthenticated)
+    {
+        <script>
+            $(function () {
+                $('.favorite-toggle').on('click', function () {
+                    var btn = $(this);
+                    var petId = btn.data('pet-id');
+                    var isFavorite = btn.data('is-favorite') === 'True';
+
+                    // AJAX isteği ile favori durumunu değiştir
+                    $.ajax({
+                        url: '/Pet/ToggleFavorite',
+                        type: 'POST',
+                        data: { petId: petId, isFavorite: !isFavorite },
+                        success: function (response) {
+                            if (response.success) {
+                                // Favorilere ekleme/çıkarma başarılıysa buton görünümünü güncelle
+                                btn.data('is-favorite', !isFavorite);
+                                btn.find('i').toggleClass('fas far fa-heart');
+
+                                // İsteğe bağlı: Sayfa yenileme yapmadan sayaçları güncelle
+                                var likesElement = btn.closest('.card').find('.fas.fa-heart.text-danger').parent();
+                                var currentLikes = parseInt(likesElement.text().trim());
+                                likesElement.html('<i class="fas fa-heart text-danger"></i> ' + (isFavorite ? currentLikes - 1 : currentLikes + 1));
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
+    }
+}
+

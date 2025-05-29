@@ -252,11 +252,11 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.PetFavorite", b =>
                 {
-                    b.Property<int>("PetFavoritteId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("PetId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PetFavoritteId"));
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -264,18 +264,10 @@ namespace Persistence.Migrations
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PetId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PetFavoritteId");
-
-                    b.HasIndex("PetId");
+                    b.HasKey("PetId", "UserId");
 
                     b.HasIndex("UserId");
 
@@ -315,11 +307,11 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.PetLike", b =>
                 {
-                    b.Property<int>("PetLikeId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("PetId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PetLikeId"));
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -327,18 +319,10 @@ namespace Persistence.Migrations
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PetId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PetLikeId");
-
-                    b.HasIndex("PetId");
+                    b.HasKey("PetId", "UserId");
 
                     b.HasIndex("UserId");
 

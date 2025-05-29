@@ -1,25 +1,23 @@
 ﻿using Application.Features.MediatR.PetLikes.Commands;
-using Application.Interfaces;
+using Application.Interfaces.PetLikeInterface;
 using AutoMapper;
-using Domain;
 using MediatR;
 
 namespace Application.Features.MediatR.PetLikes.Handlers.Write
 {
     public class DeletePetLikeCommandHandler : IRequestHandler<DeletePetLikeCommand, Unit>
     {
-        private readonly IRepository<PetLike> _repository;
-        private readonly IMapper _mapper;
-        public DeletePetLikeCommandHandler(IRepository<PetLike> repository, IMapper mapper)
+        private readonly IPetLikeRepository _petLikeRepository;
+
+        public DeletePetLikeCommandHandler(IPetLikeRepository petLikeRepository)
         {
-            _repository = repository;
-            _mapper = mapper;
+            _petLikeRepository = petLikeRepository;
         }
 
         public async Task<Unit> Handle(DeletePetLikeCommand request, CancellationToken cancellationToken)
         {
-            var petLike=await _repository.GetByIdAsync(request.Id);
-            await _repository.DeleteAsync(petLike);
+            var petLike=await _petLikeRepository.GetPetLikeByIdAsync(request.UserId,request.PetId);
+            await _petLikeRepository.DeletePetLikeAsync(petLike);
             return Unit.Value;
         }
     }

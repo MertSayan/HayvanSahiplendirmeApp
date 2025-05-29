@@ -1,5 +1,6 @@
 ﻿using Application.Constants;
 using Application.Interfaces.AdoptionRequestInterface;
+using Azure.Core;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
@@ -13,6 +14,24 @@ namespace Persistence.Repositories.AdoptionRequestRepository
         public AdoptionRequestRepository(HayvanContext context)
         {
             _context = context;
+        }
+
+        public async Task CreateAdoptionRequestAsync(AdoptionRequest entity)
+        {
+            var exists = await _context.AdoptionRequests
+            .AnyAsync(a => a.PetId == entity.PetId && a.SenderId == entity.SenderId && a.DeletedDate == null);
+
+            if (exists)
+            {
+                throw new InvalidOperationException(Messages<AdoptionRequest>.AlreadyExist);
+            }
+            else
+            {
+                entity.CreatedDate = DateTime.Now;
+                _context.AdoptionRequests.Add(entity);
+                await _context.SaveChangesAsync();
+            }
+            
         }
 
         public async Task<List<AdoptionRequest>> GetAllAdoptionRequestAsync()
@@ -61,6 +80,12 @@ namespace Persistence.Repositories.AdoptionRequestRepository
             if (entity == null)
                 throw new Exception(Messages<AdoptionRequest>.EntityNotFound);
             return entity;
+        }
+
+        public async Task<bool> HasUserRequestedAdoptionAsync(int userId, int petId)
+        {
+            return await _context.AdoptionRequests
+                .AnyAsync(a => a.PetId == petId && a.SenderId == userId && a.DeletedDate == null);
         }
     }
 }
