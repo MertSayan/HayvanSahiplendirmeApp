@@ -1,0 +1,48 @@
+﻿<div class="sidebar mb-4">
+    <div class="user-profile text-center mb-4">
+        <img src="https://randomuser.me/api/portraits/@(ViewBag.UserId == "2" || ViewBag.UserId == "4" ? "men" : "women")/@(ViewBag.UserId == "2" ? "32" : ViewBag.UserId == "3" ? "44" : ViewBag.UserId == "4" ? "45" : "43").jpg" class="rounded-circle profile-photo mb-3"
+             alt="@ViewBag.UserName">
+        <h4>@ViewBag.UserName</h4>
+        <p class="text-muted">@ViewBag.UserLocation</p>
+        @if (ViewBag.IsAuthenticated)
+        {
+            <div class="d-grid gap-2 mt-3">
+                <a href="/Message/Create?userId=@ViewBag.UserId" class="btn btn-outline-primary btn-sm">
+                    <i class="fas fa-envelope"></i> Mesaj Gönder
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="d-grid gap-2 mt-3">
+                <a href="/Account/Login?returnUrl=/Message/Create?userId=@ViewBag.UserId" class="btn btn-outline-primary btn-sm">
+                    <i class="fas fa-envelope"></i> Mesaj göndermek için giriş yap
+                </a>
+            </div>
+        }
+    </div>
+
+    <div class="sidebar-menu">
+        <div class="card">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Kullanıcı Bilgileri</h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-4">
+                        <h4>@ViewBag.PetCount</h4>
+                        <small class="text-muted">İlanlar</small>
+                    </div>
+                    <div class="col-4">
+                        <h4>@ViewBag.LikeCount</h4>
+                        <small class="text-muted">Beğeniler</small>
+                    </div>
+                    <div class="col-4">
+                        <h4>@ViewBag.AdoptionCount</h4>
+                        <small class="text-muted">Sahiplendirme</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
