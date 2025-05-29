@@ -30,6 +30,13 @@ namespace WebApi.Controllers
             var results=await _mediator.Send(new GetAllPetLikeByUserIdQuery(userId));
             return Ok(results);
         }
+        [HttpGet("ByPetId")]
+        public async Task<IActionResult> GetPetLikeCountByPetId(int petId)
+        {
+            var results = await _mediator.Send(new GetLikeCountByPetIdQuery(petId));
+            return Ok(results);
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> CreatePetLike(CreatePetLikeCommand command)

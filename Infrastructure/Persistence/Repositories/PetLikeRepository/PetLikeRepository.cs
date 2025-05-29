@@ -37,6 +37,11 @@ namespace Persistence.Repositories.PetLikeRepository
                .ToListAsync();
         }
 
+        public async Task<int> GetLikeCountByPetIdAsync(int petId)
+        {
+            return await _context.PetLikes.CountAsync(x=>x.PetId== petId);
+        }
+
         public async Task<PetLike> GetPetLikeByIdAsync(int userId, int petId)
         {
             var petLike= await _context.PetLikes

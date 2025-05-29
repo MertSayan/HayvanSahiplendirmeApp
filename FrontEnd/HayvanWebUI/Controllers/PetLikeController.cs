@@ -13,6 +13,20 @@ namespace HayvanWebUI.Controllers
         {
             _httpClientFactory = httpClientFactory;
         }
+        [HttpGet]
+        public async Task<IActionResult> GetLikeCount(int petId)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var response = await client.GetAsync($"https://localhost:7160/api/PetLikes/ByPetId?petId={petId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                return Content(json, "application/json");
+            }
+
+            return Json(new { likeCount = 0 });
+        }
 
         [HttpPost]
         public async Task<IActionResult> Like(int userId,int petId)

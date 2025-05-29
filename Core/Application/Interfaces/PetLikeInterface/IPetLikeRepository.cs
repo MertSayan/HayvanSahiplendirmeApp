@@ -9,6 +9,7 @@ namespace Application.Interfaces.PetLikeInterface
         Task<PetLike> GetPetLikeByIdAsync(int userId, int petId);
         Task DeletePetLikeAsync(PetLike entity);
         Task<bool> IsLiked(int userId,int petId);
+        Task<int> GetLikeCountByPetIdAsync(int petId);
         
     }
 }
