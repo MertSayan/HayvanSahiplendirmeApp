@@ -29,10 +29,10 @@
                         }
                         else
                         {
-                            <a href="/Login/Login?returnUrl=/Pet/Details/@Model.PetId" class="btn btn-outline-danger me-2">
+                            <a href="/Login/Index?returnUrl=/Pet/Detail/@Model.PetId" class="btn btn-outline-danger me-2">
                                 <i class="fas fa-heart"></i> Beğenmek için giriş yap
                             </a>
-                            <a href="/Account/Login?returnUrl=/Message/Create/@Model.PetId" class="btn btn-primary">
+                            <a href="/Login/Index?returnUrl=/Message/Create/@Model.PetId" class="btn btn-primary">
                                 <i class="fas fa-envelope"></i> İletişim için giriş yap
                             </a>
                         }
@@ -142,16 +142,17 @@
                             <button type="submit" class="btn btn-primary">Gönder</button>
                         </form>
                     }
-                </div>
-                   @*  else
+                    else
                     {
                         <div class="alert alert-info mt-4">
                             <i class="fas fa-info-circle me-2"></i>
-                            Yorum yapmak için <a href="/Account/Login?returnUrl=/Pet/Details/@pet.Id" class="alert-link">giriş yapın</a>
+                            Yorum yapmak için <a href="/Login/Index?returnUrl=/Pet/Detail/@Model.PetId" class="alert-link">giriş yapın</a>
                             veya
-                            <a href="/Account/Register" class="alert-link">kayıt olun</a>.
+                            <a href="/Register/Index" class="alert-link">kayıt olun</a>.
                         </div>
-                    } *@
+                    }
+                </div>
+                   
                 
             </div>
         </div>
@@ -197,7 +198,7 @@
                         </p>
                         <div class="alert alert-warning py-2">
                             <i class="fas fa-lock me-2"></i> İletişim bilgilerini görmek için
-                            <a href="/Account/Login?returnUrl=/Pet/Details/@Model.PetId" class="alert-link">giriş yapın</a>
+                            <a href="/Login/Index?returnUrl=/Pet/Details/@Model.PetId" class="alert-link">giriş yapın</a>
                         </div>
                     }
                 </div>
@@ -218,7 +219,7 @@
                     <a href="/Account/Login?returnUrl=/Message/Create/@Model.PetId" class="btn btn-primary w-100 mb-3 py-2 fs-5">
                         <i class="fas fa-sign-in-alt me-2"></i> İletişim için Giriş Yap
                     </a>
-                    <a href="/User/Profile?id=@Model.UserId" class="btn btn-outline-primary w-100 py-2">
+                    <a href="/Profile/Index?id=@Model.UserId" class="btn btn-outline-primary w-100 py-2">
                         <i class="fas fa-user me-2"></i> Profili Görüntüle
                     </a>
                 }
@@ -274,8 +275,8 @@
                         <p class="mb-2">Bu sevimli dostunuzu sahiplenmek ister misiniz?</p>
                         <div class="alert alert-info mb-0">
                             <i class="fas fa-info-circle me-2"></i>
-                            Sahiplenme başvurusu yapmak için <a href="/Account/Login?returnUrl=/Pet/Details/@Model.PetId"
-                                                                class="alert-link">giriş yapın</a> veya <a href="/Account/Register" class="alert-link">kayıt olun</a>.
+                            Sahiplenme başvurusu yapmak için <a href="/Login/Index?returnUrl=/Pet/Details/@Model.PetId"
+                                                                class="alert-link">giriş yapın</a> veya <a href="/Register/Index" class="alert-link">kayıt olun</a>.
                         </div>
                     </div>
                 </div>

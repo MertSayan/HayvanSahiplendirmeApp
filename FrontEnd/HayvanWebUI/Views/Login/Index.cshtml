@@ -25,7 +25,6 @@
                         </div>
                     }
                     <form asp-controller="Login" asp-action="Index" method="post">
-                        @* Form alanları *@
                         <div class="mb-3">
                             <label asp-for="Email" class="form-label">E-posta</label>
                             <input asp-for="Email" type="email" class="form-control" id="email" placeholder="E-posta adresinizi girin" required>
@@ -35,19 +34,14 @@
                             <input asp-for="Password" type="password" class="form-control" id="password" name="Password" placeholder="Şifrenizi girin" required>
                         </div>
 
-                        @* <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="rememberMe" name="RememberMe">
-                            <label class="form-check-label" for="rememberMe">Beni hatırla</label>
-                        </div> *@
+                        <!-- ✅ returnUrl bilgisini gizli input olarak taşıyoruz -->
+                        <input type="hidden" name="returnUrl" value="@Context.Request.Query["returnUrl"]" />
 
-                            @* Form gönderme butonu *@
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary btn-lg">Giriş Yap</button>
                         </div>
-                        @* <div class="text-center mt-3">
-                            <a href="/Account/ForgotPassword">Şifremi unuttum</a>
-                        </div> *@
                     </form>
+
                     @section Scripts {
                         <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
                         <script src="~/js/account/login.js"></script>

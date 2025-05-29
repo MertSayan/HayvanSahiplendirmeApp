@@ -29,7 +29,10 @@
                         </div>
                     }
 
-                    <form asp-controller="Register" asp-action="Index" method="post">
+                    <form asp-controller="Register" asp-action="Index" method="post" enctype="multipart/form-data">
+
+                        <!-- ✅ returnUrl bilgisini gizli input olarak taşıyoruz -->
+                        <input type="hidden" name="returnUrl" value="@Context.Request.Query["returnUrl"]" />
                         @* Kişisel bilgiler bölümü *@
                         <div class="row">
                             <div class="col-md-6 mb-3">
@@ -91,10 +94,17 @@
                         @await Component.InvokeAsync("_LocationComponentPartial")
 
 
+                        <div class="mb-3">
+                            <label asp-for="ProfilePictureUrl" class="form-label">Profil Fotoğrafı</label>
+                            <input asp-for="ProfilePictureUrl" type="file" class="form-control" accept="image/*" />
+                        </div>
+
                         @* Form gönderme butonu *@
                         <div class="d-grid gap-2 mt-4">
                             <button type="submit" class="btn btn-primary btn-lg">Kayıt Ol</button>
                         </div>
+
+
                     </form>
 
 

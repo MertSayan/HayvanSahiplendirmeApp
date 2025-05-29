@@ -1,12 +1,10 @@
 ﻿using HayvanDto.UserDtos;
 using HayvanWebUI.Models;
-using Humanizer;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 
@@ -30,36 +28,26 @@ namespace HayvanWebUI.Controllers
             return View();
         }
         [HttpPost]
-        public async  Task<IActionResult> Index(LoginDto dto)
+        public async Task<IActionResult> Index(LoginDto dto, string returnUrl = null)
         {
             var client = _httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject(dto);
             StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             var responseMessage = await client.PostAsync("https://localhost:7160/api/Auths/Login", content);
+
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
-
-                // Sadece token döndüğü için string olarak alıyoruz
                 var tokenResponse = JsonConvert.DeserializeObject<TokenResponseDto>(responseContent);
                 var tokenString = tokenResponse.Token;
 
                 var handler = new JwtSecurityTokenHandler();
                 var token = handler.ReadJwtToken(tokenString);
 
-                // JWT içindeki exp claim'ini al
-                // JWT içindeki exp claim'ini al
                 var expClaim = token.Claims.FirstOrDefault(c => c.Type == "exp");
-                DateTime expires;
-
-                if (expClaim != null && long.TryParse(expClaim.Value, out long unixExp))
-                {
-                    expires = DateTimeOffset.FromUnixTimeSeconds(unixExp).UtcDateTime;
-                }
-                else
-                {
-                    expires = DateTime.UtcNow.AddMinutes(30); // fallback
-                }
+                DateTime expires = (expClaim != null && long.TryParse(expClaim.Value, out long unixExp))
+                    ? DateTimeOffset.FromUnixTimeSeconds(unixExp).UtcDateTime
+                    : DateTime.UtcNow.AddMinutes(30);
 
                 var claims = token.Claims.ToList();
                 claims.Add(new Claim("accessToken", tokenString));
@@ -68,7 +56,7 @@ namespace HayvanWebUI.Controllers
                 var authProps = new AuthenticationProperties
                 {
                     IsPersistent = true,
-                    ExpiresUtc = expires 
+                    ExpiresUtc = expires
                 };
 
                 await HttpContext.SignInAsync(
@@ -76,11 +64,19 @@ namespace HayvanWebUI.Controllers
                     new ClaimsPrincipal(identity),
                     authProps);
 
+                // ✅ returnUrl varsa oraya dön
+                if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                {
+                    return Redirect(returnUrl);
+                }
 
-                return RedirectToAction("Index","Home");
+                // Yoksa ana sayfaya
+                return RedirectToAction("Index", "Home");
             }
+
             return View();
         }
+
 
     }
 }
