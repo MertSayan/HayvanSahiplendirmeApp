@@ -1,0 +1,61 @@
+﻿@{
+    ViewData["Title"] = "Profil";
+        Layout = "~/Views/UILayout/Index.cshtml";
+
+    var isAuthenticated = User.Identity != null && User.Identity.IsAuthenticated;
+}
+
+<div class="container py-5">
+    @if (!isAuthenticated)
+    {
+        <div class="alert alert-info mb-4">
+            <i class="fas fa-info-circle me-2"></i>
+            Kendi profilinizi düzenlemek ve diğer özelliklere erişmek için <a href="/Account/Login?returnUrl=/User/Profile" class="alert-link">giriş yapın</a> veya <a href="/Account/Register" class="alert-link">kayıt olun</a>.
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-3">
+            @await Component.InvokeAsync("_UserSideBarComponentPartial",new{id=ViewBag.UserId})
+           
+        </div>
+
+        <div class="col-md-9">
+            @* profileınfo *@
+            @await Component.InvokeAsync("_ProfileInfoComponentPartial", new { id = ViewBag.UserId })
+          
+            @* profilestats *@
+            @await Component.InvokeAsync("_ProfileStatsComponentPartial" , new { id = ViewBag.UserId })
+           
+            @* profilepets *@
+            @await Component.InvokeAsync("_ProfilePetsComponentPartial",new { id = ViewBag.UserId })
+           
+            @* profilerequestlist *@
+            @await Component.InvokeAsync("_ProfileRequestListComponentPartial", new { id = ViewBag.UserId })
+        
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Profil Düzenleme Modal -->
+      
+@section Scripts {
+
+    <script>
+        // Profil düzenleme modal
+        $(function () {
+            $('#editProfileBtn').on('click', function () {
+                $('#editProfileModal').modal('show');
+            });
+
+            // İlanları silmek için onay sorusu
+            $('.delete-pet').on('click', function (e) {
+                if (!confirm('Bu ilanı silmek istediğinize emin misiniz?')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+}
