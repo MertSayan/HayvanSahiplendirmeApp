@@ -45,11 +45,11 @@
                         }
                         else
                         {
-                            <a href="/Login/Login?returnUrl=/Pet/Details/@Model.PetId" class="btn btn-outline-danger me-2">
+                            <a href="/Login/Index?returnUrl=/Pet/Detail/@Model.PetId" class="btn btn-outline-danger me-2">
                                 <i class="fas fa-heart"></i> Beğenmek için giriş yap
                             </a>
-                            <a href="/Account/Login?returnUrl=/Message/Create/@Model.PetId" class="btn btn-primary">
-                                <i class="fas fa-envelope"></i> İletişim için giriş yap
+                            <a href="/Login/Index?returnUrl=/Pet/Detail/@Model.PetId" class="btn btn-primary">
+                                <i class="fas fa-envelope"></i> Sahiplendirme İstegi için Giriş Yap
                             </a>
                         }
                     </div>
@@ -345,51 +345,54 @@
                     var userId = @ViewBag.UserId;
                     var petId = @Model.PetId;
 
-                    // Beğeni durumu kontrolü: sayfa yüklendiğinde butona sınıf ata
-                    if (@Model.IsLiked.ToString().ToLower() === "true") {
-                        $('#likeButton').addClass('btn-danger').removeClass('btn-outline-danger');
+                    // Sayfa yüklendiğinde beğeni durumuna göre buton stilini ayarla
+            @if (Model.IsLiked)
+            {
+                <text>
+                            $('#likeButton').addClass('btn-danger').removeClass('btn-outline-danger');
                         $('#likeButton').html('<i class="fas fa-heart"></i> Beğendin (@Model.PetLikeCount)');
-                    }
+                </text>
+            }
 
-                    // Beğeni butonuna tıklama
-                    $('#likeButton').on('click', function () {
-                        var btn = $(this);
-                        var liked = btn.hasClass('btn-danger'); // zaten beğendiyse
+                        // Beğeni butonuna tıklama işlemi
+                        $('#likeButton').on('click', function () {
+                            var btn = $(this);
+                            var liked = btn.hasClass('btn-danger'); // buton zaten beğenili mi?
 
-                        $.ajax({
-                            url: liked ? '/PetLike/UnLike' : '/PetLike/Like',
-                            type: 'POST',
-                            data: {
-                                userId: userId,
-                                petId: petId
-                            },
-                            success: function (response) {
-                                if (response.success) {
-                                    // Toggle buton stili
-                                    if (liked) {
-                                        btn.removeClass('btn-danger').addClass('btn-outline-danger');
-                                    } else {
-                                        btn.removeClass('btn-outline-danger').addClass('btn-danger');
-                                    }
-
-                                    // Beğeni sayısını güncelle
-                                    $.ajax({
-                                        url: '/PetLike/GetLikeCount',
-                                        type: 'GET',
-                                        data: { petId: petId },
-                                        success: function (res) {
-                                            var count = res.likeCount;
-                                            if (liked) {
-                                                btn.html('<i class="fas fa-heart"></i> Beğen (' + count + ')');
-                                            } else {
-                                                btn.html('<i class="fas fa-heart"></i> Beğendin (' + count + ')');
-                                            }
+                            $.ajax({
+                                url: liked ? '/PetLike/UnLike' : '/PetLike/Like',
+                                type: 'POST',
+                                data: {
+                                    userId: userId,
+                                    petId: petId
+                                },
+                                success: function (response) {
+                                    if (response.success) {
+                                        // Stil güncellemesi
+                                        if (liked) {
+                                            btn.removeClass('btn-danger').addClass('btn-outline-danger');
+                                        } else {
+                                            btn.removeClass('btn-outline-danger').addClass('btn-danger');
                                         }
-                                    });
+
+                                        // Beğeni sayısını tekrar getir ve güncelle
+                                        $.ajax({
+                                            url: '/PetLike/GetLikeCount',
+                                            type: 'GET',
+                                            data: { petId: petId },
+                                            success: function (res) {
+                                                var count = res.likeCount;
+                                                if (liked) {
+                                                    btn.html('<i class="fas fa-heart"></i> Beğen (' + count + ')');
+                                                } else {
+                                                    btn.html('<i class="fas fa-heart"></i> Beğendin (' + count + ')');
+                                                }
+                                            }
+                                        });
+                                    }
                                 }
-                            }
+                            });
                         });
-                    });
                 });
 
 

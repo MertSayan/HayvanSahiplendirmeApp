@@ -61,7 +61,7 @@ namespace WebApi.Controllers
             return Ok(result);
         }
         [HttpPost]
-        public async Task<IActionResult> CreatePet(CreatePetCommand command)
+        public async Task<IActionResult> CreatePet([FromForm] CreatePetCommand command)
         {
             await _mediator.Send(command);
             return Ok(Messages<Pet>.EntityAdded);

@@ -60,7 +60,7 @@ namespace HayvanWebUI.Controllers
                 var result = JsonConvert.DeserializeObject<GetPetDetailDto>(jsonData);
                 return View(result);
             }
-            return View();
+            return View(new GetPetDetailDto());
         }
 
         [HttpPost]
