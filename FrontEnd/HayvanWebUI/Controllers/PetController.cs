@@ -2,6 +2,7 @@
 using HayvanWebUI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Drawing.Text;
 using System.Security.Claims;
 using System.Text;
 
@@ -149,6 +150,58 @@ namespace HayvanWebUI.Controllers
 
             // Hata varsa view'a geri dön
             ModelState.AddModelError("", "İlan kaydedilemedi.");
+            return View(dto);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UpdatePet(int id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var responseMessage = await client.GetAsync("https://localhost:7160/api/Pets/ByIdForUpdate?id="+id);
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                var jsonData=await responseMessage.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<UpdatePetDto>(jsonData);
+                return View(result);
+            }
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdatePet(UpdatePetDto dto)
+        {
+            if (dto.MainImageUrl == null || dto.MainImageUrl.Length == 0)
+            {
+                ModelState.AddModelError("MainImageUrl", "Fotoğraf seçilmesi zorunludur.");
+                return View(dto);
+            }
+
+            var client = _httpClientFactory.CreateClient();
+            var formContent = new MultipartFormDataContent();
+
+            formContent.Add(new StringContent(dto.PetId.ToString()), "PetId");
+            formContent.Add(new StringContent(dto.Name), "Name");
+            formContent.Add(new StringContent(dto.Age), "Age");
+            formContent.Add(new StringContent(dto.Gender), "Gender");
+            formContent.Add(new StringContent(dto.Description), "Description");
+            formContent.Add(new StringContent(dto.IsVaccinated.ToString()), "IsVaccinated");
+            formContent.Add(new StringContent(dto.IsNeutered.ToString()), "IsNeutered");
+
+            var fileContent = new StreamContent(dto.MainImageUrl.OpenReadStream());
+            fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(dto.MainImageUrl.ContentType);
+            formContent.Add(fileContent, "MainImageUrl", dto.MainImageUrl.FileName);
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+                return RedirectToAction("Login", "Account");
+
+            formContent.Add(new StringContent(userId), "UserId");
+
+            var response = await client.PutAsync("https://localhost:7160/api/Pets", formContent);
+
+            if (response.IsSuccessStatusCode)
+                return RedirectToAction("Index", "Pet");
+
+            ModelState.AddModelError("", "İlan güncellenemedi.");
             return View(dto);
         }
     }

@@ -1,24 +1,25 @@
-﻿@model HayvanDto.PetDtos.CreatePetDto
+﻿@model HayvanDto.PetDtos.UpdatePetDto
 
 @{
-    ViewData["Title"] = "CreatePet";
+    ViewData["Title"] = "UpdatePet";
     Layout = "~/Views/UILayout/Index.cshtml";
 }
 
 <div class="container py-5">
     <div class="row mb-4">
         <div class="col-md-8">
-            <h1>Hayvan Sahiplendirme İlanı Ekle</h1>
-            <p class="lead">Lütfen hayvan hakkındaki tüm bilgileri doğru ve eksiksiz olarak doldurunuz. Bu, sahiplenecek kişilerin doğru karar vermeleri için önemlidir.</p>
+            <h1>Hayvan Sahiplendirme İlanını Güncelle</h1>
+            <p class="lead">Lütfen hayvan hakkındaki bilgileri güncelleyin. Bu, sahiplenecek kişilerin doğru karar vermeleri için önemlidir.</p>
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-8">
             <div class="pet-detail-info">
-                <form asp-controller="Pet" asp-action="CreatePet" method="post" enctype="multipart/form-data">
+                <form asp-controller="Pet" asp-action="UpdatePet" method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="PetId" />
 
-                    @* CreateBasicInfo *@
+                    @* Temel Bilgiler *@
                     <h4 class="mb-3">Temel Bilgiler</h4>
                     <div class="row mb-4">
                         <div class="col-md-6 mb-3">
@@ -28,18 +29,11 @@
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            @await Component.InvokeAsync("_PetTypeDropdownComponentPartial")
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label asp-for="Breed" class="form-label">Hayvanın Cinsi</label>
-                            <input asp-for="Breed" class="form-control" placeholder="Örn: Sarman/Golden/Kırma" />
-                            <span asp-validation-for="Breed" class="text-danger"></span>
-                        </div>
-                        <div class="col-md-6 mb-3">
                             <label asp-for="Age" class="form-label">Yaş</label>
                             <input asp-for="Age" class="form-control" placeholder="Örn: 2 Yaş" />
                             <span asp-validation-for="Age" class="text-danger"></span>
                         </div>
+
                         <div class="col-md-6 mb-3">
                             <label asp-for="Gender" class="form-label">Cinsiyet</label>
                             <select asp-for="Gender" class="form-select">
@@ -49,6 +43,7 @@
                             </select>
                             <span asp-validation-for="Gender" class="text-danger"></span>
                         </div>
+
                         <div class="col-md-12 mb-3">
                             <label asp-for="Description" class="form-label">Hakkında</label>
                             <textarea asp-for="Description" class="form-control" rows="4"
@@ -57,7 +52,7 @@
                         </div>
                     </div>
 
-                    @* CreateHealtInfo *@
+                    @* Sağlık Bilgileri *@
                     <h4 class="mb-3">Sağlık Bilgileri</h4>
                     <div class="row mb-4">
                         <div class="col-md-6 mb-3 form-check form-switch">
@@ -70,44 +65,24 @@
                         </div>
                     </div>
 
-                    @* CreatePhotos *@
-                    <h4 class="mb-3">Fotoğraflar</h4>
+                    @* Fotoğraf Zorunlu *@
+                    <h4 class="mb-3">Fotoğraf</h4>
                     <div class="row mb-4">
                         <div class="col-md-12 mb-3">
-                            <label asp-for="MainImageUrl" class="form-label">Ana Fotoğraf</label>
-                            <input asp-for="MainImageUrl" class="form-control" type="file" />
+                            <label asp-for="MainImageUrl" class="form-label">Yeni Fotoğraf *</label>
+                            <input asp-for="MainImageUrl" class="form-control" type="file" required />
                             <span asp-validation-for="MainImageUrl" class="text-danger"></span>
                         </div>
                     </div>
 
-                    @* CreateLocation *@
-                    <h4 class="mb-3">Konum Bilgileri</h4>
-                    <div class="row mb-4">
-                        @* konum bölümü *@
-                        @await Component.InvokeAsync("_LocationComponentPartial", new { model = Model })
-                    </div>
-
-                    @* 
-                    <div class="mb-4">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="termsAgree" name="termsAgree" required>
-                            <label class="form-check-label" for="termsAgree">
-                                <a href="#">Sahiplendirme Koşulları</a>'nı okudum ve kabul ediyorum
-                            </label>
-                        </div>
-                    </div>
-                    *@
-
                     <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary btn-lg">İlanı Yayınla</button>
+                        <button type="submit" class="btn btn-primary btn-lg">Güncelle</button>
                     </div>
-
                 </form>
             </div>
         </div>
 
         <div class="col-md-4">
-            @* CreateSideBar *@
             @await Component.InvokeAsync("_CreateSideBarComponentPartial")
 
             @section Scripts {

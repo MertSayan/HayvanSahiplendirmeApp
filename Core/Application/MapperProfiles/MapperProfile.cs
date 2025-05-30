@@ -26,7 +26,7 @@ namespace Application.MapperProfiles
 
             //Pet
             CreateMap<Pet,CreatePetCommand>().ReverseMap();
-            CreateMap<Pet,UpdatePetCommand>().ReverseMap();
+            CreateMap<Pet, UpdatePetCommand>().ReverseMap();
             CreateMap<Pet, GetAllPetQueryResult>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Name))
                 .ForMember(dest => dest.PetTypeName, opt => opt.MapFrom(src => src.PetType.PetTypeName));
@@ -56,6 +56,9 @@ namespace Application.MapperProfiles
             CreateMap<Pet, GetFeaturedPetQueryResult>()
                 .ForMember(dest => dest.LikeCount, opt => opt.MapFrom(src => src.PetLikes.Count(c => c.DeletedDate == null)))
                 .ForMember(dest => dest.PetTypeName, opt => opt.MapFrom(src => src.PetType.PetTypeName));
+            CreateMap<Pet, GetPetByIdQueryResult>()
+                .ForMember(dest => dest.PetTypeName, opt => opt.MapFrom(src => src.PetType.PetTypeName))
+                .ForMember(dest => dest.ExistingImagePath, opt => opt.MapFrom(src => src.MainImageUrl));
 
             //PetComment
             CreateMap<PetComment, CreatePetCommentCommand>().ReverseMap();

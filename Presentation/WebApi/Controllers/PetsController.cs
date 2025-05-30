@@ -30,6 +30,13 @@ namespace WebApi.Controllers
             var value=await _mediator.Send(new GetByIdPetQuery(petId,currentUserId));
             return Ok(value);
         }
+        [HttpGet("ByIdForUpdate")]
+        public async Task<IActionResult> GetPetById(int id)
+        {
+            var value = await _mediator.Send(new GetPetByIdQuery(id));
+            return Ok(value);
+        }
+        
         [HttpGet("GetAllPetByOwnerId")]
         public async Task<IActionResult> GetAllPetByOwnerId(int id)
         {
@@ -67,7 +74,7 @@ namespace WebApi.Controllers
             return Ok(Messages<Pet>.EntityAdded);
         }
         [HttpPut]
-        public async Task<IActionResult> UpdatePet(UpdatePetCommand command)
+        public async Task<IActionResult> UpdatePet([FromForm] UpdatePetCommand command)
         {
             await _mediator.Send(command);
             return Ok(Messages<Pet>.EntityUpdated);
