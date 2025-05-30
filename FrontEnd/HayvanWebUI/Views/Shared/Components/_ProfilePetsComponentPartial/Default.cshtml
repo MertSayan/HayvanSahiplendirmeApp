@@ -1,67 +1,49 @@
 ﻿@model List<GetAllPetByOwnerIdDto>
-@{
-    var isAuthenticated = User.Identity != null && User.Identity.IsAuthenticated;
-}
-<div class="pet-detail-info mb-4">
-    <div class="d-flex justify-content-between align-items-center">
 
+<div class="pet-detail-info mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-2">
         <h2>İlanlar</h2>
-        <a href="/Pet/Create" class="btn btn-outline-primary btn-sm">
+        <a href="/Pet/CreatePet" class="btn btn-outline-primary btn-sm">
             <i class="fas fa-plus me-1"></i> Yeni İlan Ekle
         </a>
-
     </div>
-    <div class="row">
-        @* İlan kartlarını ekle *@
 
-        <!-- Zeynep'in ilanları -->
-        <div class="col-md-4 mb-4">
-            @foreach (var item in Model)
-            {
-                <div class="card h-100">
-                    <div class="position-relative">
-                        <img src="@item.MainImageUrl" class="card-img-top" alt="@item.Name">
-                        <span class="position-absolute top-0 start-0 badge @(!item.IsAdopted ? "bg-success" : "bg-secondary") m-2">
-                            @(!item.IsAdopted ? "Aktif" : "Sahiplendirildi")
-                        </span>
+    <div class="scroll-container d-flex overflow-auto gap-3 pb-2" style="scroll-snap-type: x mandatory;">
+        @foreach (var item in Model)
+        {
+            <div class="card flex-shrink-0" style="min-width: 280px; max-width: 280px; scroll-snap-align: start;">
+                <div class="position-relative">
+                    <img src="@item.MainImageUrl" class="card-img-top" alt="@item.Name" style="height: 200px; object-fit: cover;">
+                    <span class="position-absolute top-0 start-0 badge @(!item.IsAdopted ? "bg-success" : "bg-secondary") m-2">
+                        @(!item.IsAdopted ? "Aktif" : "Sahiplendirildi")
+                    </span>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">@item.Name</h5>
+                    <div class="pet-tags mb-2">
+                        <span class="pet-tag">@item.PetTypeName</span>
+                        <span class="pet-tag">@item.Age Yaş</span>
                     </div>
-                    <div class="card-body">
-                        <h5 class="card-title">@item.Name</h5>
-                        <div class="pet-tags">
-                            <span class="pet-tag">@item.PetTypeName</span>
-                            <span class="pet-tag">@item.Age Yaş</span>
-                        </div>
-                        <p class="card-text mt-2">@item.Description</p>
-                    </div>
-                    <div class="card-footer bg-white d-flex justify-content-between align-items-center">
-                        <a href="/Pet/Detail/@item.PetId" class="btn btn-primary btn-sm">Detaylar</a>
-
-                        <div class="dropdown">
-                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
-                                    id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-cog"></i>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <li>
-                                    <a class="dropdown-item" href="/Pet/Edit/@item.PetId"><i class="fas fa-edit me-2"></i> Düzenle</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item delete-pet" href="/Pet/Delete/@item.PetId">
-                                        <i class="fas fa-trash me-2"></i> Sil
-                                    </a>
-                                </li>
-                                @if (!item.IsAdopted)
-                                {
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-power-off me-2"></i> Pasifleştir</a></li>
-                                }
-                            </ul>
-                        </div>
+                    <p class="card-text">@item.Description</p>
+                </div>
+                <div class="card-footer bg-white d-flex justify-content-between align-items-center">
+                    <a href="/Pet/Detail/@item.PetId" class="btn btn-primary btn-sm">Detaylar</a>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
+                                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="/Pet/Edit/@item.PetId"><i class="fas fa-edit me-2"></i> Düzenle</a></li>
+                            <li><a class="dropdown-item delete-pet" href="/Pet/Delete/@item.PetId"><i class="fas fa-trash me-2"></i> Sil</a></li>
+                            @if (!item.IsAdopted)
+                            {
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-power-off me-2"></i> Pasifleştir</a></li>
+                            }
+                        </ul>
                     </div>
                 </div>
-
-            }
-        </div>
-
-
+            </div>
+        }
     </div>
 </div>
