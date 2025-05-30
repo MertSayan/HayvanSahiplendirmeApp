@@ -94,5 +94,62 @@ namespace HayvanWebUI.Controllers
             return Json(new { success = false });
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> CreatePet()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreatePet(CreatePetDto dto)
+        {
+            var client = _httpClientFactory.CreateClient();
+
+            var formContent = new MultipartFormDataContent();
+
+            formContent.Add(new StringContent(dto.Name), "Name");
+            formContent.Add(new StringContent(dto.Age), "Age");
+            formContent.Add(new StringContent(dto.Description), "Description");
+            formContent.Add(new StringContent(dto.Gender), "Gender");
+            formContent.Add(new StringContent(dto.City), "City");
+            formContent.Add(new StringContent(dto.District), "District");
+            formContent.Add(new StringContent(dto.PetTypeId.ToString()), "PetTypeId");
+            formContent.Add(new StringContent(dto.IsVaccinated.ToString()), "IsVaccinated");
+            formContent.Add(new StringContent(dto.IsNeutered.ToString()), "IsNeutered");
+            formContent.Add(new StringContent("false"), "IsAdopted"); // ilk kayıt olduğunda false olmalı
+
+            if (!string.IsNullOrEmpty(dto.Breed))
+                formContent.Add(new StringContent(dto.Breed), "Breed");
+
+            // Ana fotoğraf ekleme
+            if (dto.MainImageUrl != null && dto.MainImageUrl.Length > 0)
+            {
+                var fileContent = new StreamContent(dto.MainImageUrl.OpenReadStream());
+                fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(dto.MainImageUrl.ContentType);
+                formContent.Add(fileContent, "MainImageUrl", dto.MainImageUrl.FileName);
+            }
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                // Eğer null gelirse login değildir, güvenlik önlemi al
+                return RedirectToAction("Login", "Account");
+            }
+
+            formContent.Add(new StringContent(userId), "UserId");
+
+            var response = await client.PostAsync("https://localhost:7160/api/Pets", formContent);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index", "Pet");
+            }
+
+            // Hata varsa view'a geri dön
+            ModelState.AddModelError("", "İlan kaydedilemedi.");
+            return View(dto);
+        }
     }
 }
