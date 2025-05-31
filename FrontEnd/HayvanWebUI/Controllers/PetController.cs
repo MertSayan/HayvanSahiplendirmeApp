@@ -199,7 +199,7 @@ namespace HayvanWebUI.Controllers
             var response = await client.PutAsync("https://localhost:7160/api/Pets", formContent);
 
             if (response.IsSuccessStatusCode)
-                return RedirectToAction("Index", "Pet");
+                return RedirectToAction("Index", "User");
 
             ModelState.AddModelError("", "İlan güncellenemedi.");
             return View(dto);

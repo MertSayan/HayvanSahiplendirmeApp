@@ -63,7 +63,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("UpdateUser")]
-        public async Task<IActionResult> UpdateUser(UpdateUserCommand command)
+        public async Task<IActionResult> UpdateUser([FromForm] UpdateUserCommand command)
         {
             await _mediator.Send(command);
             return Ok(Messages<User>.EntityUpdated);

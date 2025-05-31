@@ -5,6 +5,7 @@ namespace HayvanWebUI.Controllers
 {
     public class UserController : Controller
     {
+        //Profil Ana Sayfası
         public IActionResult Index()
         {
             var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
