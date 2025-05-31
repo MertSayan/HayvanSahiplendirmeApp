@@ -1,4 +1,5 @@
-﻿using HayvanDto.PetDtos;
+﻿using HayvanDto.AdoptionRequestDtos;
+using HayvanDto.PetDtos;
 using HayvanDto.UserDtos;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -90,6 +91,21 @@ namespace HayvanWebUI.Controllers
                 return View(result);
             }
             return View(new GetAllPetByOwnerIdDto());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SentRequests(int id)
+        {
+            ViewBag.UserId = id;
+            var client = _httpClientFactory.CreateClient();
+            var responseMessage = await client.GetAsync("https://localhost:7160/api/AdoptionRequests/GetAllAdoptiobRequestBySenderId?senderId=" + id);
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                var jsonData = await responseMessage.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<List<GetAllAdoptionRequestBySenderIdDto>>(jsonData);
+                return View(result);
+            }
+            return View(new GetAllAdoptionRequestBySenderIdDto());
         }
 
     }

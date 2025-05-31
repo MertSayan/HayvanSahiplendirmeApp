@@ -1,6 +1,6 @@
-﻿namespace Application.Features.MediatR.AdoptionRequests.Results
+﻿namespace HayvanDto.AdoptionRequestDtos
 {
-    public class GetAllAdoptionRequestBySenderIdQueryResult
+    public class GetAllAdoptionRequestBySenderIdDto
     {
         public int AdoptionRequestId { get; set; }
         public string PetName { get; set; }
