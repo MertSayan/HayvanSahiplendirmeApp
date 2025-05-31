@@ -1,0 +1,111 @@
+﻿@model List<GetAllPetByOwnerIdDto>
+@{
+    ViewData["Title"] = "MyPets";
+    Layout = "~/Views/UILayout/Index.cshtml";
+}
+
+<div class="container py-5">
+    @* mypetsheader *@
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1>Hayvanlarım</h1>
+            <p class="lead">
+                İlan verdiğiniz ve sahiplendirme sürecindeki hayvanlarınızı bu sayfadan yönetebilirsiniz.
+            </p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="/Pet/Create" class="btn btn-primary"><i class="fas fa-plus"></i> Yeni İlan Ekle</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            @* usersidebar *@
+            @await Component.InvokeAsync("_UserSideBarComponentPartial", new { id = ViewBag.UserId })
+
+        </div>
+
+        <div class="col-md-9">
+            <div class="card shadow-sm mb-4">
+                @* mypetsTabMenu *@
+                <div class="card-header bg-white">
+                    <ul class="nav nav-tabs card-header-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Aktif İlanlar </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Sahiplendirilenler</a>
+                        </li>
+                       
+                    </ul>
+                </div>
+                @* mypetsList *@
+                <div class="card-body">
+                    <!-- Aktif İlanlar -->
+                    <div class="row">
+                        @foreach (var pet in Model)
+                        {
+                            <div class="col-md-4 mb-4">
+                                <div class="card h-100">
+                                    <div class="similar-pet-container">
+                                        <img src="@pet.MainImageUrl" class="similar-pet-img" alt="@pet.Name">
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">@pet.Name</h5>
+                                        <div class="pet-tags">
+                                            <span class="pet-tag">@pet.PetTypeName</span>
+                                            <span class="pet-tag">@pet.Age</span>
+                                        </div>
+                                        <p class="card-text mt-2 mb-0">@pet.Description</p>
+                                        @* <small class="text-muted"><i class="far fa-clock me-1"></i> @pet.PublishTime</small> *@
+                                    </div>
+                                    <div class="card-footer bg-white d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <span class="me-2"><i class="fas fa-heart text-danger"></i> @pet.LikeCount</span>
+                                            <span><i class="fas fa-comment text-secondary"></i> @pet.CommentCount</span>
+                                        </div>
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
+                                                    data-bs-toggle="dropdown">
+                                                İşlemler
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                <li>
+                                                    <a class="dropdown-item" href="/Pet/Detail/@pet.PetId">
+                                                        <i class="fas fa-eye me-2"></i>Görüntüle
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" href="/Pet/UpdatePet/@pet.PetId"><i class="fas fa-edit me-2"></i>Düzenle</a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" href="/Pet/Delete/@pet.PetId" class="delete-pet">
+                                                        <i class="fas fa-trash me-2 text-danger"></i>Sil
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // İlanları silmek için onay sorusu
+        $(function () {
+            $('.delete-pet').on('click', function (e) {
+                if (!confirm('Bu ilanı silmek istediğinize emin misiniz?')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+}
+

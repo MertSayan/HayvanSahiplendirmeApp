@@ -45,6 +45,8 @@ namespace Persistence.Repositories.PetRepository
              .Where(p => p.UserId == ownerId && p.DeletedDate == null)
              .Include(p => p.PetType)
              .Include(p => p.AdoptionRequests)
+             .Include(p=>p.PetLikes)
+             .Include(p=>p.PetComments)
              .ToListAsync();
         }
 
