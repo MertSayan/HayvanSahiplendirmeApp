@@ -107,6 +107,27 @@ namespace HayvanWebUI.Controllers
             }
             return View(new GetAllAdoptionRequestBySenderIdDto());
         }
+        [HttpGet]
+        public IActionResult ReceivedRequest(int id)
+        {
+            ViewBag.UserId = id;
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> MyFavoritte(int id)
+        {
+            ViewBag.UserId = id;
+            var client = _httpClientFactory.CreateClient();
+            var responseMessage = await client.GetAsync("https://localhost:7160/api/PetFavorities/GetAllMyFavoritePet?userId=" + id);
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                var jsonData = await responseMessage.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<List<GetAllFavoritePetDto>>(jsonData);
+                return View(result);
+            }
+            return View(new GetAllFavoritePetDto());
+        }
 
     }
 }

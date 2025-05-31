@@ -1,6 +1,12 @@
-﻿namespace Application.Features.MediatR.PetFavorites.Results
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HayvanDto.PetDtos
 {
-    public class GetAllFavoritePetQueryResult
+    public class GetAllFavoritePetDto
     {
         public int PetId { get; set; }
         public string Name { get; set; }
