@@ -33,7 +33,7 @@ namespace Persistence.Repositories.PetRepository
         }
         public async Task<List<Pet>> GetAllPetAsync()
         {
-            return await _context.Pets.Where(x=>x.DeletedDate==null)
+            return await _context.Pets.Where(x=>x.DeletedDate==null && x.ApprovalStatus=="Pending")
                 .Include(x=>x.User)
                 .Include(x=>x.PetType)
                 .ToListAsync();
@@ -70,7 +70,7 @@ namespace Persistence.Repositories.PetRepository
             var pets =  _context.Pets
                 .Include(p => p.PetType)
                 .Include(p=>p.PetLikes)
-                .Where(p => !p.IsAdopted && p.DeletedDate == null); // sadece aktif ilanlar
+                .Where(p => !p.IsAdopted && p.DeletedDate == null && p.ApprovalStatus=="Accepted"); // sadece aktif ilanlar
 
             if (query.PetTypeId.HasValue)
                 pets = pets.Where(p => p.PetTypeId == query.PetTypeId);
@@ -100,12 +100,23 @@ namespace Persistence.Repositories.PetRepository
              .ToListAsync();
         }
 
+        public Task<List<Pet>> GetLastPetsAsync(int count)
+        {
+            return _context.Pets
+              .Where(p => p.DeletedDate == null && p.ApprovalStatus == "Accepted")
+              .Include(x=>x.User)
+              .Include(x=>x.PetType)
+              .OrderByDescending(p => p.CreatedDate)
+              .Take(count)
+              .ToListAsync();
+        }
+
         public async Task<List<Pet>> GetTopLikedPetsAsync(int count)
         {
             return await _context.Pets
             .Include(p => p.PetLikes)
             .Include(p=>p.PetType)
-            .Where(p => !p.IsAdopted && p.DeletedDate==null)
+            .Where(p => !p.IsAdopted && p.DeletedDate==null && p.ApprovalStatus == "Accepted")
             .OrderByDescending(p => p.PetLikes.Count)
             .Take(count)
             .ToListAsync();

@@ -40,6 +40,7 @@ namespace Application.Features.MediatR.Pets.Handlers.Write
 
             var pet = _mapper.Map<Pet>(request);
             pet.MainImageUrl = photoPath;
+            pet.ApprovalStatus = "Pending";
             await _repository.CreateAsync(pet);
             return Unit.Value;
         }

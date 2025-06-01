@@ -9,6 +9,7 @@ using Application.Interfaces.PetFavoritesInterface;
 using Application.Interfaces.PetImageInterface;
 using Application.Interfaces.PetInterface;
 using Application.Interfaces.PetLikeInterface;
+using Application.Interfaces.PetTypeInterface;
 using Application.Interfaces.TokenInterface;
 using Application.Interfaces.UserInterface;
 using Application.Validations.Pets;
@@ -26,6 +27,7 @@ using Persistence.Repositories.PetFavoriteRepository;
 using Persistence.Repositories.PetImageRepository;
 using Persistence.Repositories.PetLikeRepository;
 using Persistence.Repositories.PetRepository;
+using Persistence.Repositories.PetTypeRepository;
 using Persistence.Repositories.TokenRepository;
 using Persistence.Repositories.UserRepository;
 using System.Text;
@@ -84,6 +86,7 @@ namespace WebApi
             builder.Services.AddScoped<IAdoptionTrackingRepository, AdoptionTrackingRepository>();
             builder.Services.AddScoped<IPetFavoritesRepository, PetFavoriteRepository>();
             builder.Services.AddScoped<IPetImageRepository, PetImageRepository>();
+            builder.Services.AddScoped<IPetTypeRepository, PetTypeRepository>();
 
 
             builder.Services.AddControllers();

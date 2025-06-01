@@ -12,6 +12,7 @@ namespace Application.Interfaces.PetInterface
         Task<List<Pet>> GetAllAdoptedPetByOwnerIdAsync(int ownerId);
         Task<List<Pet>> GetFilteredPetsAsync(GetAllFilterPetQuery query);
         Task<List<Pet>> GetTopLikedPetsAsync(int count);
+        Task<List<Pet>> GetLastPetsAsync(int count);
 
 
     }

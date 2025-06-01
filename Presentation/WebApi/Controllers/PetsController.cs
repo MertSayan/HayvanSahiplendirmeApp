@@ -67,6 +67,12 @@ namespace WebApi.Controllers
             var result = await _mediator.Send(new GetFeaturedPetQuery(sayi));
             return Ok(result);
         }
+        [HttpGet("LastPets")]
+        public async Task<IActionResult> GetLastPets(int count)
+        {
+            var result = await _mediator.Send(new GetLastsPetQuery(count));
+            return Ok(result);
+        }
         [HttpPost]
         public async Task<IActionResult> CreatePet([FromForm] CreatePetCommand command)
         {

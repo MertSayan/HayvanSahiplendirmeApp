@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.Context;
 
@@ -11,9 +12,11 @@ using Persistence.Context;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(HayvanContext))]
-    partial class HayvanContextModelSnapshot : ModelSnapshot
+    [Migration("20250601090144_add_pet_issApproved_prop")]
+    partial class add_pet_issApproved_prop
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -155,10 +158,6 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ApprovalStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Breed")
                         .HasColumnType("nvarchar(max)");
 
@@ -185,6 +184,9 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsAdopted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsApproved")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsNeutered")
