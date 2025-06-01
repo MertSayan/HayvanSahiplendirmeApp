@@ -1,4 +1,5 @@
 ﻿using Application.Constants;
+using Application.Features.MediatR.AdoptionRequests.Commands;
 using Application.Features.MediatR.Pets.Commands;
 using Application.Features.MediatR.Pets.Queries;
 using Domain;
@@ -84,6 +85,18 @@ namespace WebApi.Controllers
         {
             await _mediator.Send(command);
             return Ok(Messages<Pet>.EntityUpdated);
+        }
+        [HttpPut("Accept")]
+        public async Task<IActionResult> UpdatePetAccept([FromBody] UpdatePetAcceptCommand command)
+        {
+            await _mediator.Send(command);
+            return Ok();
+        }
+        [HttpPut("Reject")]
+        public async Task<IActionResult> UpdatePetReject([FromBody] UpdatePetRejectCommand command)
+        {
+            await _mediator.Send(command);
+            return Ok();
         }
         [HttpDelete]
         public async Task<IActionResult> DeletePet(int id)

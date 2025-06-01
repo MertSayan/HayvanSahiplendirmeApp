@@ -17,7 +17,7 @@ namespace Persistence.Repositories.PetTypeRepository
         public async Task<List<GetPetTypeDistributionQueryResult>> GetPetTypeDistributionAsync()
         {
             var result = await _context.Pets
-               .Where(p => p.DeletedDate == null)
+               .Where(p => p.DeletedDate == null && p.ApprovalStatus=="Accepted")
                .GroupBy(p => p.PetTypeId)
                .Select(g => new GetPetTypeDistributionQueryResult
                {

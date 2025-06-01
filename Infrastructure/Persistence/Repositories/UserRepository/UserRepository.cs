@@ -1,13 +1,9 @@
 ﻿using Application.Enums;
+using Application.Features.MediatR.Users.Results;
 using Application.Interfaces.UserInterface;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persistence.Repositories.UserRepository
 {
@@ -49,6 +45,27 @@ namespace Persistence.Repositories.UserRepository
             if (entity == null)
                 throw new Exception("User bulunamadı.");
             return entity;
+        }
+
+        public async Task<AdminDashboardStatsQueryResult> GetDashboardStatsAsync()
+        {
+            var totalUsers = await _context.Users.CountAsync();
+            var totalPets = await _context.Pets.CountAsync(p => p.DeletedDate == null);
+            var adoptedPets = await _context.Pets.CountAsync(p => p.IsAdopted && p.DeletedDate == null);
+            var activePets = await _context.Pets.CountAsync(p => !p.IsAdopted && p.ApprovalStatus == "Accepted" && p.DeletedDate == null);
+            var pendingApprovals = await _context.Pets.CountAsync(p => p.ApprovalStatus == "Pending" && p.DeletedDate == null);
+
+            double adoptionRate = totalPets > 0
+                ? Math.Round((double)adoptedPets / totalPets * 100, 2)
+                : 0;
+
+            return new AdminDashboardStatsQueryResult
+            {
+                TotalUserCount = totalUsers,
+                ActivePetCount = activePets,
+                AdoptionRate = adoptionRate,
+                PendingApprovalCount = pendingApprovals
+            };
         }
 
         public async Task<(int totalPets, int totalLikes, int successfulAdoptions)> GetUserStatsAsync(int userId)
