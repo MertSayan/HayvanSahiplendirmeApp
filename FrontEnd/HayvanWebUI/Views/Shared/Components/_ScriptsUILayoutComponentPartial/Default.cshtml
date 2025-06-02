@@ -1,2 +1,24 @@
 ﻿<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- SignalR Client Kitaplığı -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+
+<!-- Kendi mesajlaşma script'in -->
+<script src="~/js/signalr/messaging.js"></script>
+<script>
+    try {
+        const userId = '@(User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value ?? "0")';
+        if (parseInt(userId) > 0) {
+            localStorage.setItem("userId", userId);
+            console.log("✅ userId yüklendi:", userId);
+        } else {
+            console.warn("⚠️ userId 0 geldi.");
+        }
+    } catch (e) {
+        console.error("🚫 userId yazılamadı:", e);
+    }
+</script>
+
+
+
+

@@ -5,23 +5,26 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{1205A5DF-B999-43E3-87BE-8438E9FACC7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Core\Application\Application.csproj", "{133D902E-FB46-4F46-99D1-7471296520ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Core\Application\Application.csproj", "{133D902E-FB46-4F46-99D1-7471296520ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Core\Domain\Domain.csproj", "{A2F34636-1395-4680-99A6-0D696F82640F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Core\Domain\Domain.csproj", "{A2F34636-1395-4680-99A6-0D696F82640F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrontEnd", "FrontEnd", "{21A9CAEE-E0F7-4613-A7C3-8DE9D42FC313}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HayvanDto", "FrontEnd\HayvanDto\HayvanDto.csproj", "{2A6401CA-7EB4-431A-8255-D6087BD4715E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HayvanDto", "FrontEnd\HayvanDto\HayvanDto.csproj", "{2A6401CA-7EB4-431A-8255-D6087BD4715E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HayvanWebUI", "FrontEnd\HayvanWebUI\HayvanWebUI.csproj", "{6548FB53-4884-470B-AC23-0BB6C668D359}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HayvanWebUI", "FrontEnd\HayvanWebUI\HayvanWebUI.csproj", "{6548FB53-4884-470B-AC23-0BB6C668D359}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{4EF73924-4FA6-474A-B474-F60452F0EB23}"
+	ProjectSection(SolutionItems) = preProject
+		Infrastructure\Persistence\Repositories\Repository.cs = Infrastructure\Persistence\Repositories\Repository.cs
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{187331EA-BB2A-498D-A9B2-6ADBBB9586C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Infrastructure\Persistence\Persistence.csproj", "{0F4746E8-71B0-4AD2-B4F2-491DCC58D0AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "Infrastructure\Persistence\Persistence.csproj", "{0F4746E8-71B0-4AD2-B4F2-491DCC58D0AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "Presentation\WebApi\WebApi.csproj", "{ABF8366D-69F0-4C46-A332-CE801BB3B313}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "Presentation\WebApi\WebApi.csproj", "{ABF8366D-69F0-4C46-A332-CE801BB3B313}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

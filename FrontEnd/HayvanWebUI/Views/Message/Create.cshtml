@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Mesajlaş";
+    Layout = "~/Views/UILayout/Index.cshtml";
+    var receiverId = ViewBag.ReceiverId;
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div id="chat-box" class="border p-4 rounded shadow-sm">
+                <h4 class="mb-4">Kullanıcı ile Mesajlaş</h4>
+
+                <div id="messageArea" class="mb-3" style="height: 250px; overflow-y: auto; background: #f1f1f1; padding: 10px;">
+                    <!-- Mesajlar buraya gelir -->
+                </div>
+
+                <div class="input-group">
+                    <input type="text" id="messageInput" class="form-control" placeholder="Mesaj yaz...">
+                    <button id="sendBtn" class="btn btn-primary">Gönder</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const receiverId = @receiverId;
+
+        document.getElementById("sendBtn").addEventListener("click", function () {
+            const message = document.getElementById("messageInput").value;
+            if (message.trim() !== "") {
+                sendMessageToUser(receiverId, message);
+                document.getElementById("messageInput").value = "";
+
+                const messageArea = document.getElementById("messageArea");
+                messageArea.scrollTop = messageArea.scrollHeight;
+            }
+        });
+
+        if (window.connection) {
+            window.connection.on("ReceiveMessage", function (senderId, messageText) {
+                const messageArea = document.getElementById("messageArea");
+                messageArea.scrollTop = messageArea.scrollHeight;
+            });
+        }
+    </script>
+}

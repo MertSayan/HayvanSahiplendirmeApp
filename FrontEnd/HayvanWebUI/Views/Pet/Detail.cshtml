@@ -220,10 +220,8 @@
                 <hr>
                 @if (isAuthenticated)
                 {
-                    <a href="/Message/Create/@Model.PetId" class="btn btn-primary w-100 mb-3 py-2 fs-5">
-                        <i class="fas fa-envelope me-2"></i>
-                        İletişime Geç
-                    </a>
+                    <a href="/Message/Create/@Model.UserId" class="btn btn-primary">İletişime Geç</a>
+
                     <a href="/User/Index?id=@Model.UserId" class="btn btn-outline-primary w-100 py-2">
                         <i class="fas fa-user me-2"></i>
                         Profili Görüntüle
