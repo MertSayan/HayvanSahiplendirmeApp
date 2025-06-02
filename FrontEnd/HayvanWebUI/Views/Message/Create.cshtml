@@ -44,5 +44,24 @@
                 messageArea.scrollTop = messageArea.scrollHeight;
             });
         }
+
+        // ✅ Sohbet açıldığında geçmiş mesajları getir
+        $(document).ready(function () {
+            const userId = parseInt(localStorage.getItem("userId"));
+
+            $.get(`https://localhost:7160/api/Messages/GetConversation?userId1=${userId}&userId2=${receiverId}`, function (data) {
+                const messageArea = document.getElementById("messageArea");
+                messageArea.innerHTML = "";
+
+                data.forEach(msg => {
+                    const prefix = msg.senderId === userId ? "Sen" : "O";
+                    messageArea.innerHTML += `<div><b>${prefix}:</b> ${msg.messageText}</div>`;
+                });
+
+                messageArea.scrollTop = messageArea.scrollHeight;
+            });
+        });
+
+
     </script>
 }
