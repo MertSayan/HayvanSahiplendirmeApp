@@ -5,7 +5,7 @@
 }
 <style>
     .bubble-in {
-        background-color: #e0e0e0; /* önceki: #f1f1f1 */
+        background-color: #e0e0e0;
         color: #333;
         max-width: 75%;
     }
@@ -28,13 +28,88 @@
         height: 500px;
         overflow-y: auto;
     }
+
+    .input-group {
+        margin-top: 10px;
+    }
+
+    #messageInput {
+        border-radius: 20px 0 0 20px;
+        padding: 10px 15px;
+        border: 1px solid #ccc;
+        outline: none;
+        font-size: 14px;
+    }
+
+    #sendBtn {
+        border-radius: 0 20px 20px 0;
+        background-color: #ff7f32;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        transition: background-color 0.2s ease-in-out;
+    }
+
+        #sendBtn:hover {
+            background-color: #e66e20;
+        }
+
+    /* 🔶 Sol konuşma listesi stilleri */
+    .conversation-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        background-color: #fff;
+        border-radius: 10px;
+        margin-bottom: 8px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        border: 1px solid #eee;
+    }
+
+        .conversation-item:hover {
+            background-color: #f8f8f8;
+        }
+
+    .profile-img {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .conversation-item .info .name {
+        font-weight: 600;
+        font-size: 15px;
+    }
+
+    .conversation-item .info .last-message {
+        font-size: 13px;
+        color: #666;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 180px;
+    }
 </style>
 
+
+
 <div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
+    <div class="row">
+        <!-- 🔹 SOL KONUŞMA PANELİ -->
+        <!-- SOL KONUŞMA PANELİ -->
+        <div class="col-md-4">
+            <h5 class="mb-3">Konuşmalarım</h5>
+            <div id="conversationList"></div>
+        </div>
+
+        <!-- 🔸 SAĞ MESAJLAŞMA PANELİ -->
+        <div class="col-md-8">
             <div id="chat-box" class="border p-4 rounded shadow-sm">
                 <h4 class="mb-4">Kullanıcı ile Mesajlaş</h4>
+                <input type="hidden" id="receiverId" value="@receiverId" />
 
                 <div id="messageArea" class="mb-3" style="height: 400px; overflow-y: auto; background: #f1f1f1; padding: 10px;">
                     <!-- Mesajlar buraya gelir -->
@@ -50,10 +125,35 @@
 </div>
 
 @section Scripts {
-
-
     <script>
         const receiverId = @receiverId;
+
+        // 🔄 Sol konuşma listesini yükleyen fonksiyon
+        function loadConversations() {
+            const userId = parseInt(localStorage.getItem("userId"));
+            if (!userId) return;
+
+            $.get(`https://localhost:7160/api/Messages/GetAllConversations?userId=${userId}`, function (data) {
+                const listArea = document.getElementById("conversationList");
+                listArea.innerHTML = "";
+
+                data.forEach(conv => {
+                    const date = new Date(conv.lastMessageTime);
+                    const formattedDate = date.toLocaleDateString("tr-TR");
+
+                    listArea.innerHTML += `
+                                <div class="conversation-item" onclick="location.href='/Message/Create/${conv.receiverId}'">
+                                    <img src="${conv.receiverPhotoUrl}" class="profile-img" />
+                                    <div class="info">
+                                        <div class="name">${conv.receiverName}</div>
+                                        <div class="last-message">${conv.lastMessage}</div>
+                                    </div>
+                                    ${conv.unreadCount > 0 ? `<span class="badge bg-danger ms-auto">${conv.unreadCount}</span>` : ''}
+                                </div>
+                            `;
+                });
+            });
+        }
 
         document.getElementById("sendBtn").addEventListener("click", function () {
             const message = document.getElementById("messageInput").value;
@@ -66,41 +166,40 @@
             }
         });
 
-        if (window.connection) {
-            window.connection.on("ReceiveMessage", function (senderId, messageText) {
-                const messageArea = document.getElementById("messageArea");
-                messageArea.scrollTop = messageArea.scrollHeight;
-            });
-        }
-
-        // ✅ Sohbet açıldığında geçmiş mesajları getir
+        // ✅ Geçmiş mesajları getir
         $(document).ready(function () {
             const userId = parseInt(localStorage.getItem("userId"));
+            if (!userId) return;
 
+            // Sağdaki mesaj geçmişini getir
             $.get(`https://localhost:7160/api/Messages/GetConversation?userId1=${userId}&userId2=${receiverId}`, function (data) {
                 const messageArea = document.getElementById("messageArea");
                 messageArea.innerHTML = "";
 
                 data.forEach(msg => {
                     const isMine = msg.senderId === userId;
-                    const alignmentClass = isMine ? "message-out" : "message-in";
                     const bubbleColor = isMine ? "bubble-out" : "bubble-in";
-                    const time = new Date(msg.createdAt).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+                    const time = new Date(msg.createdAt).toLocaleDateString('tr-TR', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                    });
 
                     messageArea.innerHTML += `
-                <div class="d-flex ${isMine ? 'justify-content-end' : 'justify-content-start'} mb-2">
-                    <div class="${bubbleColor} p-2 rounded">
-                        <div>${msg.messageText}</div>
-                        <div class="text-end small text-muted mt-1">${time}</div>
-                    </div>
-                </div>
-            `;
+                                <div class="d-flex ${isMine ? 'justify-content-end' : 'justify-content-start'} mb-2">
+                                    <div class="${bubbleColor} p-2 rounded">
+                                        <div>${msg.messageText}</div>
+                                        <div class="text-end small text-muted mt-1">${time}</div>
+                                    </div>
+                                </div>
+                            `;
                 });
 
                 messageArea.scrollTop = messageArea.scrollHeight;
             });
+
+            // ✅ Sol konuşma listesini getir
+            loadConversations();
         });
-
-
     </script>
 }

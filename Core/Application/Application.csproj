@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\MediatR\Messages\Results\" />
     <Folder Include="Features\MediatR\PetTypes\Commands\" />
     <Folder Include="Features\MediatR\PetTypes\Handlers\Write\" />
   </ItemGroup>

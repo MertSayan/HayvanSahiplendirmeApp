@@ -27,5 +27,12 @@ namespace WebApi.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("GetAllConversations")]
+        public async Task<IActionResult> GetConversations([FromQuery] int userId)
+        {
+            var result = await _mediator.Send(new GetUserConversationsQuery(userId));
+            return Ok(result);
+        }
     }
 }

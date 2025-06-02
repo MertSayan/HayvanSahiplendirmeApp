@@ -23,11 +23,20 @@ if (!userId || userId === 0) {
         .catch(err => console.error("🚫 SignalR bağlantı hatası:", err));
 
 
+
     // 📥 Gelen mesajları dinle
     // 👇 Önce varsa eski event listener'ı kaldır
     window.connection.off("ReceiveMessage");
 
-    window.connection.on("ReceiveMessage", (senderId, messageText) => {
+    window.connection.on("ReceiveMessage", (senderId, receiverId, messageText) => {
+        const currentReceiverId = parseInt(document.getElementById("receiverId")?.value); // ya da ViewBag
+
+        // Sadece aktif sohbet penceresine mesaj yaz
+        if (receiverId !== currentReceiverId && senderId !== currentReceiverId) {
+            console.warn("❌ Bu mesaj açık olan kullanıcıya ait değil. Atlanıyor.");
+            return;
+        }
+
         const messageArea = document.getElementById("messageArea");
         if (!messageArea) return;
 
@@ -35,7 +44,6 @@ if (!userId || userId === 0) {
         const alignment = isMine ? "justify-content-end" : "justify-content-start";
         const bubbleClass = isMine ? "bubble-out" : "bubble-in";
 
-        // ➕ div oluştur
         const wrapperDiv = document.createElement("div");
         wrapperDiv.className = `d-flex ${alignment} mb-2`;
 
@@ -60,4 +68,12 @@ if (!userId || userId === 0) {
         window.connection.invoke("SendMessage", userId, receiverId, messageText)
             .catch(err => console.error("🚫 Mesaj gönderilemedi:", err));
     }
+
+    // 🔄 Sol paneli güncelleyen SignalR yayını
+    window.connection.off("RefreshConversationList");
+    window.connection.on("RefreshConversationList", () => {
+        if (typeof loadConversations === "function") {
+            loadConversations();
+        }
+    });
 }

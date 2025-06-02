@@ -51,15 +51,35 @@ namespace WebApi.SignalR.Hubs
 
             await _mediator.Send(command);
 
-            // 2. SignalR ile mesajı gönder
+            // 2. SignalR ile mesajı her iki tarafa gönder
             if (_userConnections.TryGetValue(receiverId, out var receiverConnectionId))
             {
-                await Clients.Client(receiverConnectionId).SendAsync("ReceiveMessage", senderId, message);
+                await Clients.Client(receiverConnectionId).SendAsync("ReceiveMessage", senderId, receiverId, message);
             }
 
             if (_userConnections.TryGetValue(senderId, out var senderConnectionId))
             {
-                await Clients.Client(senderConnectionId).SendAsync("ReceiveMessage", senderId, message);
+                await Clients.Client(senderConnectionId).SendAsync("ReceiveMessage", senderId, receiverId, message);
+            }
+
+            // 3. 🔁 Sol konuşma panelini güncellemek için her iki kullanıcıya event gönder
+            if (_userConnections.TryGetValue(receiverId, out var convReceiverConn))
+            {
+                await Clients.Client(convReceiverConn).SendAsync("RefreshConversationList");
+            }
+
+            if (_userConnections.TryGetValue(senderId, out var convSenderConn))
+            {
+                await Clients.Client(convSenderConn).SendAsync("RefreshConversationList");
+            }
+        }
+
+
+        public async Task NotifyConversationUpdate(int userId)
+        {
+            if (_userConnections.TryGetValue(userId, out var connectionId))
+            {
+                await Clients.Client(connectionId).SendAsync("RefreshConversationList");
             }
         }
     }
