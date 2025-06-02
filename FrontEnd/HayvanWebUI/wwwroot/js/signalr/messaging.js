@@ -31,10 +31,26 @@ if (!userId || userId === 0) {
         const messageArea = document.getElementById("messageArea");
         if (!messageArea) return;
 
-        const prefix = senderId === userId ? "Sen" : "O";
-        messageArea.innerHTML += `<div><b>${prefix}:</b> ${messageText}</div>`;
+        const isMine = senderId === userId;
+        const alignment = isMine ? "justify-content-end" : "justify-content-start";
+        const bubbleClass = isMine ? "bubble-out" : "bubble-in";
+
+        // ➕ div oluştur
+        const wrapperDiv = document.createElement("div");
+        wrapperDiv.className = `d-flex ${alignment} mb-2`;
+
+        const bubbleDiv = document.createElement("div");
+        bubbleDiv.className = `${bubbleClass} p-2 rounded`;
+        bubbleDiv.innerHTML = `
+        <div>${messageText}</div>
+        <div class="text-end small text-muted mt-1">${new Date().toLocaleDateString('tr-TR')}</div>
+    `;
+
+        wrapperDiv.appendChild(bubbleDiv);
+        messageArea.appendChild(wrapperDiv);
         messageArea.scrollTop = messageArea.scrollHeight;
     });
+
 
 
     // 📤 Mesaj gönderme fonksiyonu

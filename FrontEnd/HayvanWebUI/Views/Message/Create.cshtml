@@ -3,6 +3,32 @@
     Layout = "~/Views/UILayout/Index.cshtml";
     var receiverId = ViewBag.ReceiverId;
 }
+<style>
+    .bubble-in {
+        background-color: #e0e0e0; /* önceki: #f1f1f1 */
+        color: #333;
+        max-width: 75%;
+    }
+
+    .bubble-out {
+        background-color: #ff7f32;
+        color: white;
+        max-width: 75%;
+    }
+
+    .bubble-in, .bubble-out {
+        border-radius: 12px;
+        padding: 10px 15px;
+        word-wrap: break-word;
+    }
+
+    #messageArea {
+        background: #fff;
+        padding: 10px;
+        height: 500px;
+        overflow-y: auto;
+    }
+</style>
 
 <div class="container py-5">
     <div class="row justify-content-center">
@@ -10,7 +36,7 @@
             <div id="chat-box" class="border p-4 rounded shadow-sm">
                 <h4 class="mb-4">Kullanıcı ile Mesajlaş</h4>
 
-                <div id="messageArea" class="mb-3" style="height: 250px; overflow-y: auto; background: #f1f1f1; padding: 10px;">
+                <div id="messageArea" class="mb-3" style="height: 400px; overflow-y: auto; background: #f1f1f1; padding: 10px;">
                     <!-- Mesajlar buraya gelir -->
                 </div>
 
@@ -24,6 +50,8 @@
 </div>
 
 @section Scripts {
+
+
     <script>
         const receiverId = @receiverId;
 
@@ -54,8 +82,19 @@
                 messageArea.innerHTML = "";
 
                 data.forEach(msg => {
-                    const prefix = msg.senderId === userId ? "Sen" : "O";
-                    messageArea.innerHTML += `<div><b>${prefix}:</b> ${msg.messageText}</div>`;
+                    const isMine = msg.senderId === userId;
+                    const alignmentClass = isMine ? "message-out" : "message-in";
+                    const bubbleColor = isMine ? "bubble-out" : "bubble-in";
+                    const time = new Date(msg.createdAt).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+
+                    messageArea.innerHTML += `
+                <div class="d-flex ${isMine ? 'justify-content-end' : 'justify-content-start'} mb-2">
+                    <div class="${bubbleColor} p-2 rounded">
+                        <div>${msg.messageText}</div>
+                        <div class="text-end small text-muted mt-1">${time}</div>
+                    </div>
+                </div>
+            `;
                 });
 
                 messageArea.scrollTop = messageArea.scrollHeight;
