@@ -24,7 +24,7 @@ namespace Application.Features.MediatR.Users.Handlers.Write
             string photoPath = null;
             if(request.ProfilePictureUrl != null && request.ProfilePictureUrl.Length>0)
             {
-                var uploadsFolderPath = Path.Combine("C:\\csharpprojeler\\HayvanSahiplendirmeApp\\FrontEnd\\HayvanWebUI", "wwwroot", "users");
+                var uploadsFolderPath = Path.Combine("C:\\Users\\furka\\Source\\Repos\\HayvanSahiplendirmeApp\\FrontEnd\\HayvanWebUI", "wwwroot", "users");
                 if(!Directory.Exists(uploadsFolderPath))
                 {
                     Directory.CreateDirectory(uploadsFolderPath);

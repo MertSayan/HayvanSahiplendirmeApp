@@ -9,12 +9,12 @@
 <!-- Hero Section -->
 @await Component.InvokeAsync("_HeroSectionComponentPartial")
 
-<ul>
-    @foreach (var claim in User.Claims)
-    {
-        <li>@claim.Type = @claim.Value</li>
-    }
-</ul>
+    @* <ul>
+        @foreach (var claim in User.Claims)
+        {
+            <li>@claim.Type = @claim.Value</li>
+        }
+    </ul> *@
 
 <!-- Featured Pets Section -->
 @await Component.InvokeAsync("_FeaturedPetsComponentPartial")

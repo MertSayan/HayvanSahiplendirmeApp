@@ -22,9 +22,15 @@ namespace HayvanWebUI.ViewComponents.UILayoutViewComponents
             {
                 var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 var userName = user.FindFirst(ClaimTypes.Name)?.Value;
+                var userRole = user.FindFirst(ClaimTypes.Role)?.Value; 
+
+
 
                 ViewBag.UserId = userId;
                 ViewBag.UserName = userName;
+                ViewBag.UserRole = userRole; 
+
+                
 
                 var client = _httpClientFactory.CreateClient();
                 var responseMessage = await client.GetAsync("https://localhost:7160/api/Auths/GetByIdUser?id=" + userId);

@@ -20,8 +20,9 @@ namespace Application.Features.MediatR.PetImages.Handlers.Write
         }
         public async Task<Unit> Handle(CreatePetImagesCommand request, CancellationToken cancellationToken)
         {
+            
             var savedImagePaths = new List<string>();
-            var uploadsFolderPath = Path.Combine("C:\\csharpprojeler\\HayvanSahiplendirmeApp\\FrontEnd\\HayvanWebUI", "wwwroot", "PetImage");
+            var uploadsFolderPath = Path.Combine("C:\\Users\\furka\\Source\\Repos\\HayvanSahiplendirmeApp\\FrontEnd\\HayvanWebUI", "wwwroot", "PetImage");
             if (!Directory.Exists(uploadsFolderPath))
             {
                 Directory.CreateDirectory(uploadsFolderPath);

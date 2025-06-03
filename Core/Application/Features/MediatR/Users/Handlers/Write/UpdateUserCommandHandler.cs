@@ -32,7 +32,7 @@ namespace Application.Features.MediatR.Users.Handlers.Write
             {
                 if (!string.IsNullOrEmpty(user.ProfilePictureUrl))
                 {
-                    var oldImagePath = Path.Combine("C:\\csharpprojeler\\HayvanSahiplendirmeApp\\FrontEnd\\HayvanWebUI", "wwwroot", user.ProfilePictureUrl.TrimStart('/'));
+                    var oldImagePath = Path.Combine("C:\\Users\\furka\\Source\\Repos\\HayvanSahiplendirmeApp\\FrontEnd\\HayvanWebUI", "wwwroot", user.ProfilePictureUrl.TrimStart('/'));
                     if (File.Exists(oldImagePath))
                     {
                         File.Delete(oldImagePath);
@@ -40,7 +40,7 @@ namespace Application.Features.MediatR.Users.Handlers.Write
                 }
 
                 // Yeni resmi kaydet
-                var uploadsFolderPath = Path.Combine("C:\\csharpprojeler\\HayvanSahiplendirmeApp\\FrontEnd\\HayvanWebUI", "wwwroot", "users");
+                var uploadsFolderPath = Path.Combine("C:\\Users\\furka\\Source\\Repos\\HayvanSahiplendirmeApp\\FrontEnd\\HayvanWebUI", "wwwroot", "users");
                 if (!Directory.Exists(uploadsFolderPath))
                 {
                     Directory.CreateDirectory(uploadsFolderPath);
