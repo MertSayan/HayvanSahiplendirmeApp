@@ -1,0 +1,74 @@
+﻿@model List<GetAllFavoritePetDto>
+@{
+    ViewData["Title"] = "MyFavoritte";
+    Layout = "~/Views/UILayout/Index.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1>Favorilerim</h1>
+            <p class="lead">Beğendiğiniz ve favorilerinize eklediğiniz hayvanlar burada listelenir.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            @await Component.InvokeAsync("_UserSideBarComponentPartial", new { id = ViewBag.UserId })
+        </div>
+
+        <div class="col-md-9">
+            @* favoritelist *@
+
+            <div class="row">
+                @foreach (var pet in Model)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="similar-pet-container">
+                                <img src="@pet.MainImageUrl"
+                                     class="similar-pet-img" alt="@pet.Name">
+                                <button class="btn btn-sm btn-danger position-absolute favorite-remove-btn" data-pet-id="@pet.PetId">
+                                    <i class="fas fa-heart-broken"></i>
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">@pet.Name</h5>
+                                <div class="pet-tags">
+                                    <span class="pet-tag">@pet.PetTypeName</span>
+                                    <span class="pet-tag">@pet.Age</span>
+                                </div>
+                                <p class="card-text mt-2">@pet.Description</p>
+                            </div>
+                            <div class="card-footer bg-white d-flex justify-content-between align-items-center">
+                                <a href="/Pet/Detail/@pet.PetId" class="btn btn-primary btn-sm">Detaylar</a>
+                                <div>
+                                    <span class="me-2"><i class="fas fa-heart text-danger"></i> @pet.LikeCount</span>
+                                    <span><i class="fas fa-comment text-secondary"></i> @pet.CommentCount</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Favorilerden çıkarma işlemi için onay sorusu
+        $(function () {
+            $('.favorite-remove-btn').on('click', function (e) {
+                if (!confirm('Bu hayvanı favorilerden çıkarmak istediğinize emin misiniz?')) {
+                    e.preventDefault();
+                } else {
+                    // Gerçek uygulamada AJAX ile favorilerden çıkarma işlemi yapılacak
+                    $(this).closest('.col-md-4').fadeOut();
+                }
+            });
+        });
+    </script>
+}
+

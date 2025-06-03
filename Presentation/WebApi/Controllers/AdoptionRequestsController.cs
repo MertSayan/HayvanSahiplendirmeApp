@@ -64,13 +64,13 @@ namespace WebApi.Controllers
             return Ok(Messages<AdoptionRequest>.EntityUpdated);
         }
         [HttpPut("Accept")]
-        public async Task<IActionResult> UpdateAdoptionRequestAccept(UpdateAdoptionRequestAcceptCommand command)
+        public async Task<IActionResult> UpdateAdoptionRequestAccept([FromBody] UpdateAdoptionRequestAcceptCommand command)
         {
             await _mediator.Send(command);
             return Ok(Messages<AdoptionRequest>.SahiplenmeKabul);
         }
         [HttpPut("Reject")]
-        public async Task<IActionResult> UpdateAdoptionRequestReject(UpdateAdoptionRequestRejectCommand command)
+        public async Task<IActionResult> UpdateAdoptionRequestReject([FromBody] UpdateAdoptionRequestRejectCommand command)
         {
             await _mediator.Send(command);
             return Ok(Messages<AdoptionRequest>.SahiplenmeRed);

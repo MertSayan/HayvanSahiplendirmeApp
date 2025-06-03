@@ -19,5 +19,8 @@ namespace HayvanDto.PetDtos
         public string? Breed { get; set; } // Örn: "Golden Retriever"
         public string MainImageUrl { get; set; }
         public int RequestCount { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public int LikeCount { get; set; }
+        public int CommentCount { get; set; }
     }
 }

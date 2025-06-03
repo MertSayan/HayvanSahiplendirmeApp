@@ -1,0 +1,119 @@
+﻿@model HayvanDto.PetDtos.CreatePetDto
+
+@{
+    ViewData["Title"] = "CreatePet";
+    Layout = "~/Views/UILayout/Index.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1>Hayvan Sahiplendirme İlanı Ekle</h1>
+            <p class="lead">Lütfen hayvan hakkındaki tüm bilgileri doğru ve eksiksiz olarak doldurunuz. Bu, sahiplenecek kişilerin doğru karar vermeleri için önemlidir.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="pet-detail-info">
+                <form asp-controller="Pet" asp-action="CreatePet" method="post" enctype="multipart/form-data">
+
+                    @* CreateBasicInfo *@
+                    <h4 class="mb-3">Temel Bilgiler</h4>
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Name" class="form-label">Hayvan Adı</label>
+                            <input asp-for="Name" class="form-control" placeholder="Örn: Karamel" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            @await Component.InvokeAsync("_PetTypeDropdownComponentPartial")
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Breed" class="form-label">Hayvanın Cinsi</label>
+                            <input asp-for="Breed" class="form-control" placeholder="Örn: Sarman/Golden/Kırma" />
+                            <span asp-validation-for="Breed" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Age" class="form-label">Yaş</label>
+                            <input asp-for="Age" class="form-control" placeholder="Örn: 2 Yaş" />
+                            <span asp-validation-for="Age" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Gender" class="form-label">Cinsiyet</label>
+                            <select asp-for="Gender" class="form-select">
+                                <option value="">Seçiniz</option>
+                                <option value="Erkek">Erkek</option>
+                                <option value="Dişi">Dişi</option>
+                            </select>
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label asp-for="Description" class="form-label">Hakkında</label>
+                            <textarea asp-for="Description" class="form-control" rows="4"
+                                      placeholder="Hayvanın karakteri, alışkanlıkları ve diğer özellikleri hakkında bilgi verin."></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    @* CreateHealtInfo *@
+                    <h4 class="mb-3">Sağlık Bilgileri</h4>
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3 form-check form-switch">
+                            <input asp-for="IsNeutered" class="form-check-input" type="checkbox" />
+                            <label asp-for="IsNeutered" class="form-check-label">Kısırlaştırılmış</label>
+                        </div>
+                        <div class="col-md-6 mb-3 form-check form-switch">
+                            <input asp-for="IsVaccinated" class="form-check-input" type="checkbox" />
+                            <label asp-for="IsVaccinated" class="form-check-label">Aşıları Tam</label>
+                        </div>
+                    </div>
+
+                    @* CreatePhotos *@
+                    <h4 class="mb-3">Fotoğraflar</h4>
+                    <div class="row mb-4">
+                        <div class="col-md-12 mb-3">
+                            <label asp-for="MainImageUrl" class="form-label">Ana Fotoğraf</label>
+                            <input asp-for="MainImageUrl" class="form-control" type="file" />
+                            <span asp-validation-for="MainImageUrl" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    @* CreateLocation *@
+                    <h4 class="mb-3">Konum Bilgileri</h4>
+                    <div class="row mb-4">
+                        @* konum bölümü *@
+                        @await Component.InvokeAsync("_LocationComponentPartial", new { model = Model })
+                    </div>
+
+                    @* 
+                    <div class="mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="termsAgree" name="termsAgree" required>
+                            <label class="form-check-label" for="termsAgree">
+                                <a href="#">Sahiplendirme Koşulları</a>'nı okudum ve kabul ediyorum
+                            </label>
+                        </div>
+                    </div>
+                    *@
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">İlanı Yayınla</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            @* CreateSideBar *@
+            @await Component.InvokeAsync("_CreateSideBarComponentPartial")
+
+            @section Scripts {
+                <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
+                <script src="~/js/account/register.js"></script>
+            }
+        </div>
+    </div>
+</div>

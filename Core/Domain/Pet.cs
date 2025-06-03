@@ -18,6 +18,7 @@
         public bool IsAdopted { get; set; } // sahiplendirilip sahiplendirilmediği ( ilan aktif mi pasif mi gibi )
         public string? Breed { get; set; } // Örn: "Golden Retriever"
         public string MainImageUrl { get; set; }
+        public string ApprovalStatus { get; set; } = "Pending";
         public ICollection<PetImage> Images { get; set; }=new List<PetImage>();
 
         public ICollection<PetComment> PetComments { get; set; } = new List<PetComment>();

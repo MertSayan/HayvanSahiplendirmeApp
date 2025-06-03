@@ -18,8 +18,7 @@ namespace Application.Validations.Pets
             RuleFor(x => x.Age)
                 .NotEmpty().WithMessage("Yaş bilgisi boş olamaz.");
 
-            RuleFor(x => x.PetTypeId)
-                .GreaterThan(0).WithMessage("Geçerli bir hayvan türü seçmelisiniz.");
+          
 
             RuleFor(x => x.MainImageUrl)
                 .NotEmpty().WithMessage("Ana görsel URL'si zorunludur.");

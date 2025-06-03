@@ -1,5 +1,6 @@
 ﻿using Domain;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,6 @@ namespace Application.Features.MediatR.Pets.Commands
         public bool IsNeutered { get; set; } //kısırlaştırıldı mı
         public bool IsAdopted { get; set; } // sahiplendirilip sahiplendirilmediği ( ilan aktif mi pasif mi gibi )
         public string? Breed { get; set; } // Örn: "Golden Retriever"
-        public string MainImageUrl { get; set; }
+        public IFormFile? MainImageUrl { get; set; }
     }
 }

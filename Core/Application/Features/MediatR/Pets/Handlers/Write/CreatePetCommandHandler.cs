@@ -3,11 +3,6 @@ using Application.Interfaces;
 using AutoMapper;
 using Domain;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.MediatR.Pets.Handlers.Write
 {
@@ -22,7 +17,30 @@ namespace Application.Features.MediatR.Pets.Handlers.Write
         }
         public async Task<Unit> Handle(CreatePetCommand request, CancellationToken cancellationToken)
         {
+            string photoPath = null;
+            if(request.MainImageUrl!=null && request.MainImageUrl.Length>0)
+            {
+                var uploadsFolderPath=Path.Combine("C:\\csharpprojeler\\HayvanSahiplendirmeApp\\FrontEnd\\HayvanWebUI", "wwwroot", "PetMain");
+                if (!Directory.Exists(uploadsFolderPath))
+                {
+                    Directory.CreateDirectory(uploadsFolderPath);
+                }
+                var fileExtension = Path.GetExtension(request.MainImageUrl.FileName);
+                var uniqueFileName = $"{Guid.NewGuid()}_{fileExtension}";
+                var filePath=Path.Combine(uploadsFolderPath, uniqueFileName);
+
+                using(var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await request.MainImageUrl.CopyToAsync(fileStream);
+                }
+
+                photoPath= $"/PetMain/{uniqueFileName}";
+            }
+
+
             var pet = _mapper.Map<Pet>(request);
+            pet.MainImageUrl = photoPath;
+            pet.ApprovalStatus = "Pending";
             await _repository.CreateAsync(pet);
             return Unit.Value;
         }

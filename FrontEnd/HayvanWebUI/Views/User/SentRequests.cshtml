@@ -1,0 +1,114 @@
+﻿@model List<GetAllAdoptionRequestBySenderIdDto>
+
+@{
+    ViewData["Title"] = "SentRequests";
+    Layout = "~/Views/UILayout/Index.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <p class="lead">
+                <span>Sahiplendirmek istediğiniz hayvanlar için gönderdiğiniz istekleri bu sayfadan takip edebilirsiniz.</span>
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            @await Component.InvokeAsync("_UserSideBarComponentPartial", new { id = ViewBag.UserId })
+        </div>
+
+        <div class="col-md-9">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+
+                    <div class="list-group">
+                        @foreach (var item in Model)
+                        {
+                            TimeSpan fark = DateTime.Now - item.CreatedDate;
+                            string zamanBilgisi;
+
+                            if (fark.TotalDays >= 30)
+                            {
+                                int ay = (int)(fark.TotalDays / 30);
+                                zamanBilgisi = $"{ay} ay önce";
+                            }
+                            else if (fark.TotalDays >= 1)
+                            {
+                                zamanBilgisi = $"{(int)fark.TotalDays} gün önce";
+                            }
+                            else if (fark.TotalHours >= 1)
+                            {
+                                zamanBilgisi = $"{(int)fark.TotalHours} saat önce";
+                            }
+                            else
+                            {
+                                zamanBilgisi = "az önce";
+                            }
+
+                            <div class="list-group-item mb-3">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">@item.PetName için sahiplendirme isteği</h5>
+                                    <small>@zamanBilgisi</small>
+                                </div>
+                                <div class="d-flex">
+                                    <img src="@item.PetImageUrl" class="request-pet-thumbnail me-3" alt="@item.PetName" style="width: 90px; height: 90px; object-fit: cover;" />
+                                    <div>
+                                        <p class="mb-1">
+                                            <strong>Durum:</strong>
+                                            @if (item.Status == "Beklemede")
+                                            {
+                                                <span class="badge bg-warning text-dark">Beklemede</span>
+                                            }
+                                            else if (item.Status == "Kabul Edildi")
+                                            {
+                                                <span class="badge bg-success">Kabul Edildi</span>
+                                            }
+                                            else if (item.Status == "Reddedildi")
+                                            {
+                                                <span class="badge bg-danger">Reddedildi</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary">@item.Status</span>
+                                            }
+                                        </p>
+                                        <p class="text-muted">@item.Note</p>
+                                        <p class="mb-0 text-muted small">
+                                            İlan Sahibi: <a href="/User/Profile?id=@item.AdoptionRequestId">@item.OwnerName</a>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="mt-2">
+                                    <a href="/Pet/Detail/@item.PetId" class="btn btn-sm btn-outline-primary me-2">
+                                        <i class="fas fa-eye"></i> İlanı Görüntüle
+                                    </a>
+                                    <a href="/Messages/Send?to=@item.AdoptionRequestId" class="btn btn-sm btn-outline-primary me-2">
+                                        <i class="fas fa-comment"></i> Mesaj Gönder
+                                    </a>
+                                    <a href="/Adoption/Cancel/@item.PetId" class="btn btn-sm btn-outline-danger">
+                                        <i class="fas fa-times"></i> İsteği İptal Et
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('.btn-danger, .btn-outline-danger').on('click', function (e) {
+                if (!confirm('Bu işlemi yapmak istediğinize emin misiniz?')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+}

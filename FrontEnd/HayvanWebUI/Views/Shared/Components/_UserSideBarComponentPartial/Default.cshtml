@@ -8,11 +8,12 @@
         years--;
     }
 
+
     var yearText = years + " Yıldır Üye";
 }
 <div class="sidebar mb-4">
     <div class="user-profile text-center mb-4">
-        <img src="@Model.ProfilePictureUrl" class="rounded-circle profile-photo mb-3"
+        <img src="@Model.ExistingImagePath" class="rounded-circle profile-photo mb-3"
              alt="User">
         <h4>@Model.Name @Model.Surname</h4>
         <p class="text-muted">@Model.City, @Model.District</p>
@@ -27,7 +28,7 @@
     <div class="sidebar-menu">
         <ul class="list-group">
             <li class="list-group-item menu-item-top ">
-                <a href="/User/Profile" class="d-flex align-items-center">
+                <a href="/User/Index/@Model.UserId" class="d-flex align-items-center">
                     <i class="fas fa-user me-2"></i>
                     <span>Profilim</span>
                     <div class="ms-auto d-flex align-items-center">
@@ -36,29 +37,29 @@
                 </a>
             </li>
             <li class="list-group-item ">
-                <a href="/User/MyPets" class="d-flex align-items-center">
+                <a href="/User/MyPets/@Model.UserId" class="d-flex align-items-center">
                     <i class="fas fa-paw me-2"></i>
                     <span>Hayvanlarım</span>
                     <div class="ms-auto d-flex align-items-center">
-                        <span class="badge bg-primary badge-sm">3</span>
+                        <span class="badge bg-primary badge-sm"></span>
                     </div>
                 </a>
             </li>
             <li class="list-group-item ">
-                <a href="/User/Requests" class="d-flex align-items-center">
+                <a href="/User/SentRequests/@Model.UserId" class="d-flex align-items-center">
                     <i class="fas fa-paper-plane me-2"></i>
                     <span>İsteklerim</span>
                     <div class="ms-auto d-flex align-items-center">
-                        <span class="badge bg-primary badge-sm">2</span>
+                        <span class="badge bg-primary badge-sm"></span>
                     </div>
                 </a>
             </li>
             <li class="list-group-item ">
-                <a href="/User/Requests?type=received" class="d-flex align-items-center">
+                <a href="/User/ReceivedRequest/@Model.UserId" class="d-flex align-items-center">
                     <i class="fas fa-envelope me-2"></i>
                     <span>G. İstekler</span>
                     <div class="ms-auto d-flex align-items-center">
-                        <span class="badge bg-danger badge-sm">5</span>
+                        <span class="badge bg-danger badge-sm"></span>
                     </div>
                 </a>
             </li>
@@ -67,16 +68,16 @@
                     <i class="fas fa-comments me-2"></i>
                     <span>Mesajlar</span>
                     <div class="ms-auto d-flex align-items-center">
-                        <span class="badge bg-danger badge-sm">3</span>
+                        <span class="badge bg-danger badge-sm"></span>
                     </div>
                 </a>
             </li>
             <li class="list-group-item ">
-                <a href="/User/Favorites" class="d-flex align-items-center">
+                <a href="/User/MyFavoritte/@Model.UserId" class="d-flex align-items-center">
                     <i class="fas fa-heart me-2"></i>
                     <span>Favoriler</span>
                     <div class="ms-auto d-flex align-items-center">
-                        <span class="badge bg-primary badge-sm">7</span>
+                        <span class="badge bg-primary badge-sm"></span>
                     </div>
                 </a>
             </li>

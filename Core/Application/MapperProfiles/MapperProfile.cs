@@ -26,9 +26,9 @@ namespace Application.MapperProfiles
 
             //Pet
             CreateMap<Pet,CreatePetCommand>().ReverseMap();
-            CreateMap<Pet,UpdatePetCommand>().ReverseMap();
+            CreateMap<Pet, UpdatePetCommand>().ReverseMap();
             CreateMap<Pet, GetAllPetQueryResult>()
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Name))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Name + " " + src.User.Surname))
                 .ForMember(dest => dest.PetTypeName, opt => opt.MapFrom(src => src.PetType.PetTypeName));
             CreateMap<Pet, GetByIdPetQueryResult>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Name))
@@ -43,7 +43,9 @@ namespace Application.MapperProfiles
                 .ForMember(dest => dest.UserImageUrl, opt => opt.MapFrom(src => src.User.ProfilePictureUrl));
             CreateMap<Pet, GetAllPetByOwnerIdQueryResult>()
                 .ForMember(dest => dest.PetTypeName, opt => opt.MapFrom(src => src.PetType.PetTypeName))
-                .ForMember(dest => dest.RequestCount, opt => opt.MapFrom(src => src.AdoptionRequests.Count(r => r.DeletedDate == null)));
+                .ForMember(dest => dest.RequestCount, opt => opt.MapFrom(src => src.AdoptionRequests.Count(r => r.DeletedDate == null)))
+                .ForMember(dest => dest.LikeCount, opt => opt.MapFrom(src => src.PetLikes.Count(c => c.DeletedDate == null)))
+                .ForMember(dest => dest.CommentCount, opt => opt.MapFrom(src => src.PetComments.Count(c => c.DeletedDate == null)));
             CreateMap<Pet,GetAllActivePetByOwnerIdQueryResult>()
                 .ForMember(dest => dest.PetTypeName, opt => opt.MapFrom(src => src.PetType.PetTypeName))
                 .ForMember(dest => dest.LikeCount, opt => opt.MapFrom(src => src.PetLikes.Count(l => l.DeletedDate == null)))
@@ -56,6 +58,13 @@ namespace Application.MapperProfiles
             CreateMap<Pet, GetFeaturedPetQueryResult>()
                 .ForMember(dest => dest.LikeCount, opt => opt.MapFrom(src => src.PetLikes.Count(c => c.DeletedDate == null)))
                 .ForMember(dest => dest.PetTypeName, opt => opt.MapFrom(src => src.PetType.PetTypeName));
+            CreateMap<Pet, GetPetByIdQueryResult>()
+                .ForMember(dest => dest.PetTypeName, opt => opt.MapFrom(src => src.PetType.PetTypeName))
+                .ForMember(dest => dest.ExistingImagePath, opt => opt.MapFrom(src => src.MainImageUrl));
+            CreateMap<Pet, GetLastsPetQueryResult>()
+                .ForMember(dest => dest.PetTypeName, opt => opt.MapFrom(src => src.PetType.PetTypeName))
+                .ForMember(dest => dest.UserNameSurname, opt => opt.MapFrom(src => src.User.Name + " " + src.User.Surname));
+
 
             //PetComment
             CreateMap<PetComment, CreatePetCommentCommand>().ReverseMap();
@@ -80,7 +89,8 @@ namespace Application.MapperProfiles
             CreateMap<AdoptionRequest, GetAllAdoptionRequestByPetIdQueryResult>()
                 .ForMember(dest => dest.SenderName, opt => opt.MapFrom(src => src.Sender.Name))
                 .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => src.Owner.Name))
-                .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.Name));
+                .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.Name))
+                .ForMember(dest => dest.PetId, opt => opt.MapFrom(src => src.Pet.PetId));
             //CreateMap<AdoptionRequest, GetAllAdoptionRequestByUserIdQueryResult>()
             //    .ForMember(dest => dest.SenderName, opt => opt.MapFrom(src => src.Sender.Name))
             //    .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => src.Owner.Name))
@@ -95,7 +105,8 @@ namespace Application.MapperProfiles
                 .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.Name));
             CreateMap<AdoptionRequest, GetAllAdoptionRequestBySenderIdQueryResult>()
               .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.Name))
-              .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => src.Owner.Name));
+              .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => src.Owner.Name))
+              .ForMember(dest => dest.PetImageUrl, opt => opt.MapFrom(src => src.Pet.MainImageUrl));
             CreateMap<AdoptionRequest, GetAllIncomingAdoptionByOwnerIdQueryResult>()
             .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.Name))
             .ForMember(dest => dest.SenderName, opt => opt.MapFrom(src => src.Sender.Name + " " + src.Sender.Surname))
@@ -109,7 +120,10 @@ namespace Application.MapperProfiles
             CreateMap<User, GetAllUserQueryResult>()
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));
             CreateMap<User, GetByIdUserQueryResult>()
-                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));
+                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName))
+                .ForMember(dest => dest.ExistingImagePath, opt => opt.MapFrom(src => src.ProfilePictureUrl))
+                .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password));
+
             CreateMap<User, GetByIdUserDetailsForAdminQueryResult>()
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));
 

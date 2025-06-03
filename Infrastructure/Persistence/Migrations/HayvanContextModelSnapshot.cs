@@ -59,9 +59,10 @@ namespace Persistence.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.HasIndex("PetId");
-
                     b.HasIndex("SenderId");
+
+                    b.HasIndex("PetId", "SenderId")
+                        .IsUnique();
 
                     b.ToTable("AdoptionRequests");
                 });
@@ -151,6 +152,10 @@ namespace Persistence.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PetId"));
 
                     b.Property<string>("Age")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ApprovalStatus")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

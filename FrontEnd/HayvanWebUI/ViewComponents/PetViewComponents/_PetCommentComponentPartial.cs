@@ -23,7 +23,7 @@ namespace HayvanWebUI.ViewComponents.PetViewComponents
                 var result = JsonConvert.DeserializeObject<List<GetAllPetCommentDto>>(jsonData);
                 return View(result);
             }
-            return View();
+            return View(new List<GetAllPetCommentDto>());
         }
     }
 }

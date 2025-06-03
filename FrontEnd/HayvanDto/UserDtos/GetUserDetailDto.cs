@@ -14,7 +14,7 @@ namespace HayvanDto.UserDtos
         public string Email { get; set; }
         public string Password { get; set; }
         public string RoleName { get; set; }
-        public string? ProfilePictureUrl { get; set; }
+        public string? ExistingImagePath { get; set; }
         public string City { get; set; }
         public string District { get; set; }
         public string? AboutMe { get; set; } // Profil açıklaması

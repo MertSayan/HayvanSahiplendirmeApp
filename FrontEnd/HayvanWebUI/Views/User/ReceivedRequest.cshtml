@@ -1,0 +1,47 @@
+﻿@model List<GetAllAdoptionRequestByOwnerIdDto>
+
+@{
+    ViewData["Title"] = "ReceivedRequest";
+    Layout = "~/Views/UILayout/Index.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <p class="lead">
+                <span>Size gelen Sahiplendirme isteklerini bu sayfadan takip edebilirsiniz.</span>
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            @await Component.InvokeAsync("_UserSideBarComponentPartial", new { id = ViewBag.UserId })
+        </div>
+
+        <div class="col-md-9">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+
+                    @await Component.InvokeAsync("_ProfileRequestListComponentPartial", new { id = ViewBag.UserId })
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('.btn-danger, .btn-outline-danger').on('click', function (e) {
+                if (!confirm('Bu işlemi yapmak istediğinize emin misiniz?')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+}
+
+

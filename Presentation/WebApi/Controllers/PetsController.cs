@@ -1,4 +1,5 @@
 ﻿using Application.Constants;
+using Application.Features.MediatR.AdoptionRequests.Commands;
 using Application.Features.MediatR.Pets.Commands;
 using Application.Features.MediatR.Pets.Queries;
 using Domain;
@@ -30,6 +31,13 @@ namespace WebApi.Controllers
             var value=await _mediator.Send(new GetByIdPetQuery(petId,currentUserId));
             return Ok(value);
         }
+        [HttpGet("ByIdForUpdate")]
+        public async Task<IActionResult> GetPetById(int id)
+        {
+            var value = await _mediator.Send(new GetPetByIdQuery(id));
+            return Ok(value);
+        }
+        
         [HttpGet("GetAllPetByOwnerId")]
         public async Task<IActionResult> GetAllPetByOwnerId(int id)
         {
@@ -60,17 +68,35 @@ namespace WebApi.Controllers
             var result = await _mediator.Send(new GetFeaturedPetQuery(sayi));
             return Ok(result);
         }
+        [HttpGet("LastPets")]
+        public async Task<IActionResult> GetLastPets(int count)
+        {
+            var result = await _mediator.Send(new GetLastsPetQuery(count));
+            return Ok(result);
+        }
         [HttpPost]
-        public async Task<IActionResult> CreatePet(CreatePetCommand command)
+        public async Task<IActionResult> CreatePet([FromForm] CreatePetCommand command)
         {
             await _mediator.Send(command);
             return Ok(Messages<Pet>.EntityAdded);
         }
         [HttpPut]
-        public async Task<IActionResult> UpdatePet(UpdatePetCommand command)
+        public async Task<IActionResult> UpdatePet([FromForm] UpdatePetCommand command)
         {
             await _mediator.Send(command);
             return Ok(Messages<Pet>.EntityUpdated);
+        }
+        [HttpPut("Accept")]
+        public async Task<IActionResult> UpdatePetAccept([FromBody] UpdatePetAcceptCommand command)
+        {
+            await _mediator.Send(command);
+            return Ok();
+        }
+        [HttpPut("Reject")]
+        public async Task<IActionResult> UpdatePetReject([FromBody] UpdatePetRejectCommand command)
+        {
+            await _mediator.Send(command);
+            return Ok();
         }
         [HttpDelete]
         public async Task<IActionResult> DeletePet(int id)

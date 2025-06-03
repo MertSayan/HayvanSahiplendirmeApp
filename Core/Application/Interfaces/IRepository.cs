@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Application.Features.MediatR.Users.Results;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -21,5 +22,7 @@ namespace Application.Interfaces
 
         //toplu ekleme yapmak için bu entity e özgü servis-interface de kullanılabilir.
         //Task CreateRangeAsync(IEnumerable<T> entities);
+
+
     }
 }

@@ -8,5 +8,8 @@
         public string Note { get; set; }
         public string Status { get; set; }
         public DateTime CreatedDate { get; set; }
+        public string PetImageUrl { get; set; }
+        public int PetId { get; set; }
+
     }
 }

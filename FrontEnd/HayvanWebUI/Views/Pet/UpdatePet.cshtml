@@ -1,0 +1,101 @@
+﻿@model HayvanDto.PetDtos.UpdatePetDto
+
+@{
+    ViewData["Title"] = "İlanı Güncelle";
+    Layout = "~/Views/UILayout/Index.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1>Hayvan Sahiplendirme İlanını Güncelle</h1>
+            <p class="lead">Hayvan hakkında bilgileri güncelleyerek ilanınızı düzenleyebilirsiniz.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="pet-detail-info">
+                <form asp-controller="Pet" asp-action="UpdatePet" method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="PetId" />
+                    <input type="hidden" asp-for="UserId" />
+                    <input type="hidden" asp-for="IsAdopted" />
+                    <input type="hidden" asp-for="ExistingImagePath" />
+
+                    @* Temel Bilgiler *@
+                    <h4 class="mb-3">Temel Bilgiler</h4>
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Name" class="form-label">Hayvan Adı</label>
+                            <input asp-for="Name" class="form-control" placeholder="Örn: Karamel" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Age" class="form-label">Yaş</label>
+                            <input asp-for="Age" class="form-control" placeholder="Örn: 2 Yaş" />
+                            <span asp-validation-for="Age" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Gender" class="form-label">Cinsiyet</label>
+                            <select asp-for="Gender" class="form-select">
+                                <option value="">Seçiniz</option>
+                                <option value="Erkek">Erkek</option>
+                                <option value="Dişi">Dişi</option>
+                            </select>
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label asp-for="Description" class="form-label">Açıklama</label>
+                            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Hayvan hakkında detay verin..."></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    @* Sağlık Bilgileri *@
+                    <h4 class="mb-3">Sağlık Bilgileri</h4>
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3 form-check form-switch">
+                            <input asp-for="IsNeutered" class="form-check-input" type="checkbox" />
+                            <label asp-for="IsNeutered" class="form-check-label">Kısırlaştırılmış</label>
+                        </div>
+                        <div class="col-md-6 mb-3 form-check form-switch">
+                            <input asp-for="IsVaccinated" class="form-check-input" type="checkbox" />
+                            <label asp-for="IsVaccinated" class="form-check-label">Aşıları Tam</label>
+                        </div>
+                    </div>
+
+                    @* Fotoğraf *@
+                    <h4 class="mb-3">Fotoğraf</h4>
+                    <div class="mb-4">
+                        @if (!string.IsNullOrEmpty(Model.ExistingImagePath))
+                        {
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Mevcut Fotoğraf</label><br />
+                                <img src="@Model.ExistingImagePath" alt="Mevcut Fotoğraf" class="rounded shadow-sm" style="max-width: 180px; height: auto;" />
+                            </div>
+                        }
+
+                        <label asp-for="MainImageUrl" class="form-label">Yeni Fotoğraf</label>
+                        <input asp-for="MainImageUrl" class="form-control" type="file"  />
+                    </div>
+
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">Güncelle</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            @await Component.InvokeAsync("_CreateSideBarComponentPartial")
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
+}

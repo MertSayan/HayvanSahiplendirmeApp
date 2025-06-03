@@ -23,5 +23,12 @@ namespace WebApi.Controllers
             var values = await _mediator.Send(new GetAllPetTypeQuery());
             return Ok(values);
         }
+        [HttpGet("GetPetTypeCount")]
+        public async Task<IActionResult> GetPetTypeCount()
+        {
+            var values = await _mediator.Send(new GetPetTypeDistributionQuery());
+            return Ok(values);
+        }
+
     }
 }

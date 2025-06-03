@@ -24,7 +24,7 @@ namespace HayvanWebUI.ViewComponents.UserViewComponents
                 var result = JsonConvert.DeserializeObject<List<GetAllPetByOwnerIdDto>>(jsonData);
                 return View(result);
             }
-            return View(new GetUserDetailDto());
+            return View(new GetAllPetByOwnerIdDto());
         }
     }
 }
