@@ -39,7 +39,12 @@
                             <li><a class="dropdown-item" href="/User/MyFavoritte/@ViewBag.UserId">Favorilerim</a></li>
                             <li><a class="dropdown-item" href="/User/SentRequests/@ViewBag.UserId">Gönderdiğim İstekler</a></li>
                             <li><a class="dropdown-item" href="/User/ReceivedRequest/@ViewBag.UserId">Gelen İstekler</a></li>
-                            <li><a class="dropdown-item" href="/Message/Index">Mesajlarım</a></li>
+                            <li><a class="dropdown-item" href="/Message/Create">Mesajlarım</a></li>
+                            @if (ViewBag.UserRole == "Admin")
+                            {
+                                <li><a class="dropdown-item" href="Admin/AdminMain/Index">Admin Paneli</a></li>
+                            } 
+
                             <li>
                                 <hr class="dropdown-divider">
                             </li>

@@ -28,7 +28,7 @@ namespace Application.Features.MediatR.Pets.Handlers.Write
                 // Önceki resmi sil
                 if (!string.IsNullOrEmpty(pet.MainImageUrl))
                 {
-                    var oldImagePath = Path.Combine("C:\\csharpprojeler\\HayvanSahiplendirmeApp\\FrontEnd\\HayvanWebUI", "wwwroot", pet.MainImageUrl.TrimStart('/'));
+                    var oldImagePath = Path.Combine("C:\\Users\\furka\\Source\\Repos\\HayvanSahiplendirmeApp\\FrontEnd\\HayvanWebUI", "wwwroot", pet.MainImageUrl.TrimStart('/'));
                     if (File.Exists(oldImagePath))
                     {
                         File.Delete(oldImagePath);
@@ -36,7 +36,7 @@ namespace Application.Features.MediatR.Pets.Handlers.Write
                 }
 
                 // Yeni resmi kaydet
-                var uploadsFolderPath = Path.Combine("C:\\csharpprojeler\\HayvanSahiplendirmeApp\\FrontEnd\\HayvanWebUI", "wwwroot", "PetMain");
+                var uploadsFolderPath = Path.Combine("C:\\Users\\furka\\Source\\Repos\\HayvanSahiplendirmeApp\\FrontEnd\\HayvanWebUI", "wwwroot", "PetMain");
                 if (!Directory.Exists(uploadsFolderPath))
                 {
                     Directory.CreateDirectory(uploadsFolderPath);

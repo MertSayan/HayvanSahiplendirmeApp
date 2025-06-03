@@ -20,7 +20,7 @@ namespace Application.Features.MediatR.Pets.Handlers.Write
             string photoPath = null;
             if(request.MainImageUrl!=null && request.MainImageUrl.Length>0)
             {
-                var uploadsFolderPath=Path.Combine("C:\\csharpprojeler\\HayvanSahiplendirmeApp\\FrontEnd\\HayvanWebUI", "wwwroot", "PetMain");
+                var uploadsFolderPath=Path.Combine("C:\\Users\\furka\\Source\\Repos\\HayvanSahiplendirmeApp\\FrontEnd\\HayvanWebUI", "wwwroot", "PetMain");
                 if (!Directory.Exists(uploadsFolderPath))
                 {
                     Directory.CreateDirectory(uploadsFolderPath);
