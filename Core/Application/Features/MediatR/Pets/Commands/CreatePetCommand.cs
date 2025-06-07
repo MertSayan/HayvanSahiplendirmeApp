@@ -24,5 +24,6 @@ namespace Application.Features.MediatR.Pets.Commands
         public bool IsAdopted { get; set; } // sahiplendirilip sahiplendirilmediği ( ilan aktif mi pasif mi gibi )
         public string? Breed { get; set; } // Örn: "Golden Retriever"
         public IFormFile? MainImageUrl { get; set; }
+
     }
 }

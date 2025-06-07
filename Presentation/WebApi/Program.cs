@@ -16,6 +16,7 @@ using Application.Interfaces.UserInterface;
 using Application.Validations.Pets;
 using AutoMapper;
 using FluentValidation;
+using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -34,6 +35,8 @@ using Persistence.Repositories.PetTypeRepository;
 using Persistence.Repositories.TokenRepository;
 using Persistence.Repositories.UserRepository;
 using System.Text;
+using WebApi.Configurations;
+using WebApi.Consumer;
 using WebApi.SignalR.Hubs; // Hub class'ý burada
 
 namespace WebApi
@@ -88,6 +91,8 @@ namespace WebApi
             builder.Services.AddScoped<IPetImageRepository, PetImageRepository>();
             builder.Services.AddScoped<IPetTypeRepository, PetTypeRepository>();
 
+            builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
+
             builder.Services.AddScoped<IUserFactory, UserFactory>();
             builder.Services.AddScoped<IPetFactory, PetFactory>();
             builder.Services.AddScoped<IPetLikesFactory, PetLikeFactory>();
@@ -126,6 +131,26 @@ namespace WebApi
 
             IMapper mapper = mapperConfig.CreateMapper();
             builder.Services.AddSingleton(mapper);
+
+            builder.Services.AddMassTransit(x =>
+            {
+                x.AddConsumer<PetCreatedEventConsumer>();
+
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.Host("localhost", "/", h =>
+                    {
+                        h.Username("guest");
+                        h.Password("guest");
+                    });
+
+                    cfg.ReceiveEndpoint("pet-created-event-queue", e =>
+                    {
+                        e.ConfigureConsumer<PetCreatedEventConsumer>(context);
+                    });
+                });
+            });
+
 
             var app = builder.Build();
 
