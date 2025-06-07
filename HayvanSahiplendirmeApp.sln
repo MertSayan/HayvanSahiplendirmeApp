@@ -16,9 +16,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HayvanWebUI", "FrontEnd\HayvanWebUI\HayvanWebUI.csproj", "{6548FB53-4884-470B-AC23-0BB6C668D359}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{4EF73924-4FA6-474A-B474-F60452F0EB23}"
-	ProjectSection(SolutionItems) = preProject
-		Infrastructure\Persistence\Repositories\Repository.cs = Infrastructure\Persistence\Repositories\Repository.cs
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{187331EA-BB2A-498D-A9B2-6ADBBB9586C2}"
 EndProject

@@ -1,4 +1,5 @@
-﻿using Application.Features.MediatR.PetImages.Commands;
+﻿using Application.Factories;
+using Application.Features.MediatR.PetImages.Commands;
 using Application.Interfaces;
 using Domain;
 using MediatR;
@@ -13,44 +14,25 @@ namespace Application.Features.MediatR.PetImages.Handlers.Write
     public class CreatePetImagesCommandHandler : IRequestHandler<CreatePetImagesCommand, Unit>
     {
         private readonly IRepository<PetImage> _repository;
+        private readonly IPetImageFactory _petImageFactory;
 
-        public CreatePetImagesCommandHandler(IRepository<PetImage> repository)
+        public CreatePetImagesCommandHandler(IRepository<PetImage> repository, IPetImageFactory petImageFactory)
         {
             _repository = repository;
+            _petImageFactory = petImageFactory;
         }
+
         public async Task<Unit> Handle(CreatePetImagesCommand request, CancellationToken cancellationToken)
         {
-            
-            var savedImagePaths = new List<string>();
-            var uploadsFolderPath = Path.Combine("C:\\Users\\furka\\Source\\Repos\\HayvanSahiplendirmeApp\\FrontEnd\\HayvanWebUI", "wwwroot", "PetImage");
-            if (!Directory.Exists(uploadsFolderPath))
+            var petImages = await _petImageFactory.CreatePetImagesAsync(request.PetId, request.PetImages);
+
+            foreach (var image in petImages)
             {
-                Directory.CreateDirectory(uploadsFolderPath);
+                await _repository.CreateAsync(image);
             }
 
-            foreach (var image in request.PetImages)
-            {
-                if (image != null && image.Length > 0)
-                {
-                    var extension = Path.GetExtension(image.FileName);
-                    var uniqueName = $"{Guid.NewGuid()}{extension}";
-                    var filePath = Path.Combine(uploadsFolderPath, uniqueName);
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await image.CopyToAsync(stream);
-                    }
-
-                    var imageEntity = new PetImage
-                    {
-                        PetId = request.PetId,
-                        PetImageUrl = $"/PetImage/{uniqueName}"
-                    };
-
-                    await _repository.CreateAsync(imageEntity);
-                }
-            }
             return Unit.Value;
         }
     }
+
 }

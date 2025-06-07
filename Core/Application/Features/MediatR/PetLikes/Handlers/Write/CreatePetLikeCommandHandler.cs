@@ -1,4 +1,5 @@
-﻿using Application.Features.MediatR.PetLikes.Commands;
+﻿using Application.Factories;
+using Application.Features.MediatR.PetLikes.Commands;
 using Application.Interfaces;
 using AutoMapper;
 using Domain;
@@ -9,19 +10,20 @@ namespace Application.Features.MediatR.PetLikes.Handlers.Write
     public class CreatePetLikeCommandHandler : IRequestHandler<CreatePetLikeCommand, Unit>
     {
         private readonly IRepository<PetLike> _repository;
-        private readonly IMapper _mapper;
+        private readonly IPetLikesFactory _petLikeFactory;
 
-        public CreatePetLikeCommandHandler(IRepository<PetLike> repository, IMapper mapper)
+        public CreatePetLikeCommandHandler(IRepository<PetLike> repository, IPetLikesFactory petLikeFactory)
         {
             _repository = repository;
-            _mapper = mapper;
+            _petLikeFactory = petLikeFactory;
         }
 
         public async Task<Unit> Handle(CreatePetLikeCommand request, CancellationToken cancellationToken)
         {
-            var petLike=_mapper.Map<PetLike>(request);
+            var petLike = _petLikeFactory.CreatePetLike(request);
             await _repository.CreateAsync(petLike);
             return Unit.Value;
         }
     }
+
 }

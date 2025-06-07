@@ -1,4 +1,5 @@
 using Application.Behaviors;
+using Application.Factories;
 using Application.Features.MediatR.Users.Handlers.Write;
 using Application.Interfaces;
 using Application.Interfaces.AdoptionRequestInterface;
@@ -19,6 +20,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Persistence.Context;
+using Persistence.Factories;
 using Persistence.Repositories;
 using Persistence.Repositories.AdoptionRequestRepository;
 using Persistence.Repositories.AdoptionTrackingRepository;
@@ -85,6 +87,13 @@ namespace WebApi
             builder.Services.AddScoped<IPetFavoritesRepository, PetFavoriteRepository>();
             builder.Services.AddScoped<IPetImageRepository, PetImageRepository>();
             builder.Services.AddScoped<IPetTypeRepository, PetTypeRepository>();
+
+            builder.Services.AddScoped<IUserFactory, UserFactory>();
+            builder.Services.AddScoped<IPetFactory, PetFactory>();
+            builder.Services.AddScoped<IPetLikesFactory, PetLikeFactory>();
+            builder.Services.AddScoped<IPetImageFactory, PetImageFactory>();
+            builder.Services.AddScoped<IAdoptionRequestFactory, AdoptionRequestFactory>();
+
 
             // ? Message repository DI
             builder.Services.AddScoped<IMessageRepository, MessageRepository>();
