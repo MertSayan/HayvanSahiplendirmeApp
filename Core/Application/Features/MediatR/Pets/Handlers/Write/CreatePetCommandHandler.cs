@@ -36,6 +36,8 @@ namespace Application.Features.MediatR.Pets.Handlers.Write
            );
             if (petWithUser?.User?.Email == null)
                 throw new Exception("İlan sahibi kullanıcının e-posta adresi bulunamadı.");
+
+
             // Event yayınla
             await _publishEndpoint.Publish(new PetCreatedEvent
             {

@@ -99,6 +99,9 @@ namespace WebApi
             builder.Services.AddScoped<IPetImageFactory, PetImageFactory>();
             builder.Services.AddScoped<IAdoptionRequestFactory, AdoptionRequestFactory>();
 
+            builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+
+
 
             // ? Message repository DI
             builder.Services.AddScoped<IMessageRepository, MessageRepository>();

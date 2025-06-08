@@ -12,7 +12,7 @@ namespace Application.Features.MediatR.Pets.Commands
     public class CreatePetCommand:IRequest<Unit>
     {
         public int UserId { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } 
         public int PetTypeId { get; set; }
         public string Age { get; set; }
         public string Gender { get; set; }
@@ -24,6 +24,13 @@ namespace Application.Features.MediatR.Pets.Commands
         public bool IsAdopted { get; set; } // sahiplendirilip sahiplendirilmediği ( ilan aktif mi pasif mi gibi )
         public string? Breed { get; set; } // Örn: "Golden Retriever"
         public IFormFile? MainImageUrl { get; set; }
+
+        public override string ToString()
+        {
+            return $"UserId: {UserId}, Tarih: {DateTime.Now:dd.MM.yyyy HH:mm}, Pet Adı: '{Name}'";
+        }
+
+
 
     }
 }
