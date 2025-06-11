@@ -1,4 +1,5 @@
 using Application.Behaviors;
+using Application.Common;
 using Application.Factories;
 using Application.Features.MediatR.Users.Handlers.Write;
 using Application.Interfaces;
@@ -13,6 +14,7 @@ using Application.Interfaces.PetLikeInterface;
 using Application.Interfaces.PetTypeInterface;
 using Application.Interfaces.TokenInterface;
 using Application.Interfaces.UserInterface;
+using Application.Observers;
 using Application.Validations.Pets;
 using AutoMapper;
 using FluentValidation;
@@ -35,7 +37,6 @@ using Persistence.Repositories.PetTypeRepository;
 using Persistence.Repositories.TokenRepository;
 using Persistence.Repositories.UserRepository;
 using System.Text;
-using WebApi.Configurations;
 using WebApi.Consumer;
 using WebApi.SignalR.Hubs; // Hub class'ý burada
 
@@ -90,6 +91,8 @@ namespace WebApi
             builder.Services.AddScoped<IPetFavoritesRepository, PetFavoriteRepository>();
             builder.Services.AddScoped<IPetImageRepository, PetImageRepository>();
             builder.Services.AddScoped<IPetTypeRepository, PetTypeRepository>();
+            builder.Services.AddScoped<IPetCreatedObserver, EmailPetCreatedObserver>();
+
 
             builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 
