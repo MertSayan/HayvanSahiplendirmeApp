@@ -1,5 +1,8 @@
 using Application.Behaviors;
 using Application.Common;
+using Application.Facades.PetFacades;
+using Application.Facades.PetImageFacade;
+using Application.Facades.UserFacades;
 using Application.Factories;
 using Application.Features.MediatR.Users.Handlers.Write;
 using Application.Interfaces;
@@ -12,6 +15,7 @@ using Application.Interfaces.PetImageInterface;
 using Application.Interfaces.PetInterface;
 using Application.Interfaces.PetLikeInterface;
 using Application.Interfaces.PetTypeInterface;
+using Application.Interfaces.Services;
 using Application.Interfaces.TokenInterface;
 using Application.Interfaces.UserInterface;
 using Application.Observers;
@@ -36,6 +40,7 @@ using Persistence.Repositories.PetRepository;
 using Persistence.Repositories.PetTypeRepository;
 using Persistence.Repositories.TokenRepository;
 using Persistence.Repositories.UserRepository;
+using Persistence.Services.Mail;
 using System.Text;
 using WebApi.Consumer;
 using WebApi.SignalR.Hubs; // Hub class'ý burada
@@ -101,6 +106,13 @@ namespace WebApi
             builder.Services.AddScoped<IPetLikesFactory, PetLikeFactory>();
             builder.Services.AddScoped<IPetImageFactory, PetImageFactory>();
             builder.Services.AddScoped<IAdoptionRequestFactory, AdoptionRequestFactory>();
+
+            builder.Services.AddScoped<PetFacade>();
+            builder.Services.AddScoped<UserFacade>();
+            builder.Services.AddScoped<PetImageFacade>();
+
+            builder.Services.AddScoped<IMailSender, SmtpMailSender>();
+
 
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
