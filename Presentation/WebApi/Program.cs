@@ -1,5 +1,8 @@
 using Application.Behaviors;
 using Application.Common;
+using Application.Facades.PetFacades;
+using Application.Facades.PetImageFacade;
+using Application.Facades.UserFacades;
 using Application.Factories;
 using Application.Features.MediatR.Users.Handlers.Write;
 using Application.Interfaces;
@@ -101,6 +104,11 @@ namespace WebApi
             builder.Services.AddScoped<IPetLikesFactory, PetLikeFactory>();
             builder.Services.AddScoped<IPetImageFactory, PetImageFactory>();
             builder.Services.AddScoped<IAdoptionRequestFactory, AdoptionRequestFactory>();
+
+            builder.Services.AddScoped<PetFacade>();
+            builder.Services.AddScoped<UserFacade>();
+            builder.Services.AddScoped<PetImageFacade>();
+
 
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
