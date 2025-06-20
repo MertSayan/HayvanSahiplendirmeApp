@@ -204,5 +204,23 @@ namespace HayvanWebUI.Controllers
             ModelState.AddModelError("", "İlan güncellenemedi.");
             return View(dto);
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var responseMessage = await client.DeleteAsync($"https://localhost:7160/api/Pets?id={id}");
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index"); // Silindikten sonra listeye dön
+            }
+
+            // Eğer hata olduysa kullanıcıya bir şey göster
+            TempData["Error"] = "Silme işlemi başarısız oldu.";
+            return RedirectToAction("Index");
+        }
+
     }
 }

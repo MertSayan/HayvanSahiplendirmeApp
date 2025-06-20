@@ -5,7 +5,7 @@
 
         public int totalUserCount { get; set; }
         public int activePetCount { get; set; }
-        public int adoptionRate { get; set; }
+        public decimal adoptionRate { get; set; }
         public int pendingApprovalCount { get; set; }
 
 
